@@ -18,4 +18,11 @@ return [
             ]
         ]
     ],
+    'modules' => [
+        'user' => [
+            'class' => 'dektrium\user\Module',
+            'admins' => ['admin']
+        ],
+        'rbac' => 'dektrium\rbac\RbacWebModule',
+    ],
 ];
