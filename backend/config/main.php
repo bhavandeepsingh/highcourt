@@ -24,7 +24,7 @@ return [
             //'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
             'identityCookie' => [
                 'name'     => '_backendIdentity',
-                'path'     => '/admin',
+                'path'     => 'backend/',
                 'httpOnly' => true,
             ],
         ],
@@ -32,7 +32,7 @@ return [
             'name' => 'BACKENDSESSID',
             'cookieParams' => [
                 'httpOnly' => true,
-                'path'     => '/admin',
+                'path'     => 'backend/',
             ],
         ],
         /*'session' => [
@@ -59,6 +59,16 @@ return [
             ],
         ],
         */
+    ],
+    'modules' => [
+        'user' => [
+            // following line will restrict access to admin controller from backend application
+            'as backend' => 'dektrium\user\filters\BackendFilter',
+            'enableUnconfirmedLogin' => true,
+            'confirmWithin' => 21600,
+            'cost' => 12,
+            'admins' => ['admin']
+        ],
     ],
     'params' => $params,
 ];

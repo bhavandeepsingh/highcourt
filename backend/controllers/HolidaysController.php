@@ -101,6 +101,10 @@ class HolidaysController extends Controller
      */
     public function actionDelete($id)
     {
+        if(!Yii::$app->user->can("deletePost")){
+            return "Unauthorized Access";
+            die;
+        }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
