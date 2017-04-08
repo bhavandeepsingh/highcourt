@@ -12,14 +12,14 @@ use Yii;
  * @property integer $index
  * @property integer $status
  */
-class Banner extends \yii\db\ActiveRecord
+class Banners extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'Banner';
+        return 'banners';
     }
 
     /**

@@ -25,18 +25,11 @@
             </div>
         </form>
         <!-- /.search form -->
-
-        <?= dmstr\widgets\Menu::widget(
-            [
-                'options' => ['class' => 'sidebar-menu'],
-                'items' => [
-                    ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
-                    ['label' => 'Gii', 'icon' => 'fa fa-file-code-o', 'url' => ['/gii']],
-                    ['label' => 'Banner', 'icon' => 'fa fa-picture-o', 'url' => ['/banner']],
-                    ['label' => 'Holidays', 'icon' => 'fa fa-tree', 'url' => ['/holidays']],
-                    ['label' => 'Debug', 'icon' => 'fa fa-dashboard', 'url' => ['/debug']],
-                    ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
-                    [
+        
+        <?php
+            $menu = [['label' => 'Application Menu', 'options' => ['class' => 'header']]];
+                    
+                    /*[[
                         'label' => 'Same tools',
                         'icon' => 'fa fa-share',
                         'url' => '#',
@@ -62,7 +55,26 @@
                             ],
                         ],
                     ],
-                ],
+                ];*/
+            $roles=\Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
+            foreach($roles as $key=>$role){
+                if($key=="admin"){
+                    $menu[]=['label' => 'Gii', 'icon' => 'fa fa-file-code-o', 'url' => ['/gii']];
+                    $menu[]=['label' => 'Users', 'icon' => 'fa fa-user', 'url' => ['/rbac']];
+                    //$menu[]=['label' => 'Debug', 'icon' => 'fa fa-dashboard', 'url' => ['/debug']];
+                }
+            }
+            $menu[]=['label' => 'Judges & Executives', 'icon' => 'fa fa-user', 'url' => ['/members']];
+            $menu[]=['label' => 'Banners', 'icon' => 'fa fa-picture-o', 'url' => ['/banners']];
+            $menu[]=['label' => 'Holidays', 'icon' => 'fa fa-tree', 'url' => ['/holidays']];
+            $menu[]=['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest];
+            
+        ?>
+        
+        <?= dmstr\widgets\Menu::widget(
+            [
+                'options' => ['class' => 'sidebar-menu'],
+                'items' => $menu,
             ]
         ) ?>
 

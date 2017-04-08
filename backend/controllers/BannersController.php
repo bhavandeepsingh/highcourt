@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Banner;
+use common\models\Banners;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * BannerController implements the CRUD actions for Banner model.
+ * BannersController implements the CRUD actions for Banner model.
  */
-class BannerController extends Controller
+class BannersController extends Controller
 {
     /**
      * @inheritdoc
@@ -36,7 +36,7 @@ class BannerController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Banner::find(),
+            'query' => Banners::find(),
         ]);
 
         return $this->render('index', [
@@ -63,7 +63,7 @@ class BannerController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Banner();
+        $model = new Banners();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -115,7 +115,7 @@ class BannerController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Banner::findOne($id)) !== null) {
+        if (($model = Banners::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
