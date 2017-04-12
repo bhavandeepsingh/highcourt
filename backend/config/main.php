@@ -28,6 +28,13 @@ return [
                 'httpOnly' => true,
             ],
         ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@dektrium/user/views' => '@app/views/user'
+                ],
+            ],
+        ],
         'session' => [
             'name' => 'BACKENDSESSID',
             'cookieParams' => [
@@ -67,7 +74,11 @@ return [
             'enableUnconfirmedLogin' => true,
             'confirmWithin' => 21600,
             'cost' => 12,
-            'admins' => ['admin']
+            'admins' => ['admin'],
+            'modelMap' => [
+                'User' => 'common\models\User',
+                'Profile' => 'common\models\Profile',
+            ],
         ],
     ],
     'params' => $params,
