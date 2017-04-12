@@ -60,6 +60,7 @@
             foreach($roles as $key=>$role){
                 if($key=="admin"){
                     $menu[]=['label' => 'Gii', 'icon' => 'fa fa-file-code-o', 'url' => ['/gii']];
+                    $menu[]=['label' => 'Memberships', 'icon' => 'fa fa-user-plus', 'url' => ['/membership-types']];
                     $menu[]=['label' => 'Users', 'icon' => 'fa fa-user', 'url' => ['/rbac']];
                     //$menu[]=['label' => 'Debug', 'icon' => 'fa fa-dashboard', 'url' => ['/debug']];
                 }

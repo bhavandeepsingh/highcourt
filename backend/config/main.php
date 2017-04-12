@@ -76,8 +76,8 @@ return [
             'cost' => 12,
             'admins' => ['admin'],
             'modelMap' => [
-                'User' => 'common\models\User',
-                'Profile' => 'common\models\Profile',
+                'User'      => 'common\models\User',
+                'Profile'   => 'common\models\Profile',
             ],
         ],
     ],
