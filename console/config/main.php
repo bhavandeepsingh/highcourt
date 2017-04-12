@@ -27,5 +27,10 @@ return [
             ],
         ],
     ],
+    'modules' => [
+        'gii' => 'yii\gii\Module',
+        'rbac' => 'dektrium\rbac\RbacConsoleModule',
+    ],
     'params' => $params,
 ];
+ 
