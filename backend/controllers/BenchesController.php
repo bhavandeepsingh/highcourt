@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Judges;
-use common\models\JudgesSearch;
+use common\models\Benches;
+use common\models\BenchesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use common\models\UploadForm;
+
 /**
- * JudgesController implements the CRUD actions for Judges model.
+ * BenchesController implements the CRUD actions for Benches model.
  */
-class JudgesController extends Controller
+class BenchesController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class JudgesController extends Controller
     }
 
     /**
-     * Lists all Judges models.
+     * Lists all Benches models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new JudgesSearch();
+        $searchModel = new BenchesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class JudgesController extends Controller
     }
 
     /**
-     * Displays a single Judges model.
+     * Displays a single Benches model.
      * @param integer $id
      * @return mixed
      */
@@ -57,18 +57,17 @@ class JudgesController extends Controller
     }
 
     /**
-     * Creates a new Judges model.
+     * Creates a new Benches model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Judges();
+        $model = new Benches();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {            
-            UploadForm::uploadProfilePic($model->id, UploadForm::$IMAGE_TYPE_JUDGES);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {            
+        } else {
             return $this->render('create', [
                 'model' => $model,
             ]);
@@ -76,7 +75,7 @@ class JudgesController extends Controller
     }
 
     /**
-     * Updates an existing Judges model.
+     * Updates an existing Benches model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -86,7 +85,6 @@ class JudgesController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-             UploadForm::uploadProfilePic($model->id, UploadForm::$IMAGE_TYPE_JUDGES);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -96,7 +94,7 @@ class JudgesController extends Controller
     }
 
     /**
-     * Deletes an existing Judges model.
+     * Deletes an existing Benches model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -109,15 +107,15 @@ class JudgesController extends Controller
     }
 
     /**
-     * Finds the Judges model based on its primary key value.
+     * Finds the Benches model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Judges the loaded model
+     * @return Benches the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Judges::findOne($id)) !== null) {
+        if (($model = Benches::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

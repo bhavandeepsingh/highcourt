@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Judges;
-use common\models\JudgesSearch;
+use common\models\Roster;
+use common\models\RosterSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use common\models\UploadForm;
+
 /**
- * JudgesController implements the CRUD actions for Judges model.
+ * RosterController implements the CRUD actions for Roster model.
  */
-class JudgesController extends Controller
+class RosterController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class JudgesController extends Controller
     }
 
     /**
-     * Lists all Judges models.
+     * Lists all Roster models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new JudgesSearch();
+        $searchModel = new RosterSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class JudgesController extends Controller
     }
 
     /**
-     * Displays a single Judges model.
+     * Displays a single Roster model.
      * @param integer $id
      * @return mixed
      */
@@ -57,26 +57,30 @@ class JudgesController extends Controller
     }
 
     /**
-     * Creates a new Judges model.
+     * Creates a new Roster model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Judges();
+        $model = new Roster();
+        $modelJudges = new \common\models\RosterJudges();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {            
-            UploadForm::uploadProfilePic($model->id, UploadForm::$IMAGE_TYPE_JUDGES);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $modelJudges->load(Yii::$app->request->post());
+            $modelJudges->roster_id = $model->id;
+            $modelJudges->save();
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {            
+        } else {
             return $this->render('create', [
                 'model' => $model,
+                'modelJudges' => $modelJudges
             ]);
         }
     }
 
     /**
-     * Updates an existing Judges model.
+     * Updates an existing Roster model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -84,19 +88,21 @@ class JudgesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelJudges = new \common\models\RosterJudges();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-             UploadForm::uploadProfilePic($model->id, UploadForm::$IMAGE_TYPE_JUDGES);
+            \common\models\RosterJudges::updateRosterJudge($model->id, Yii::$app->request->post());            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'modelJudges' => $modelJudges
             ]);
         }
     }
 
     /**
-     * Deletes an existing Judges model.
+     * Deletes an existing Roster model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -109,15 +115,15 @@ class JudgesController extends Controller
     }
 
     /**
-     * Finds the Judges model based on its primary key value.
+     * Finds the Roster model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Judges the loaded model
+     * @return Roster the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Judges::findOne($id)) !== null) {
+        if (($model = Roster::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

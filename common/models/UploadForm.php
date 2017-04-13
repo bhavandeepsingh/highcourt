@@ -9,6 +9,8 @@ class UploadForm extends Model
 {
     public static $IMAGE_TYPE_JUDGES = "IMAGE_TYPE_JUDGES";
     
+    public static $IMAGE_TYPE_MEMBERS = "IMAGE_TYPE_MEMBERS";
+    
     /**
      * @var UploadedFile
      */
@@ -17,7 +19,7 @@ class UploadForm extends Model
     public function rules()
     {
         return [
-            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'jpg'],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg'],
         ];
     }
     
@@ -39,13 +41,16 @@ class UploadForm extends Model
         if($type == self::$IMAGE_TYPE_JUDGES){
             $type_path = "judges/";
         }
+        else if($type == self::$IMAGE_TYPE_MEMBERS){
+            $type_path = "members/";
+        }
         return Yii::$app->basePath . '/../uploads/'. $type_path;
     }
     
-    public static function judgeProfilePic($id){          
+    public static function uploadProfilePic($id, $type){          
         $model = self::getImageInstance();         
         if(!empty($model->imageFile)){          
-            if($model->upload($model->getPathWithType(self::$IMAGE_TYPE_JUDGES). $id, "image")){                 
+            if($model->upload($model->getPathWithType($type). $id, "image")){                 
                 return true;
             }
         }        
@@ -63,11 +68,19 @@ class UploadForm extends Model
         return self::getImageSrc(self::$IMAGE_TYPE_JUDGES, $id);
     }
     
+    public static function getMemberProfilePic($id = 0){
+        if($id <= 0) return "";
+        return self::getImageSrc(self::$IMAGE_TYPE_MEMBERS, $id);
+    }
+    
     public static function getImageSrc($type, $id){
         $type_path = "";
         if($type == self::$IMAGE_TYPE_JUDGES){
-            $type_path = "judges/".$id. "/image.jpg";
+            $type_path = "judges/";
+        }else if($type == self::$IMAGE_TYPE_MEMBERS){
+            $type_path = "members/";
         }        
+        $type_path .= $id. "/image.jpg";
         return Yii::$app->urlManager->baseUrl.'/../../uploads/'.$type_path;
     }
     
