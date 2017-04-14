@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status',
                 'format' => 'raw',
+                'filter' => [0 => 'Inactive', 1 => 'Active'],
                 'value' => function($data){
                     if($data->status){
                         return "Active";
