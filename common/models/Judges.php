@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use common\models\UploadForm;
 
 /**
  * This is the model class for table "{{%judges}}".

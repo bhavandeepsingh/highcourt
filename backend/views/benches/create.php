@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Members */
+/* @var $model common\models\Benches */
 
-$this->title = Yii::t('app', 'Create Members');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Members'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Create Benches');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Benches'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="members-create">
+<div class="benches-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

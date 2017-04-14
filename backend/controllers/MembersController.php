@@ -3,14 +3,15 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\JudgesExecutives;
-use yii\data\ActiveDataProvider;
+use common\models\Members;
+use common\models\MembersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\UploadForm;
 
 /**
- * MembersController implements the CRUD actions for JudgesExecutives model.
+ * MembersController implements the CRUD actions for Members model.
  */
 class MembersController extends Controller
 {
@@ -30,22 +31,22 @@ class MembersController extends Controller
     }
 
     /**
-     * Lists all JudgesExecutives models.
+     * Lists all Members models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => JudgesExecutives::find(),
-        ]);
+        $searchModel = new MembersSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single JudgesExecutives model.
+     * Displays a single Members model.
      * @param integer $id
      * @return mixed
      */
@@ -57,15 +58,16 @@ class MembersController extends Controller
     }
 
     /**
-     * Creates a new JudgesExecutives model.
+     * Creates a new Members model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new JudgesExecutives();
+        $model = new Members();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            UploadForm::uploadProfilePic($this->id, UploadForm::$IMAGE_TYPE_MEMBERS);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -75,7 +77,7 @@ class MembersController extends Controller
     }
 
     /**
-     * Updates an existing JudgesExecutives model.
+     * Updates an existing Members model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -84,9 +86,10 @@ class MembersController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) { 
+            UploadForm::uploadProfilePic($this->id, UploadForm::$IMAGE_TYPE_MEMBERS);
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
+        } else {             
             return $this->render('update', [
                 'model' => $model,
             ]);
@@ -94,7 +97,7 @@ class MembersController extends Controller
     }
 
     /**
-     * Deletes an existing JudgesExecutives model.
+     * Deletes an existing Members model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -107,15 +110,15 @@ class MembersController extends Controller
     }
 
     /**
-     * Finds the JudgesExecutives model based on its primary key value.
+     * Finds the Members model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return JudgesExecutives the loaded model
+     * @return Members the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = JudgesExecutives::findOne($id)) !== null) {
+        if (($model = Members::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
