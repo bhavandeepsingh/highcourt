@@ -2,57 +2,46 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\widgets\Pjax;
 /* @var $this yii\web\View */
+/* @var $searchModel common\models\MembersSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Judges Executives';
+$this->title = Yii::t('app', 'Members');
 $this->params['breadcrumbs'][] = $this->title;
-$templates="";
-$templates.=(Yii::$app->user->can(USER_CAN_UPDATE_POSTS))?"{update} ":"";
-$templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
 ?>
-<div class="judges-executives-index">
+<div class="members-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Judges Executives', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Members'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <?= GridView::widget([
+<?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            [
+              'label' => 'Image',
+              'format' => 'html',
+              'value' => function($data){ return '<img src="'. \common\models\UploadForm::getMemberProfilePic($data->id).'" width="100">'; }  
+            ],
             'name',
-            'designation',
-            'description:ntext',
-            [
-                'attribute' => 'type',
-                'format' => 'raw',
-                'value' => function($data){
-                    switch (@$data->type){
-                        case "1":
-                            return "Judge";
-                            break;
-                        case "2":
-                            return "Executive";
-                            break;
-                        default:
-                            return "Unknown";
-                            break;
-                    }
-                    
-                }
-            ],
-            // 'createdOn',
-            // 'status',
+            'enrollment_no',
+            'membership_no',
+            'email_id:email',
+            // 'landline_no:ntext',
+            // 'mobile_no:ntext',
+            // 'residential_address:ntext',
+            // 'court_address:ntext',
+            // 'blood_group',
+            // 'created_at',
+            // 'updated_at',
 
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{view} '.$templates,
-            ],
+            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-</div>
+<?php Pjax::end(); ?></div>

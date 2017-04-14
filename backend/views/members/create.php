@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\JudgesExecutives */
+/* @var $model common\models\Members */
 
-$this->title = 'Create Judges Executives';
-$this->params['breadcrumbs'][] = ['label' => 'Judges Executives', 'url' => ['index']];
+$this->title = Yii::t('app', 'Create Members');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Members'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="judges-executives-create">
+<div class="members-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
