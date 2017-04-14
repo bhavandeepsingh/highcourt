@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'status')->dropDownList([0 => 'Inactive', 1 => 'Active']) ?>
 
-    <?= $form->field($model, 'created_at') ?>
+    <?php //$form->field($model, 'created_at') ?>
 
     <?php // echo $form->field($model, 'updated_at') ?>
 

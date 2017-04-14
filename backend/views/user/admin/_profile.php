@@ -38,7 +38,8 @@ use yii\helpers\Html;
 <?= $form->field($profile, 'location')->textInput(['placeholder' => 'Location']) ?>
 <?php //$form->field($profile, 'gravatar_email') ?>
 <?= $form->field($profile, 'bio')->textarea(['placeholder' => 'About Member']) ?>
-<?= $form->field($profile, 'designation')->dropDownList(['' => 'Select Designation',1 => 'Advocate', 2 => 'Additional Advocate']) ?>
+<?php $membershiptypes = \common\models\MembershipTypes::find()->all(); ?>
+<?= $form->field($profile, 'designation')->dropDownList(\yii\helpers\ArrayHelper::map($membershiptypes,'id','name'), ['prompt'=>"Select Membership Type"]) ?>
 <?= $form->field($profile, 'profile')->textInput(['placeholder' => 'Profile Name (eg. Additonal Advocate General, Haryana)']) ?>
 <?= $form->field($profile, 'enrollment_number')->textInput(['placeholder' => 'Enrollment Number']) ?>
 <?= $form->field($profile, 'membership_number')->textInput(['placeholder' => 'Membership Number']) ?>
