@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput() ?>
+    <?= $form->field($model, 'name')->textInput(['placeholder' => "Name"]) ?>
 
     <?= $form->field($model, 'type')->dropDownList($model->getBenchTypes(), ['prompt' => 'Select Bench Type']) ?>  
 

@@ -6,6 +6,7 @@ return [
             'class' => 'yii\caching\FileCache',
         ],
     ],
+    'timeZone' => 'Asia/Kolkata',
     'modules' => [
         'user' => [
             'class' => 'dektrium\user\Module',

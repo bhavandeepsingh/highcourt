@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Benches;
-use common\models\BenchesSearch;
+use common\models\Notification;
+use common\models\NotificationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * BenchesController implements the CRUD actions for Benches model.
+ * NotificationController implements the CRUD actions for Notification model.
  */
-class BenchesController extends Controller
+class NotificationController extends Controller
 {
     /**
      * @inheritdoc
@@ -44,12 +44,12 @@ class BenchesController extends Controller
     }
 
     /**
-     * Lists all Benches models.
+     * Lists all Notification models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new BenchesSearch();
+        $searchModel = new NotificationSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -59,7 +59,7 @@ class BenchesController extends Controller
     }
 
     /**
-     * Displays a single Benches model.
+     * Displays a single Notification model.
      * @param integer $id
      * @return mixed
      */
@@ -71,14 +71,14 @@ class BenchesController extends Controller
     }
 
     /**
-     * Creates a new Benches model.
+     * Creates a new Notification model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Benches();
-
+        $model = new Notification();
+        $model->sender_id = Yii::$app->user->id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -89,7 +89,7 @@ class BenchesController extends Controller
     }
 
     /**
-     * Updates an existing Benches model.
+     * Updates an existing Notification model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -97,7 +97,7 @@ class BenchesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -108,7 +108,7 @@ class BenchesController extends Controller
     }
 
     /**
-     * Deletes an existing Benches model.
+     * Deletes an existing Notification model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -121,15 +121,15 @@ class BenchesController extends Controller
     }
 
     /**
-     * Finds the Benches model based on its primary key value.
+     * Finds the Notification model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Benches the loaded model
+     * @return Notification the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Benches::findOne($id)) !== null) {
+        if (($model = Notification::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

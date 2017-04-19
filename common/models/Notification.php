@@ -4,28 +4,25 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
-
 /**
- * This is the model class for table "{{%benches}}".
+ * This is the model class for table "notification".
  *
  * @property integer $id
- * @property string $name
- * @property integer $type
+ * @property string $title
+ * @property string $description
+ * @property integer $sender_id
+ * @property integer $reciever_id
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Benches extends \yii\db\ActiveRecord
+class Notification extends \yii\db\ActiveRecord
 {
-    
-    public static $BENCH_TYPE_SINGLE = 1;
-    public static $BENCH_TYPE_DEVISION = 2;
-
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%benches}}';
+        return 'notification';
     }
 
     /**
@@ -34,9 +31,10 @@ class Benches extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'type'], 'required'],
-            [['name'], 'string'],
-            [['type', 'created_at', 'updated_at'], 'integer'],
+            [['title', 'description'], 'required'],
+            [['description'], 'string'],
+            //[['sender_id', 'reciever_id', 'created_at', 'updated_at'], 'integer'],
+            [['title'], 'string', 'max' => 255],
         ];
     }
 
@@ -47,8 +45,10 @@ class Benches extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Category Name',
-            'type' => 'Type',
+            'title' => 'Title',
+            'description' => 'Description',
+            'sender_id' => 'Sender ID',
+            'reciever_id' => 'Reciever ID',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -58,13 +58,6 @@ class Benches extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::className(),
-        ];
-    }
-    
-    public function getBenchTypes(){
-        return [
-            self::$BENCH_TYPE_SINGLE => 'Single' ,
-            self::$BENCH_TYPE_DEVISION => 'Devision'
         ];
     }
 }

@@ -26,6 +26,20 @@ class RosterController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index','view','create','update'],
+                        'roles' => ['author'],
+                    ],
+                ],
+            ],
         ];
     }
 

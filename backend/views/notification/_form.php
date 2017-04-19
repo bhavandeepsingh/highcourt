@@ -4,19 +4,21 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\MembershipTypes */
+/* @var $model common\models\Notification */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="membership-types-form">
+<div class="notification-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true, "placeholder" => "Name"]) ?>
+    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'amount')->textInput(['maxlength' => true, "placeholder" => "Amount (e.g : 200)"]) ?>
+    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'status')->dropDownList([0 => 'Inactive', 1 => 'Active']) ?>
+    <?php //$form->field($model, 'sender_id')->textInput() ?>
+
+    <?php //$form->field($model, 'reciever_id')->textInput() ?>
 
     <?php //$form->field($model, 'created_at')->textInput() ?>
 

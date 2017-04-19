@@ -66,7 +66,7 @@ class JudgesController extends Controller
         $model = new Judges();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {            
-            UploadForm::uploadProfilePic($model->id, UploadForm::$IMAGE_TYPE_JUDGES);
+            UploadForm::uploadJudgeProfilePic($model->id);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {            
             return $this->render('create', [
@@ -86,7 +86,7 @@ class JudgesController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-             UploadForm::uploadProfilePic($model->id, UploadForm::$IMAGE_TYPE_JUDGES);
+             UploadForm::uploadJudgeProfilePic($model->id);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
