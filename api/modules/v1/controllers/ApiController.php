@@ -14,13 +14,13 @@ class ApiController extends \yii\rest\Controller{
     public function beforeAction($action) {   
         $headers = Yii::$app->request->headers;
         if(isset($headers[$this->header_name]) && !empty($headers[$this->header_name])){                        
-            if(is_numeric($headers[$this->header_name])){
+            if(is_numeric($headers[$this->header_name])){                
                 Yii::$app->user->setIdentity(\common\models\User::findOne(["id" => $headers[$this->header_name]]));           
             }else{
                 Yii::$app->user->setIdentity(\common\models\User::findOne(["auth_key" => $headers[$this->header_name]]));           
             }
-        }  
-        $this->login_user = Yii::$app->user->getIdentity();       
+            $this->login_user = Yii::$app->user->getIdentity(); 
+        }              
         return parent::beforeAction($action);
     }       
     
@@ -44,6 +44,12 @@ class ApiController extends \yii\rest\Controller{
         return \yii\helpers\ArrayHelper::merge(['is_success' => false], $error);
     } 
     
+    
+    public function errorLoginRequierd(){
+        return $this->error(['error' => 'Please set login id.']);
+    }
+
+
     public function exception(Exception $e){        
         return \yii\helpers\ArrayHelper::merge(['is_success' => false], [
             'exception' => [
@@ -62,10 +68,11 @@ class ApiController extends \yii\rest\Controller{
     }
     
     public function loginId(){
-        return \Yii::$app->user->getId();
+        return ($this->login_user)? $this->login_user->getId(): false;
     }
     
-    public function dataProvider($debug = false){
-        return $this->success(['list' => $this->dataprovider->getModels(), 'pagination' => $this->pagination()], $debug); 
+    public function dataProvider($dataprovider, $debug = false){
+        $this->dataprovider = $dataprovider;
+        return $this->success(['list' => $dataprovider->getModels(), 'pagination' => $this->pagination()], $debug); 
     }
 }
