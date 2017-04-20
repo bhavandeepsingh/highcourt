@@ -46,4 +46,13 @@ class Banners extends \yii\db\ActiveRecord
             'status' => 'Status',
         ];
     }
+    
+    public function afterSave($insert, $changedAttributes) {
+        UploadForm::uploadBannerProfilePic($this->id);
+        parent::afterSave($insert, $changedAttributes);
+    }
+    
+    public function getBannerPicSrc(){
+        return UploadForm::getBannerProfilePic($this->id);
+    }
 }

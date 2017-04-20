@@ -9,6 +9,9 @@ use yii\widgets\Pjax;
 
 $this->title = Yii::t('app', 'Benches');
 $this->params['breadcrumbs'][] = $this->title;
+$templates="";
+$templates.=(Yii::$app->user->can(USER_CAN_UPDATE_POSTS))?"{update} ":"";
+$templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
 ?>
 <div class="benches-index">
 
@@ -30,10 +33,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Bench Type',
                 'value' => function($data){return $data->getBenchTypes()[$data->type];}
             ],
-            'created_at',
-            'updated_at',
+            //'created_at',
+            //'updated_at',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} '.$templates
+            ],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

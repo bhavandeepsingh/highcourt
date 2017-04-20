@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\JudgesExecutives;
-use yii\data\ActiveDataProvider;
+use common\models\Notification;
+use common\models\NotificationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * MembersController implements the CRUD actions for JudgesExecutives model.
+ * NotificationController implements the CRUD actions for Notification model.
  */
-class MembersController extends Controller
+class NotificationController extends Controller
 {
     /**
      * @inheritdoc
@@ -26,26 +26,40 @@ class MembersController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index','view','create','update'],
+                        'roles' => ['author'],
+                    ],
+                ],
+            ],
         ];
     }
 
     /**
-     * Lists all JudgesExecutives models.
+     * Lists all Notification models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => JudgesExecutives::find(),
-        ]);
+        $searchModel = new NotificationSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single JudgesExecutives model.
+     * Displays a single Notification model.
      * @param integer $id
      * @return mixed
      */
@@ -57,14 +71,14 @@ class MembersController extends Controller
     }
 
     /**
-     * Creates a new JudgesExecutives model.
+     * Creates a new Notification model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new JudgesExecutives();
-
+        $model = new Notification();
+        $model->sender_id = Yii::$app->user->id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -75,7 +89,7 @@ class MembersController extends Controller
     }
 
     /**
-     * Updates an existing JudgesExecutives model.
+     * Updates an existing Notification model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -83,7 +97,7 @@ class MembersController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -94,7 +108,7 @@ class MembersController extends Controller
     }
 
     /**
-     * Deletes an existing JudgesExecutives model.
+     * Deletes an existing Notification model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -107,15 +121,15 @@ class MembersController extends Controller
     }
 
     /**
-     * Finds the JudgesExecutives model based on its primary key value.
+     * Finds the Notification model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return JudgesExecutives the loaded model
+     * @return Notification the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = JudgesExecutives::findOne($id)) !== null) {
+        if (($model = Notification::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

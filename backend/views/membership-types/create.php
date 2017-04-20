@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\MembershipTypes */
 
-$this->title = 'Create Membership Types';
-$this->params['breadcrumbs'][] = ['label' => 'Membership Types', 'url' => ['index']];
+$this->title = 'Create Subscription';
+$this->params['breadcrumbs'][] = ['label' => 'Subscription', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="membership-types-create">

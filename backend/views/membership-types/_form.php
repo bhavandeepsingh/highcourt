@@ -12,9 +12,9 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true, "placeholder" => "Name"]) ?>
 
-    <?= $form->field($model, 'amount')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'amount')->textInput(['maxlength' => true, "placeholder" => "Amount (e.g : 200)"]) ?>
 
     <?= $form->field($model, 'status')->dropDownList([0 => 'Inactive', 1 => 'Active']) ?>
 

@@ -25,7 +25,7 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'url:url',
+            //'url:url',
             'index',
             'status',
 

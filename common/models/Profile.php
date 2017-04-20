@@ -60,4 +60,13 @@ class Profile extends BaseProfile
             'long2'                 => \Yii::t('user', 'Longitude Office'),
         ];
     }
+    
+    public function afterSave($insert, $changedAttributes) {
+        UploadForm::uploadUserProfilePic($this->user_id);
+        parent::afterSave($insert, $changedAttributes);
+    }
+    
+    public function getProfilePicSrc(){
+        return UploadForm::getUserProfilePic($this->user_id);
+    }
 }

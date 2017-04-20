@@ -47,7 +47,7 @@ class Benches extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Category Name',
             'type' => 'Type',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',

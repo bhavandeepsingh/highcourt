@@ -9,6 +9,9 @@ use yii\widgets\Pjax;
 
 $this->title = Yii::t('app', 'Rosters');
 $this->params['breadcrumbs'][] = $this->title;
+$templates="";
+$templates.=(Yii::$app->user->can(USER_CAN_UPDATE_POSTS))?"{update} ":"";
+$templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
 ?>
 <div class="roster-index">
 

@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ],
                         ['label' => Yii::t('user', 'Information'), 'url' => ['/user/admin/info', 'id' => $user->id]],
                         [
-                            'label' => Yii::t('user', 'Assignments'),
+                            'label' => Yii::t('user', 'Permissions'),
                             'url' => ['/user/admin/assignments', 'id' => $user->id],
                             'visible' => isset(Yii::$app->extensions['dektrium/yii2-rbac']),
                         ],

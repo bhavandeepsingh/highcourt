@@ -7,45 +7,28 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-backend',
+    'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
-    'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [
-        'as backend' => 'dektrium\user\filters\BackendFilter',
-    ],
+    'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
-            'csrfParam' => '_csrf-backend',
+            'csrfParam' => '_csrf-frontend',
         ],
         'user' => [
-            //'identityClass' => 'common\models\User',
-            //'enableAutoLogin' => true,
-            //'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
             'identityCookie' => [
-                'name'     => '_backendIdentity',
-                'path'     => 'backend/',
+                'name'     => '_frontendIdentity',
+                'path'     => '/',
                 'httpOnly' => true,
-            ],
-        ],
-        'view' => [
-            'theme' => [
-                'pathMap' => [
-                    '@dektrium/user/views' => '@app/views/user'
-                ],
             ],
         ],
         'session' => [
-            'name' => 'BACKENDSESSID',
+            'name' => 'FRONTENDSESSID',
             'cookieParams' => [
                 'httpOnly' => true,
-                'path'     => 'backend/',
+                'path'     => '/',
             ],
         ],
-        /*'session' => [
-            // this is the name of the session cookie used for login on the backend
-            'name' => 'advanced-backend',
-        ],*/
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -58,29 +41,20 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
-        */
     ],
     'modules' => [
         'user' => [
-            // following line will restrict access to admin controller from backend application
-            'as backend' => 'dektrium\user\filters\BackendFilter',
+            // following line will restrict access to admin controller from frontend application
+            'as frontend' => 'dektrium\user\filters\FrontendFilter',
             'enableUnconfirmedLogin' => true,
             'confirmWithin' => 21600,
             'cost' => 12,
-            'admins' => ['admin'],
-            'modelMap' => [
-                'User' => 'common\models\User',
-                'Profile' => 'common\models\Profile',
-            ],
+            'admins' => ['admin']
+        ],
+        'v1' => [
+            'class' => 'app\modules\v1\Module',
         ],
     ],
     'params' => $params,
 ];
-
+ 

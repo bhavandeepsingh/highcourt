@@ -8,17 +8,15 @@ use yii\widgets\Pjax;
 
 $this->title = 'Holidays';
 $this->params['breadcrumbs'][] = $this->title;
+$templates="";
+$templates.=(Yii::$app->user->can(USER_CAN_UPDATE_POSTS))?"{update} ":"";
+$templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
 ?>
 <div class="holidays-index">
     <h1><?= Html::encode($this->title) ?></h1>
     <p>
         <?= Html::a('Create Holidays', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <?php
-        $templates="";
-        $templates.=(Yii::$app->user->can(USER_CAN_UPDATE_POSTS))?"{update} ":"";
-        $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
-    ?>
 <?php Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

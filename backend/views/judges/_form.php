@@ -12,18 +12,18 @@ use dosamigos\datepicker\DatePicker;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => "Name"]) ?>
     
     <?= $form->field(new \common\models\UploadForm(), 'imageFile')->fileInput() ?> 
     <?php
     if($model->id > 0){
-    ?>
-    <img src="<?= \common\models\UploadForm::getJudgeProfilePic($model->id); ?>" width="100"/>
-    <?php
+        ?>
+            <img src="<?= \common\models\UploadForm::getJudgeProfilePic($model->id); ?>" width="100"/>
+        <?php
     }
     ?>
 
-    <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'address')->textInput(['maxlength' => true, 'placeholder' => "Address"]) ?>
 
     <?= $form->field($model, 'dob')->widget(DatePicker::className(), [
         // inline too, not bad        
@@ -34,9 +34,9 @@ use dosamigos\datepicker\DatePicker;
         ]
     ]) ?>
     
-    <?= $form->field($model, 'ext_no')->input('number', ['min' => 0]) ?>
+    <?= $form->field($model, 'ext_no')->input('number', ['min' => 0, 'placeholder' => "Ext Number"]) ?>
     
-    <?= $form->field($model, 'court_room')->input('number', ['min' => 0]) ?>
+    <?= $form->field($model, 'court_room')->input('number', ['min' => 0, 'placeholder' => "Court Room"]) ?>
 
     <?= $form->field($model, 'date_of_appointment')->widget(DatePicker::className(), [
         // inline too, not bad        
@@ -56,7 +56,7 @@ use dosamigos\datepicker\DatePicker;
         ]
     ]) ?>
 
-    <?= $form->field($model, 'bio_graphy')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'bio_graphy')->textarea(['rows' => 6, 'placeholder' => "Biography"]) ?>
    
 
     <div class="form-group">

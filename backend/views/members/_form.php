@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => "Name"]) ?>
     
     <?= $form->field(new \common\models\UploadForm(), 'imageFile')->fileInput() ?> 
     
@@ -24,13 +24,13 @@ use yii\widgets\ActiveForm;
     }
     ?>
 
-    <?= $form->field($model, 'enrollment_no')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'enrollment_no')->textInput(['maxlength' => true, 'placeholder' => "Enrollment Number"]) ?>
 
-    <?= $form->field($model, 'membership_no')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'membership_no')->textInput(['maxlength' => true, 'placeholder' => "Membership Number"]) ?>
 
-    <?= $form->field($model, 'email_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'email_id')->textInput(['maxlength' => true, 'placeholder' => "Email Id"]) ?>
 
-    <?= $form->field($model, 'landline_no')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'landline_no')->textInput(['maxlength' => true, 'placeholder' => "Landline Number"]) ?>
 
     <div class="members_mobile_no clearfix">         
         <?php         
@@ -47,12 +47,18 @@ use yii\widgets\ActiveForm;
         ?>
     </div>
 
-    <?= $form->field($model, 'residential_address')->textarea(['rows' => 3]) ?>
+    <?= $form->field($model, 'residential_address')->textarea(['rows' => 3, 'placeholder' => "Residential Address"]) ?>
 
-    <?= $form->field($model, 'court_address')->textarea(['rows' => 3]) ?>
+    <?= $form->field($model, 'court_address')->textarea(['rows' => 3, 'placeholder' => "Court Address"]) ?>
 
     <?= $form->field($model, 'blood_group')->dropDownList(yii\helpers\ArrayHelper::map(\common\models\BloodGroups::find()->all(), 'id', 'name'), ['prompt' => 'Please Select Blood Group']) ?>  
-
+    
+    <div class="col-sm-6">
+    <?= $form->field($model, 'clerk_name')->textInput(['maxlength' => true, 'placeholder' => "Clerk Name"]) ?>
+    </div>
+    <div class="col-sm-6">
+    <?= $form->field($model, 'clerk_contact')->textInput(['maxlength' => true, 'placeholder' => "Clerk Contact"]) ?>
+    </div>
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

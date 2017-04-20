@@ -26,7 +26,7 @@ $this->title = Yii::t('user', 'Manage users');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
+<?php //$this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
 
 <?= $this->render('/admin/_menu') ?>
 
@@ -115,18 +115,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'resend_password' => function ($url, $model, $key) {
                     if (!$model->isAdmin) {
                         return '
-                    <a data-method="POST" data-confirm="' . Yii::t('user', 'Are you sure?') . '" href="' . Url::to(['resend-password', 'id' => $model->id]) . '">
+                    <a data-method="POST" data-confirm="' . Yii::t('user', 'Do you want to change and send the ?') . '" href="' . Url::to(['resend-password', 'id' => $model->id]) . '">
                     <span title="' . Yii::t('user', 'Generate and send new password to user') . '" class="glyphicon glyphicon-envelope">
                     </span> </a>';
                     }
                 },
                 'switch' => function ($url, $model) {
                     if($model->id != Yii::$app->user->id && Yii::$app->getModule('user')->enableImpersonateUser) {
-                        return Html::a('<span class="glyphicon glyphicon-user"></span>', ['/user/admin/switch', 'id' => $model->id], [
-                            'title' => Yii::t('user', 'Become this user'),
-                            'data-confirm' => Yii::t('user', 'Are you sure you want to switch to this user for the rest of this Session?'),
-                            'data-method' => 'POST',
-                        ]);
+//                        return Html::a('<span class="glyphicon glyphicon-user"></span>', ['/user/admin/switch', 'id' => $model->id], [
+//                            'title' => Yii::t('user', 'Become this user'),
+//                            'data-confirm' => Yii::t('user', 'Are you sure you want to switch to this user for the rest of this Session?'),
+//                            'data-method' => 'POST',
+//                        ]);
                     }
                 }
             ]
