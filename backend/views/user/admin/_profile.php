@@ -64,12 +64,46 @@ if($profile->user_id > 0){
 <?= $form->field($profile, 'lat2')->textInput(['placeholder' => 'Enter Latitude Office  (If want to add manually)']) ?>
 <?= $form->field($profile, 'long2')->textInput(['placeholder' => 'Enter Longitude Office  (If want to add manually)']) ?>
 
+<div class="clerks_container">
+    <div class="row clerk">
+        <div class="col-md-5">
+            <div class="row  form-group">
+                <div class="col-sm-3"><b>Clerk Name</b></div>
+                <div class="col-sm-9"><input type="text" class="form-control" name="clerks[][name]"></div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="row form-group">
+                <div class="col-sm-3"><b>Clerk Contact</b></div>
+                <div class="col-sm-9"><input type="text" class="form-control" name="clerks[][contact]"></div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="row form-group">
+                <button class="btn btn-danger clerk_minus">-</button> 
+                <button class="btn btn-primary clerk_plus">+</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="form-group">
     <div class="col-lg-offset-3 col-lg-9">
         <?= Html::submitButton(Yii::t('user', 'Update'), ['class' => 'btn btn-block btn-success']) ?>
     </div>
-</div>
+</div> 
 
 <?php ActiveForm::end(); ?>
 
 <?php $this->endContent() ?>
+<?php
+    $this->registerJs('
+        $(\'.clerks_container\').on(\'click\',\'.clerk_plus\',function(e){
+            e.preventDefault();
+            $(e.currentTarget).parents(\'.clerks_container\').append("<div class=\'row clerk\'>"+$(e.currentTarget).parents(\'.clerk\').html()+"</div>");
+        });
+        $(\'.clerks_container\').on(\'click\',\'.clerk_minus\',function(e){
+            e.preventDefault();
+            $(e.currentTarget).parents(\'.clerk\').remove();
+        });
+    ');
+?>

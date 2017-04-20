@@ -9,6 +9,9 @@ use yii\widgets\Pjax;
 
 $this->title = Yii::t('app', 'Judges');
 $this->params['breadcrumbs'][] = $this->title;
+$templates="";
+$templates.=(Yii::$app->user->can(USER_CAN_UPDATE_POSTS))?"{update} ":"";
+$templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
 ?>
 <div class="judges-index">
 
@@ -40,7 +43,10 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'created_at',
             // 'updated_at',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} '.$templates,
+            ],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

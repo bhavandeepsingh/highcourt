@@ -13,6 +13,8 @@ class UploadForm extends Model
     
     public static $IMAGE_TYPE_USERS = "IMAGE_TYPE_USERS";
     
+    public static $IMAGE_TYPE_BANNERS = "IMAGE_TYPE_BANNERS";
+    
     /**
      * @var UploadedFile
      */
@@ -49,6 +51,9 @@ class UploadForm extends Model
         else if($type == self::$IMAGE_TYPE_USERS){
             $type_path = "users/";
         }
+        else if($type == self::$IMAGE_TYPE_BANNERS){
+            $type_path = "banners/";
+        }
         return Yii::$app->basePath . '/../uploads/'. $type_path;
     }
     
@@ -74,6 +79,10 @@ class UploadForm extends Model
         return self::uploadProfilePic($id, self::$IMAGE_TYPE_MEMBERS);
     }
     
+    public static function uploadBannerProfilePic($id){
+        return self::uploadProfilePic($id, self::$IMAGE_TYPE_BANNERS);
+    }
+    
     public static function getImageInstance(){
         $model = new self;
         $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
@@ -95,6 +104,11 @@ class UploadForm extends Model
         return self::getImageSrc(self::$IMAGE_TYPE_MEMBERS, $id);
     }
     
+    public static function getBannerProfilePic($id = 0){
+        if($id <= 0) return "";
+        return self::getImageSrc(self::$IMAGE_TYPE_BANNERS, $id);
+    }
+    
     public static function getImageSrc($type, $id){
         $type_path = "";
         if($type == self::$IMAGE_TYPE_JUDGES){
@@ -103,7 +117,9 @@ class UploadForm extends Model
             $type_path = "members/";
         }else if($type == self::$IMAGE_TYPE_USERS){
             $type_path = "users/";
-        }        
+        }else if($type == self::$IMAGE_TYPE_BANNERS){
+            $type_path = "banners/";
+        }
         $type_path .= $id. "/image.jpg";
         return Yii::$app->urlManager->baseUrl.'/../../uploads/'.$type_path;
     }

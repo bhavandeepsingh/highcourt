@@ -9,6 +9,9 @@ use yii\grid\GridView;
 
 $this->title = 'Subscription';
 $this->params['breadcrumbs'][] = $this->title;
+$templates="";
+$templates.=(Yii::$app->user->can(USER_CAN_UPDATE_POSTS))?"{update} ":"";
+$templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
 ?>
 <div class="membership-types-index">
 
@@ -41,7 +44,10 @@ $this->params['breadcrumbs'][] = $this->title;
             //'created_at',
             // 'updated_at',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} '.$templates
+            ],
         ],
     ]); ?>
 </div>
