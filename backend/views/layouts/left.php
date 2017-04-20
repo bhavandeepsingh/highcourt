@@ -66,7 +66,7 @@
                 }
             }
             $menu[]=['label' => 'Judges', 'icon' => 'fa fa-user', 'url' => ['/judges']];            
-            $menu[]=['label' => 'Executive Members', 'icon' => 'fa fa-user', 'url' => ['/members']];
+            //$menu[]=['label' => 'Executive Members', 'icon' => 'fa fa-user', 'url' => ['/members']];
             //$menu[]=['label' => 'Benches', 'icon' => 'fa fa-picture-o', 'url' => ['/benches']];
             $menu[]=['label' => 'Rosters', 'items' => [
                 ['label' => 'Create Roster', 'icon' => 'fa fa-picture-o', 'url' => ['/roster']],
