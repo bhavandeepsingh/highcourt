@@ -44,6 +44,7 @@ if($profile->user_id > 0){
 }
 ?></div>
 </div>
+<?= $form->field($profile, 'executive')->checkbox(['label' => 'Mark as Executive Member']) ?>
 <?= $form->field($profile, 'public_email')->textInput(['placeholder' => 'Email Address']) ?>
 <?php //$form->field($profile, 'website') ?>
 <?php //$form->field($profile, 'location')->textInput(['placeholder' => 'Location']) ?>
@@ -65,17 +66,44 @@ if($profile->user_id > 0){
 <?= $form->field($profile, 'long2')->textInput(['placeholder' => 'Enter Longitude Office  (If want to add manually)']) ?>
 
 <div class="clerks_container">
+    <?php
+        $clerks= \common\models\Clerks::find()->where(["user_id" => $profile->user_id])->all();
+        foreach($clerks as $clerk){
+            ?>
+            <div class="row clerk">
+                <div class="col-md-5">
+                    <div class="row  form-group">
+                        <div class="col-sm-3"><b>Clerk Name</b></div>
+                        <div class="col-sm-9"><input type="text" class="form-control" name="clerks[name][]" value="<?php echo $clerk->name; ?>"></div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row form-group">
+                        <div class="col-sm-3"><b>Clerk Contact</b></div>
+                        <div class="col-sm-9"><input type="text" class="form-control" name="clerks[contact][]" value="<?php echo $clerk->phone; ?>"></div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="row form-group">
+                        <button class="btn btn-danger clerk_minus">-</button> 
+                        <button class="btn btn-primary clerk_plus">+</button>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+    ?>
     <div class="row clerk">
         <div class="col-md-5">
             <div class="row  form-group">
                 <div class="col-sm-3"><b>Clerk Name</b></div>
-                <div class="col-sm-9"><input type="text" class="form-control" name="clerks[][name]"></div>
+                <div class="col-sm-9"><input type="text" class="form-control" name="clerks[name][]"></div>
             </div>
         </div>
         <div class="col-md-5">
             <div class="row form-group">
                 <div class="col-sm-3"><b>Clerk Contact</b></div>
-                <div class="col-sm-9"><input type="text" class="form-control" name="clerks[][contact]"></div>
+                <div class="col-sm-9"><input type="text" class="form-control" name="clerks[contact][]"></div>
             </div>
         </div>
         <div class="col-md-2">
