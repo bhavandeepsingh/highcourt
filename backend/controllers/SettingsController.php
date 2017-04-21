@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Notification;
-use common\models\NotificationSearch;
+use common\models\Settings;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use common\models\UploadFile;
+
 /**
- * NotificationController implements the CRUD actions for Notification model.
+ * SettingsController implements the CRUD actions for Settings model.
  */
-class NotificationController extends Controller
+class SettingsController extends Controller
 {
     /**
      * @inheritdoc
@@ -32,34 +32,40 @@ class NotificationController extends Controller
                     [
                         'allow' => true,
                         'roles' => ['admin'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['index','view','create','update'],
-                        'roles' => ['author'],
-                    ],
+                    ]
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all Notification models.
+     * Lists all Settings models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new NotificationSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+        $model = \common\models\Settings::find()->where(["name" => "settings"])->one();
+        if(!$model){
+            $model = new Settings();
+            $model->name = "settings";
+        }
+        if(Yii::$app->request->post("settings")){
+            $settings=json_encode(Yii::$app->request->post("settings"));
+            $model->value = $settings;
+            if($model->save()){
+               Yii::$app->session->setFlash('success', "Your message to display"); 
+            }else{
+               Yii::$app->session->setFlash('danger', "An Error occurred while saving settings."); 
+            }
+        }
+        return $this->render('create', [
+            'model' => $model,
+            'data'  => (array)json_decode($model->value),
         ]);
     }
 
     /**
-     * Displays a single Notification model.
+     * Displays a single Settings model.
      * @param integer $id
      * @return mixed
      */
@@ -71,14 +77,14 @@ class NotificationController extends Controller
     }
 
     /**
-     * Creates a new Notification model.
+     * Creates a new Settings model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Notification();
-        $model->sender_id = Yii::$app->user->id;
+        $model = new Settings();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -89,16 +95,16 @@ class NotificationController extends Controller
     }
 
     /**
-     * Updates an existing Notification model.
+     * Updates an existing Settings model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);       
+        $model = $this->findModel($id);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            \common\models\UploadForm::uploadNotificationFile($model->id);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -106,14 +112,9 @@ class NotificationController extends Controller
             ]);
         }
     }
-    
-    public function beforeAction($action) {  
-        $this->enableCsrfValidation = false;
-        return parent::beforeAction($action);
-    }
 
     /**
-     * Deletes an existing Notification model.
+     * Deletes an existing Settings model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -126,15 +127,15 @@ class NotificationController extends Controller
     }
 
     /**
-     * Finds the Notification model based on its primary key value.
+     * Finds the Settings model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Notification the loaded model
+     * @return Settings the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Notification::findOne($id)) !== null) {
+        if (($model = Settings::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
