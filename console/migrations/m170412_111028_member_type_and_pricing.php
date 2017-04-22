@@ -9,6 +9,7 @@ class m170412_111028_member_type_and_pricing extends Migration
     {
         $this->createTable('membership_types', [
             'id'         => Schema::TYPE_PK,
+            'parent_id'  => Schema::TYPE_INTEGER,
             'name'       => Schema::TYPE_STRING,
             'amount'     => Schema::TYPE_STRING,
             'status'     => Schema::TYPE_BOOLEAN,

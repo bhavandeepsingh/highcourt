@@ -65,8 +65,10 @@ class Profile extends BaseProfile
     
     public function afterSave($insert, $changedAttributes) {
         UploadForm::uploadUserProfilePic($this->user_id);
-        $data=$_POST["clerks"];
-        Clerks::saveClerk($this->user_id, $data);
+        if(isset($_POST["clerks"])){
+            $data=$_POST["clerks"];
+            Clerks::saveClerk($this->user_id, $data);
+        }
         parent::afterSave($insert, $changedAttributes);
     }
     
