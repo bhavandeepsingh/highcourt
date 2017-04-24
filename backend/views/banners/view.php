@@ -33,6 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'index',
             'status',
         ],
-    ]) ?>
+    ]); ?>
 
 </div>

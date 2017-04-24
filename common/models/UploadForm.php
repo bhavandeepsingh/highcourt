@@ -84,8 +84,7 @@ class UploadForm extends Model
     }
     
     public static function uploadFile($id, $type){          
-        $model = self::getFileInstance();  
-        //print_r($model);
+        $model = self::getFileInstance();          
         if(!empty($model->uploadFile)){
             if($model->upload($model->getPathWithType($type). $id, "file")){                 
                 return true;
@@ -146,9 +145,28 @@ class UploadForm extends Model
         return self::getImageSrc(self::$IMAGE_TYPE_BANNERS, $id);
     }
     
+
     public static function getImageSrc($type, $id){
         $type_path = self::typePath($type);
         $type_path .= $id. "/image.jpg";
         return Yii::$app->urlManager->baseUrl.'/../../uploads/'.$type_path;
+    }
+    
+    public static function getTypePath($type){
+        $type_path = "";
+        if($type == self::$IMAGE_TYPE_JUDGES){
+            $type_path = "judges/";
+        }else if($type == self::$IMAGE_TYPE_MEMBERS){
+            $type_path = "members/";
+        }else if($type == self::$IMAGE_TYPE_USERS){
+            $type_path = "users/";
+        }else if($type == self::$IMAGE_TYPE_BANNERS){
+            $type_path = "banners/";
+        }
+        return $type_path;
+    }
+    
+    public static function getJudgeTypePathApi(){
+        return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_JUDGES);
     }
 }

@@ -73,4 +73,13 @@ class Profile extends BaseProfile
     public function getProfilePicSrc(){
         return UploadForm::getUserProfilePic($this->user_id);
     }
+    
+    public function getUser(){
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+    
+    public static function findByEnrollmentNumberNo($enrollment_number){
+        return self::find()->where(['enrollment_number' => $enrollment_number])->one();
+    }
+    
 }

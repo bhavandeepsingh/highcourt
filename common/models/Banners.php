@@ -51,7 +51,9 @@ class Banners extends BaseModel
         parent::afterSave($insert, $changedAttributes);
     }
     
-    public function getBannerPicSrc(){
+    public function getBannerPicSrc(){             
         return UploadForm::getBannerProfilePic($this->id);
     }
+    
+    
 }

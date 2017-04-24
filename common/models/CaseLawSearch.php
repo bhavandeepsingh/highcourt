@@ -5,12 +5,12 @@ namespace common\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Roster;
+use common\models\CaseLaw;
 
 /**
- * RosterSearch represents the model behind the search form about `common\models\Roster`.
+ * CaseLawSearch represents the model behind the search form about `common\models\CaseLaw`.
  */
-class RosterSearch extends Roster
+class CaseLawSearch extends CaseLaw
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class RosterSearch extends Roster
     public function rules()
     {
         return [
-            [['id', 'bench_id', 'created_at', 'updated_at'], 'integer'],
-            [['title', 'description'], 'safe'],
+            [['id', 'created_at', 'updated_at'], 'integer'],
+            [['discription', 'title'], 'safe'],
         ];
     }
 
@@ -39,9 +39,9 @@ class RosterSearch extends Roster
      *
      * @return ActiveDataProvider
      */
-    public function search($params = [], $login_id = 0, $as_array = false)
+    public function search($params)
     {
-        $query = Roster::find();
+        $query = CaseLaw::find();
 
         // add conditions that should always apply here
 
@@ -60,22 +60,13 @@ class RosterSearch extends Roster
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'bench_id' => $this->bench_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description]);
-        
-        if($as_array) $query->asArray(true);  
-        
-        $query->joinWith(['judges', 'bench'], true);
+        $query->andFilterWhere(['like', 'discription', $this->discription])
+            ->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
-    }
-    public static function getApiList($params = [], $login_id = 0, $as_array = false){
-        $model = new RosterSearch();
-        return $model->search($params, $login_id, $as_array);
     }
 }

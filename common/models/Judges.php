@@ -22,7 +22,7 @@ use common\models\UploadForm;
  * @property integer $updated_at
  */
 class Judges extends \yii\db\ActiveRecord
-{
+{        
     /**
      * @inheritdoc
      */
@@ -39,7 +39,7 @@ class Judges extends \yii\db\ActiveRecord
         return [
             [['name', 'address', 'dob', 'ext_no', 'date_of_appointment', 'date_of_retirement', 'court_room', 'bio_graphy'], 'required'],
             [['dob', 'date_of_appointment', 'date_of_retirement'], 'safe'],
-            [['bio_graphy'], 'string'],
+            [['bio_graphy', 'landline'], 'string'],
             [['created_at', 'updated_at'], 'integer'],
             [['name', 'address'], 'string', 'max' => 255],
         ];
@@ -58,6 +58,7 @@ class Judges extends \yii\db\ActiveRecord
             'date_of_appointment' => 'Date Of Appointment',
             'date_of_retirement' => 'Date Of Retirement',
             'bio_graphy' => 'Bio Graphy',
+            'landline' => 'Landline',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -67,7 +68,11 @@ class Judges extends \yii\db\ActiveRecord
     {
         return [
             TimestampBehavior::className(),
-        ];
+        ];                
+    }
+    
+    public function getImageTypePathApi(){
+        return UploadForm::getJudgeTypePathApi();
     }
     
 }
