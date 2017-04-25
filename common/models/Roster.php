@@ -15,7 +15,7 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Roster extends \yii\db\ActiveRecord
+class Roster extends BaseModel
 {
     /**
      * @inheritdoc
@@ -86,4 +86,5 @@ class Roster extends \yii\db\ActiveRecord
             }
         }return $str;
     }
-}
+    
+ }

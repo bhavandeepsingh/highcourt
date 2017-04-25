@@ -28,7 +28,11 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
             ['class' => 'yii\grid\SerialColumn'],
             
             //'title:ntext',
-            'description:ntext',
+            //'description:ntext',
+            [
+                'label' => 'Description',
+                'value' => function($data){ return substr($data->description,0,30);}
+            ],
             [
                 'label' => 'Bench Name',
                 'value' => function($data){ return @$data->bench->name; }

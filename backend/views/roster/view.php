@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            //'id',
             'title:ntext',
             'description:ntext',
             [
@@ -39,8 +39,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Judges',
                 'value' => @$model->judgesString
             ],
-            'created_at',
-            'updated_at',
+            [
+                'label' => 'Created At',
+                'value' => $model->getFormatedCreateAt(),
+            ],
+            [
+                'label' => 'Update At',
+                'value' => $model->getFormatedUpdateAt(),
+            ],
+            
         ],
     ]) ?>
 

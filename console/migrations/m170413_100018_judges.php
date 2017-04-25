@@ -11,6 +11,7 @@ class m170413_100018_judges extends Migration
             'id'         => Schema::TYPE_PK,
             'name'       => Schema::TYPE_STRING,
             'address'    => Schema::TYPE_STRING,
+            'landline'  =>Schema::TYPE_INTEGER,
             'dob'        => Schema::TYPE_DATE,
             'ext_no' =>  Schema::TYPE_STRING,
             'court_room' => Schema::TYPE_INTEGER,
