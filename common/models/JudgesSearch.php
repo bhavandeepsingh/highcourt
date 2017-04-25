@@ -75,6 +75,7 @@ class JudgesSearch extends Judges
         $query->addSelect(['*', 'getImageSrc("'.$this->getImageTypePathApi().'", id) as image_src']);
 
         if($as_array) $query->asArray(true);
+                      
         
         return $dataProvider;
     }

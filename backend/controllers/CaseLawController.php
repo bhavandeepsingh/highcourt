@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\MembershipTypes;
-use common\MembershipTypesSearch;
+use common\models\CaseLaw;
+use common\models\CaseLawSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * MembershipTypesController implements the CRUD actions for MembershipTypes model.
+ * CaseLawController implements the CRUD actions for CaseLaw model.
  */
-class MembershipTypesController extends Controller
+class CaseLawController extends Controller
 {
     /**
      * @inheritdoc
@@ -26,30 +26,16 @@ class MembershipTypesController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-            'access' => [
-                'class' => \yii\filters\AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['admin'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['index','view','create','update'],
-                        'roles' => ['author'],
-                    ],
-                ],
-            ],
         ];
     }
 
     /**
-     * Lists all MembershipTypes models.
+     * Lists all CaseLaw models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new MembershipTypesSearch();
+        $searchModel = new CaseLawSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -59,7 +45,7 @@ class MembershipTypesController extends Controller
     }
 
     /**
-     * Displays a single MembershipTypes model.
+     * Displays a single CaseLaw model.
      * @param integer $id
      * @return mixed
      */
@@ -71,16 +57,16 @@ class MembershipTypesController extends Controller
     }
 
     /**
-     * Creates a new MembershipTypes model.
+     * Creates a new CaseLaw model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new MembershipTypes();
+        $model = new CaseLaw();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -89,7 +75,7 @@ class MembershipTypesController extends Controller
     }
 
     /**
-     * Updates an existing MembershipTypes model.
+     * Updates an existing CaseLaw model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -97,39 +83,18 @@ class MembershipTypesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
         }
     }
-    
-    public function actionLists($id)
-    {
-        $count = \common\models\MembershipTypes::find()
-                ->where(['parent_id' => $id])
-                ->count();
-        
-        $membershiptypes = \common\models\MembershipTypes::find()
-                ->where(["parent_id"=>$id])
-                ->all();
-        
-        if($count>0){
-            echo "<option value>Select a parent id</option>";
-            foreach($membershiptypes as $mt){
-                echo "<option value='".$mt->id."'>".$mt->name."</option>";
-            }
-        }
-        else{
-            echo "<option>-</option>";
-        }
-    }
 
     /**
-     * Deletes an existing MembershipTypes model.
+     * Deletes an existing CaseLaw model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -142,15 +107,15 @@ class MembershipTypesController extends Controller
     }
 
     /**
-     * Finds the MembershipTypes model based on its primary key value.
+     * Finds the CaseLaw model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return MembershipTypes the loaded model
+     * @return CaseLaw the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = MembershipTypes::findOne($id)) !== null) {
+        if (($model = CaseLaw::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

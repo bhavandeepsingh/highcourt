@@ -13,7 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="judges-view">
 
     <h1><?= Html::img(\common\models\UploadForm::getJudgeProfilePic($model->id), ['width' => 100]) ?></h1>
-
     <p>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?php if(Yii::$app->user->can("deletePost")): echo Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
@@ -31,11 +30,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'address',
+            'landline',
             'dob',
+            'ext_no',
+            'court_room',
             'date_of_appointment',
             'date_of_retirement',
             'bio_graphy:ntext',
-            'landline'            
+                        
         ],
     ]) ?>
 

@@ -2,30 +2,27 @@
 
 namespace common\models;
 
-use Yii;
 use yii\behaviors\TimestampBehavior;
 
+use Yii;
+
 /**
- * This is the model class for table "{{%benches}}".
+ * This is the model class for table "case_law".
  *
  * @property integer $id
- * @property string $name
- * @property integer $type
+ * @property string $discription
+ * @property string $title
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Benches extends BaseModel
+class CaseLaw extends BaseModel
 {
-    
-    public static $BENCH_TYPE_SINGLE = 1;
-    public static $BENCH_TYPE_DEVISION = 2;
-
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%benches}}';
+        return 'case_law';
     }
 
     /**
@@ -34,9 +31,9 @@ class Benches extends BaseModel
     public function rules()
     {
         return [
-            [['name', 'type'], 'required'],
-            [['name'], 'string'],
-            [['type', 'created_at', 'updated_at'], 'integer'],
+            [['discription', 'title'], 'required'],
+            [['discription', 'title'], 'string'],
+            [['created_at', 'updated_at'], 'integer'],
         ];
     }
 
@@ -47,8 +44,8 @@ class Benches extends BaseModel
     {
         return [
             'id' => 'ID',
-            'name' => 'Category Name',
-            'type' => 'Type',
+            'discription' => 'Discription',
+            'title' => 'Title',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -58,13 +55,6 @@ class Benches extends BaseModel
     {
         return [
             TimestampBehavior::className(),
-        ];
-    }
-    
-    public function getBenchTypes(){
-        return [
-            self::$BENCH_TYPE_SINGLE => 'Single' ,
-            self::$BENCH_TYPE_DEVISION => 'Devision'
-        ];
+        ];                
     }
 }

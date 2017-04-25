@@ -23,7 +23,10 @@ use dosamigos\datepicker\DatePicker;
     }
     ?>
 
+
     <?= $form->field($model, 'address')->textInput(['maxlength' => true, 'placeholder' => "Address"]) ?>
+            
+    <?= $form->field($model, 'landline')->textInput(['type' => 'number']) ?>
 
     <?= $form->field($model, 'dob')->widget(DatePicker::className(), [
         // inline too, not bad        
@@ -43,7 +46,7 @@ use dosamigos\datepicker\DatePicker;
         // modify template for custom rendering
         'clientOptions' => [
             'autoclose' => true,
-            'format' => 'yyyy-mm-dd'
+            'format' => 'yyyy-mm-dd',
         ]
     ]); ?>    
 
@@ -56,9 +59,8 @@ use dosamigos\datepicker\DatePicker;
         ]
     ]) ?>
 
-    <?= $form->field($model, 'bio_graphy')->textarea(['rows' => 6, 'placeholder' => "Biography"]) ?>
-            
-    <?= $form->field($model, 'landline')->textInput(['type' => 'number']) ?>
+
+    <?= $form->field($model, 'bio_graphy')->textarea(['rows' => 5, 'placeholder' => "Biography"]) ?>
    
 
     <div class="form-group">
