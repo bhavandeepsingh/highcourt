@@ -39,7 +39,7 @@ class RosterSearch extends Roster
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params = [], $login_id = 0, $as_array = false)
     {
         $query = Roster::find();
 
@@ -67,7 +67,15 @@ class RosterSearch extends Roster
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description]);
+        
+        if($as_array) $query->asArray(true);  
+        
+        $query->joinWith(['judges', 'bench'], true);
 
         return $dataProvider;
+    }
+    public static function getApiList($params = [], $login_id = 0, $as_array = false){
+        $model = new RosterSearch();
+        return $model->search($params, $login_id, $as_array);
     }
 }

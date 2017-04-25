@@ -66,7 +66,7 @@
                 }
             }
             $menu[]=['label' => 'Judges', 'icon' => 'fa fa-user', 'url' => ['/judges']];            
-            $menu[]=['label' => 'Executive Members', 'icon' => 'fa fa-user', 'url' => ['/members']];
+            //$menu[]=['label' => 'Executive Members', 'icon' => 'fa fa-user', 'url' => ['/members']];
             //$menu[]=['label' => 'Benches', 'icon' => 'fa fa-picture-o', 'url' => ['/benches']];
             $menu[]=['label' => 'Rosters', 'items' => [
                 ['label' => 'Create Roster', 'icon' => 'fa fa-picture-o', 'url' => ['/roster']],
@@ -75,6 +75,7 @@
             $menu[]=['label' => 'Notification', 'icon' => 'fa fa-envelope', 'url' => ['/notification']];
             $menu[]=['label' => 'Banners', 'icon' => 'fa fa-picture-o', 'url' => ['/banners']];
             $menu[]=['label' => 'Holidays', 'icon' => 'fa fa-tree', 'url' => ['/holidays']];
+            $menu[]=['label' => 'Settings', 'icon' => 'fa fa-cog', 'url' => ['/settings']];
             $menu[]=['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest];
             
         ?>

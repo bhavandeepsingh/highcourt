@@ -15,7 +15,7 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Roster extends \yii\db\ActiveRecord
+class Roster extends BaseModel
 {
     /**
      * @inheritdoc
@@ -33,7 +33,7 @@ class Roster extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'description', 'bench_id'], 'required'],
+            [['description', 'bench_id'], 'required'],
             [['title', 'description'], 'string'],
             [['bench_id', 'created_at', 'updated_at'], 'integer'],
         ];
@@ -86,4 +86,5 @@ class Roster extends \yii\db\ActiveRecord
             }
         }return $str;
     }
-}
+    
+ }

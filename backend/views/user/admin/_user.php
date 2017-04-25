@@ -15,6 +15,10 @@
  */
 ?>
 
-<?= $form->field($user, 'email')->textInput(['maxlength' => 255]) ?>
-<?= $form->field($user, 'username')->textInput(['maxlength' => 255]) ?>
+<?= $form->field($user, 'email')->textInput(['maxlength' => 255,'placeholder' => 'Email Id']) ?>
+<div class="form-group">
+    <div class="control-label col-sm-3"><label for="mobile-number">Mobile</label></div>
+    <div class="col-sm-9"><?= \yii\helpers\Html::textInput('profile[mobile]', '', ["placeholder" => 'Mobile Number', 'id' => 'mobile-number' , 'class'=>"form-control"]) ?></div>
+</div>
+<?= $form->field($user, 'username')->textInput(['maxlength' => 255,'placeholder' => 'Username']) ?>
 <?= $form->field($user, 'password')->passwordInput() ?>

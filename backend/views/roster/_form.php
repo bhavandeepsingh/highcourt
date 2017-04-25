@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'title')->textInput(['placeholder' => "Title"]) ?>
+    <?php //$form->field($model, 'title')->textInput(['placeholder' => "Title"]) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6, 'placeholder' => "Description"]) ?>
 

@@ -31,6 +31,7 @@ class Profile extends BaseProfile
             'long1'                => ['long1', 'double'],
             'lat2'                 => ['lat2', 'double'],
             'long2'                => ['long2', 'double'],
+            'executive'            => ['executive', 'integer'],
             
         ];
     }
@@ -58,15 +59,29 @@ class Profile extends BaseProfile
             'long1'                 => \Yii::t('user', 'Longitude Home'),
             'lat2'                  => \Yii::t('user', 'Latitude Office'),
             'long2'                 => \Yii::t('user', 'Longitude Office'),
+            'executive'             => \Yii::t('user', 'Executive'),
         ];
     }
     
     public function afterSave($insert, $changedAttributes) {
         UploadForm::uploadUserProfilePic($this->user_id);
+        if(isset($_POST["clerks"])){
+            $data=$_POST["clerks"];
+            Clerks::saveClerk($this->user_id, $data);
+        }
         parent::afterSave($insert, $changedAttributes);
     }
     
     public function getProfilePicSrc(){
         return UploadForm::getUserProfilePic($this->user_id);
     }
+    
+    public function getUser(){
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+    
+    public static function findByEnrollmentNumberNo($enrollment_number){
+        return self::find()->where(['enrollment_number' => $enrollment_number])->one();
+    }
+    
 }
