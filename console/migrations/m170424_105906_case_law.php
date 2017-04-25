@@ -20,4 +20,14 @@ class m170424_105906_case_law extends Migration
     {
         $this->dropTable('case_law');
     }
+    /*
+    // Use safeUp/safeDown to run migration code within a transaction
+    public function safeUp()
+    {
+    }
+
+    public function safeDown()
+    {
+    }
+    */
 }
