@@ -5,21 +5,19 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%blood_groups}}".
+ * This is the model class for table "highcourts".
  *
  * @property integer $id
  * @property string $name
- * @property integer $created_at
- * @property integer $updated_at
  */
-class BloodGroups extends \yii\db\ActiveRecord
+class Highcourts extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%blood_groups}}';
+        return 'highcourts';
     }
 
     /**
@@ -28,8 +26,7 @@ class BloodGroups extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'created_at', 'updated_at'], 'required'],
-            [['created_at', 'updated_at'], 'integer'],
+            [['name'], 'required'],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -42,8 +39,6 @@ class BloodGroups extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
         ];
     }
 }

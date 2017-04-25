@@ -5,24 +5,23 @@ namespace common\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 /**
- * This is the model class for table "notification".
+ * This is the model class for table "highcourt_holidays".
  *
  * @property integer $id
- * @property string $title
- * @property string $description
- * @property integer $sender_id
- * @property integer $reciever_id
+ * @property integer $highcourt_id
+ * @property integer $holiday_id
+ * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Notification extends \yii\db\ActiveRecord
+class HighcourtHolidays extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'notification';
+        return 'highcourt_holidays';
     }
 
     /**
@@ -31,10 +30,9 @@ class Notification extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'description'], 'required'],
-            [['description'], 'string'],
-            //[['sender_id', 'reciever_id', 'created_at', 'updated_at'], 'integer'],
-            [['title'], 'string', 'max' => 255],
+            [['highcourt_id'], 'required','message' => 'Please select highcourts before saving holiday.'],
+            [['holiday_id'], 'required'],
+            [['highcourt_id', 'holiday_id', 'status', 'created_at', 'updated_at'], 'integer'],
         ];
     }
 
@@ -45,10 +43,9 @@ class Notification extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'description' => 'Description',
-            'sender_id' => 'Sender ID',
-            'reciever_id' => 'Reciever ID',
+            'highcourt_id' => 'Highcourts',
+            'holiday_id' => 'Holiday ID',
+            'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
