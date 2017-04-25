@@ -3,11 +3,12 @@
 namespace common\models;
 
 use Yii;
-
+use yii\behaviors\TimestampBehavior;
 /**
  * This is the model class for table "membership_types".
  *
  * @property integer $id
+ * @property integer $parent_id
  * @property string $name
  * @property string $amount
  * @property integer $status
@@ -31,7 +32,11 @@ class MembershipTypes extends \yii\db\ActiveRecord
     {
         return [
             [['status', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'amount'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 255],
+            [['amount'], 'match' ,
+                'pattern'=> '/^[0-9]+\.[0-9]{2}$/u',
+                'message'=> 'Please enter a valid amount. (eg. 100.00)'
+            ],
         ];
     }
 
@@ -42,11 +47,19 @@ class MembershipTypes extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'parent_id' => 'Parent ID',
             'name' => 'Name',
             'amount' => 'Amount',
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+        ];
+    }
+    
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
         ];
     }
 }

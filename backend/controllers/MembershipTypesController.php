@@ -80,7 +80,7 @@ class MembershipTypesController extends Controller
         $model = new MembershipTypes();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -97,13 +97,34 @@ class MembershipTypesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
+        }
+    }
+    
+    public function actionLists($id)
+    {
+        $count = \common\models\MembershipTypes::find()
+                ->where(['parent_id' => $id])
+                ->count();
+        
+        $membershiptypes = \common\models\MembershipTypes::find()
+                ->where(["parent_id"=>$id])
+                ->all();
+        
+        if($count>0){
+            echo "<option value>Select a parent id</option>";
+            foreach($membershiptypes as $mt){
+                echo "<option value='".$mt->id."'>".$mt->name."</option>";
+            }
+        }
+        else{
+            echo "<option>-</option>";
         }
     }
 
