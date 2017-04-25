@@ -12,6 +12,7 @@ use common\models\Judges;
  */
 class JudgesSearch extends Judges
 {
+    
     /**
      * @inheritdoc
      */
@@ -19,7 +20,7 @@ class JudgesSearch extends Judges
     {
         return [
             [['id', 'created_at', 'updated_at'], 'integer'],
-            [['name', 'address', 'dob', 'date_of_appointment', 'date_of_retirement', 'bio_graphy'], 'safe'],
+            [['name', 'address', 'dob', 'date_of_appointment', 'date_of_retirement', 'bio_graphy', 'landine'], 'safe'],
         ];
     }
 
@@ -39,7 +40,7 @@ class JudgesSearch extends Judges
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $login_id = 0, $as_array = false)
     {
         $query = Judges::find();
 
@@ -70,7 +71,16 @@ class JudgesSearch extends Judges
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'address', $this->address])
             ->andFilterWhere(['like', 'bio_graphy', $this->bio_graphy]);
+        
+        $query->addSelect(['*', 'getImageSrc("'.$this->getImageTypePathApi().'", id) as image_src']);
 
+        if($as_array) $query->asArray(true);
+        
         return $dataProvider;
+    }
+    
+    public static function getApiList($params = [], $login_id = 0, $as_array = false){
+        $model = new JudgesSearch();
+        return $model->search($params, $login_id, $as_array);
     }
 }
