@@ -35,32 +35,12 @@ use dosamigos\datepicker\DatePicker;
     
     <?= $form->field($model, 'court_room')->input('number', ['min' => 0, 'placeholder' => "Court Room"]) ?>
 
-    <?= $form->field($model, 'date_of_appointment')->widget(DatePicker::className(), [
-        // inline too, not bad        
-        // modify template for custom rendering
-        'clientOptions' => [
-            'autoclose' => true,
-            'format' => 'yyyy-mm-dd',
-        ]
-    ]); ?>    
+    <?= $form->field($model, 'date_of_appointment')->textInput(["placeholder" => "Date of Appointment"]); ?>    
 
-    <?= $form->field($model, 'date_of_retirement')->widget(DatePicker::className(), [
-        // inline too, not bad        
-        // modify template for custom rendering
-        'clientOptions' => [
-            'autoclose' => true,
-            'format' => 'yyyy-mm-dd'
-        ]
-    ]) ?>
+    <?= $form->field($model, 'date_of_retirement')->textInput(["placeholder" => "Date of Retirement"]); ?>
 
-<<<<<<< HEAD
 
     <?= $form->field($model, 'bio_graphy')->textarea(['rows' => 5, 'placeholder' => "Biography"]) ?>
-=======
-    <?= $form->field($model, 'bio_graphy')->textarea(['rows' => 6, 'placeholder' => "Biography"]) ?>
-            
-    <?= $form->field($model, 'landline')->textInput(['type' => 'number']) ?>
->>>>>>> 77bfda9bfb8135bc7389c456b3aa1c5502e80a7b
    
 
     <div class="form-group">
@@ -72,7 +52,11 @@ use dosamigos\datepicker\DatePicker;
 </div>
 
 <?php
+    $this->registerCssFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css");
+    $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js", ['depends' => [yii\web\JqueryAsset::className()]]);
     echo $this->registerJs('jQuery(document).ready(function($){
-        $("#judges-dob").datepicker({format : "yyyy-mm-dd"});
+        $("#judges-dob").datepicker({format : "yyyy-mm-dd",endDate:"0d"});
+        $("#judges-date_of_appointment").datepicker({format : "yyyy-mm-dd",endDate:"0d"});
+        $("#judges-date_of_retirement").datepicker({format : "yyyy-mm-dd",startDate:"0d"});
     });');
 ?>
