@@ -10,7 +10,7 @@ class m170426_093815_highcourt_holidays_table extends Migration
             'id'    =>Schema::TYPE_PK,
             'highcourt_id'   => Schema::TYPE_INTEGER,
             'holiday_id'   => Schema::TYPE_INTEGER,
-            'status'   => Schema::TYPE_BOOLEAN,
+            'status'   => Schema::TYPE_BOOLEAN." default 0 not null ",
             'created_at'   => Schema::TYPE_INTEGER,
             'updated_at'   => Schema::TYPE_INTEGER,
         ]);
