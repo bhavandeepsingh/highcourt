@@ -14,7 +14,7 @@ use dosamigos\datepicker\DatePicker;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => "Name"]) ?>
     
-    <?= $form->field(new \common\models\UploadForm(), 'imageFile')->fileInput() ?> 
+    <?= $form->field(new \common\models\UploadForm(), 'imageFile')->fileInput(["onChange" => "readURL(this);"]) ?> 
     
     <?php
         if($model->id > 0 && ($model->JudgePicSrc)){
@@ -52,9 +52,23 @@ use dosamigos\datepicker\DatePicker;
 <?php
     $this->registerCssFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css");
     $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js", ['depends' => [yii\web\JqueryAsset::className()]]);
-    echo $this->registerJs('jQuery(document).ready(function($){
+    echo $this->registerJs('
         $("#judges-dob").datepicker({format : "yyyy-mm-dd",endDate:"0d"});
         $("#judges-date_of_appointment").datepicker({format : "yyyy-mm-dd",endDate:"0d"});
         $("#judges-date_of_retirement").datepicker({format : "yyyy-mm-dd",startDate:"0d"});
-    });');
+    ');
 ?>
+<script type="text/javascript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $("form img")
+                    .attr("src", e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
