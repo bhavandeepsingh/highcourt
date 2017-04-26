@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * MembershipTypesController implements the CRUD actions for MembershipTypes model.
  */
-class MembershipTypesController extends Controller
+class MembershipTypesController extends BaseController
 {
     /**
      * @inheritdoc

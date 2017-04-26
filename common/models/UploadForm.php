@@ -68,6 +68,28 @@ class UploadForm extends Model
         return $type_path;
     }
     
+    public static function getPicSrcByType($id,$type){
+        switch ($type) {
+            case self::$IMAGE_TYPE_JUDGES:
+                return self::getJudgeProfilePic($id);
+                break;
+            case self::$IMAGE_TYPE_MEMBERS:
+                return self::getMemberProfilePic($id);
+                break;
+            case self::$IMAGE_TYPE_USERS:
+                return self::getUserProfilePic($id);
+                break;
+            case self::$IMAGE_TYPE_BANNERS:
+                return self::getBannerProfilePic($id);
+                break;
+            case self::$FILE_TYPE_NOTIFICATIONS:
+                //return self::getFileSrc($type, $id)
+                break;
+            default:
+                break;
+        }
+    }
+    
     public function getPathWithType($type){
         $type_path = self::typePath($type);
         return Yii::$app->basePath . '/../uploads/'. $type_path;
@@ -128,22 +150,47 @@ class UploadForm extends Model
     
     public static function getJudgeProfilePic($id = 0){
         if($id <= 0) return "";
-        return self::getImageSrc(self::$IMAGE_TYPE_JUDGES, $id);
+        $root = self::getImageSrc(self::$IMAGE_TYPE_JUDGES, $id);
+        if(file_exists($_SERVER['DOCUMENT_ROOT'].$root)){
+            return $root;
+        }
+        return false;
     }
     
     public static function getUserProfilePic($id = 0){
         if($id <= 0) return "";
-        return self::getImageSrc(self::$IMAGE_TYPE_USERS, $id);
+        $root = self::getImageSrc(self::$IMAGE_TYPE_USERS, $id);
+        if(file_exists($_SERVER['DOCUMENT_ROOT'].$root)){
+            return $root;
+        }
+        return false;
     }
     
     public static function getMemberProfilePic($id = 0){
         if($id <= 0) return "";
-        return self::getImageSrc(self::$IMAGE_TYPE_MEMBERS, $id);
+        $root = self::getImageSrc(self::$IMAGE_TYPE_MEMBERS, $id);
+        if(file_exists($_SERVER['DOCUMENT_ROOT'].$root)){
+            return $root;
+        }
+        return false;
     }
     
     public static function getBannerProfilePic($id = 0){
         if($id <= 0) return "";
-        return self::getImageSrc(self::$IMAGE_TYPE_BANNERS, $id);
+        $root = self::getImageSrc(self::$IMAGE_TYPE_BANNERS, $id);
+        if(file_exists($_SERVER['DOCUMENT_ROOT'].$root)){
+            return $root;
+        }
+        return false;
+    }
+    
+    public static function getNotificationFile($id = 0){
+        if($id <= 0) return "";
+        $root = self::getFileSrc(self::$FILE_TYPE_NOTIFICATIONS, $id);
+        if(file_exists($_SERVER['DOCUMENT_ROOT'].$root)){
+            return $root;
+        }
+        return false;
     }
     
     public static function getImageSrc($type, $id){        
@@ -151,21 +198,36 @@ class UploadForm extends Model
         return Yii::$app->urlManager->baseUrl.'/../../uploads/'.$type_path;
     }
     
+    public static function getFileSrc($type, $id){        
+        $type_path = self::getTypePath($type). $id. "/file.jpg";
+        return Yii::$app->urlManager->baseUrl.'/../../uploads/'.$type_path;
+    }
+    
     public static function getTypePath($type){
-        $type_path = "";
-        if($type == self::$IMAGE_TYPE_JUDGES){
-            $type_path = "judges/";
-        }else if($type == self::$IMAGE_TYPE_MEMBERS){
-            $type_path = "members/";
-        }else if($type == self::$IMAGE_TYPE_USERS){
-            $type_path = "users/";
-        }else if($type == self::$IMAGE_TYPE_BANNERS){
-            $type_path = "banners/";
-        }
+        $type_path = self::typePath($type);
         return $type_path;
     }
     
     public static function getJudgeTypePathApi(){
         return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_JUDGES);
     }
+    
+    /*
+     * deleteImage function takes two parameters $id and $type
+     * This will them remove the images as well as folder from location
+     */
+    
+    public static function deleteImage($id,$type){
+        $root = $_SERVER["DOCUMENT_ROOT"];
+        $src='';
+        $src = self::getPicSrcByType($id, $type);
+        if($src!=''){
+            $imagesrc = $root.$src;
+            $dirname = str_replace('image.jpg', '',$imagesrc);
+            unlink($imagesrc);
+            rmdir($dirname);
+        }    
+    }
+    
+    
 }

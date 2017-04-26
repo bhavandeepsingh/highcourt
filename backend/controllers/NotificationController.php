@@ -12,7 +12,7 @@ use common\models\UploadFile;
 /**
  * NotificationController implements the CRUD actions for Notification model.
  */
-class NotificationController extends Controller
+class NotificationController extends BaseController
 {
     /**
      * @inheritdoc

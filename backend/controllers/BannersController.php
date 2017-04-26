@@ -12,7 +12,7 @@ use common\models\UploadForm;
 /**
  * BannersController implements the CRUD actions for Banner model.
  */
-class BannersController extends Controller
+class BannersController extends BaseController
 {
     /**
      * @inheritdoc
@@ -78,7 +78,7 @@ class BannersController extends Controller
     public function actionCreate()
     {
         $model = new Banners();
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -116,10 +116,10 @@ class BannersController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        UploadForm::deleteImage($id, UploadForm::$IMAGE_TYPE_BANNERS);
         return $this->redirect(['index']);
     }
-
+    
     /**
      * Finds the Banner model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
