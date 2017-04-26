@@ -82,4 +82,8 @@ class ProfileSearch extends Profile
         $model = new ProfileSearch();
         return $model->search($params, $login_id, $as_array);
     }
+    
+    public static function editApiUser(){
+        return "qwe1";
+    }
 }

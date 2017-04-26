@@ -2,7 +2,6 @@
 namespace common\models;
 
 use dektrium\user\models\User as BaseUser;
-
 use Yii;
 
 class User extends BaseUser
@@ -20,7 +19,7 @@ class User extends BaseUser
     }
     
     
-    public function resetPassword(){        
+    public function resetPassword($password){        
         return $this->sendNewPasswordToUser(Yii::$app->security->generateRandomString(8));
     }
     

@@ -59,8 +59,14 @@ use dosamigos\datepicker\DatePicker;
         ]
     ]) ?>
 
+<<<<<<< HEAD
 
     <?= $form->field($model, 'bio_graphy')->textarea(['rows' => 5, 'placeholder' => "Biography"]) ?>
+=======
+    <?= $form->field($model, 'bio_graphy')->textarea(['rows' => 6, 'placeholder' => "Biography"]) ?>
+            
+    <?= $form->field($model, 'landline')->textInput(['type' => 'number']) ?>
+>>>>>>> 77bfda9bfb8135bc7389c456b3aa1c5502e80a7b
    
 
     <div class="form-group">
