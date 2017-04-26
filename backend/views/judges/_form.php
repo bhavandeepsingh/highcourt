@@ -15,24 +15,18 @@ use dosamigos\datepicker\DatePicker;
     <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => "Name"]) ?>
     
     <?= $form->field(new \common\models\UploadForm(), 'imageFile')->fileInput() ?> 
+    
     <?php
-    if($model->id > 0){
-        ?>
-            <img src="<?= \common\models\UploadForm::getJudgeProfilePic($model->id); ?>" width="100"/>
-        <?php
-    }
+        if($model->id > 0 && ($model->JudgePicSrc)){
+            ?>
+                <img src="<?= $model->JudgePicSrc; ?>" width="100"/>
+            <?php
+        }
     ?>
 
     <?= $form->field($model, 'address')->textarea(['maxlength' => true, 'placeholder' => "Address", 'rows' => 5]) ?>
 
-    <?= $form->field($model, 'dob')->widget(DatePicker::className(), [
-        // inline too, not bad        
-        // modify template for custom rendering
-        'clientOptions' => [
-            'autoclose' => true,
-            'format' => 'yyyy-mm-dd'
-        ]
-    ]) ?>
+    <?= $form->field($model, 'dob')->textInput(["placeholder" => "Date Of Birth"]) ?>
     
     <?= $form->field($model, 'ext_no')->input('number', ['min' => 0, 'placeholder' => "Ext Number"]) ?>
     
@@ -68,3 +62,9 @@ use dosamigos\datepicker\DatePicker;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+    echo $this->registerJs('jQuery(document).ready(function($){
+        $("#judges-dob").datepicker({format : "yyyy-mm-dd"});
+    });');
+?>

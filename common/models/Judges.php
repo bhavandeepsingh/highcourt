@@ -75,4 +75,8 @@ class Judges extends \yii\db\ActiveRecord
         return UploadForm::getJudgeTypePathApi();
     }
     
+    public function getJudgePicSrc(){             
+        return UploadForm::getJudgeProfilePic($this->id);
+    }
+    
 }
