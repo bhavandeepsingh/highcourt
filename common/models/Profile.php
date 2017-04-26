@@ -64,6 +64,7 @@ class Profile extends BaseProfile
     }
     
     public function afterSave($insert, $changedAttributes) {
+        UploadForm::deleteImage($this->user_id, UploadForm::$IMAGE_TYPE_USERS);
         UploadForm::uploadUserProfilePic($this->user_id);
         if(isset($_POST["clerks"])){
             $data=$_POST["clerks"];

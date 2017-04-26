@@ -13,16 +13,18 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
     
     <?= $form->field(new \common\models\UploadForm(), 'imageFile')->fileInput() ?> 
-    <div class="col-sm-9 col-sm-offset-3">
-        <div class="form-group">
+    
     <?php
-        if($model->id > 0){
+        if($model->id > 0 && ($model->bannerPicSrc)){
             ?>
-                <img src="<?= $model->bannerPicSrc; ?>" width="100"/>
+            <div class="col-sm-9 col-sm-offset-3">
+                <div class="form-group">
+                    <img src="<?= $model->bannerPicSrc; ?>" width="100"/>
+                </div>
+            </div>
             <?php
         }
-    ?></div>
-    </div>
+    ?>
     
     <?php //$form->field($model, 'url')->textInput(['maxlength' => true]) ?>
 

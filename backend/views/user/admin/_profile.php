@@ -34,16 +34,18 @@ use yii\helpers\Html;
 
 <?= $form->field($profile, 'name')->textInput(['placeholder' => 'Name']) ?>
 <?= $form->field(new \common\models\UploadForm(), 'imageFile')->fileInput() ?> 
-<div class="col-sm-9 col-sm-offset-3">
-    <div class="form-group">
+
 <?php
-if($profile->user_id > 0){
+if($profile->user_id > 0 && ($profile->profilePicSrc)){
     ?>
-        <img src="<?= $profile->profilePicSrc; ?>" width="100"/>
+    <div class="col-sm-9 col-sm-offset-3">
+        <div class="form-group">
+            <img src="<?= $profile->profilePicSrc; ?>" width="100"/>
+        </div>
+    </div>
     <?php
 }
-?></div>
-</div>
+?>
 <?= $form->field($profile, 'executive')->checkbox(['label' => 'Mark as Executive Member']) ?>
 <?= $form->field($profile, 'public_email')->textInput(['placeholder' => 'Email Address']) ?>
 <?php //$form->field($profile, 'website') ?>

@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * BenchesController implements the CRUD actions for Benches model.
  */
-class BenchesController extends Controller
+class BenchesController extends BaseController
 {
     /**
      * @inheritdoc

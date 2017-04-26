@@ -13,7 +13,7 @@ use common\models\UploadForm;
 /**
  * MembersController implements the CRUD actions for Members model.
  */
-class MembersController extends Controller
+class MembersController extends BaseController
 {
     /**
      * @inheritdoc

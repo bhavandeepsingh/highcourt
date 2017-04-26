@@ -17,16 +17,18 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
     
     <?= $form->field(new \common\models\UploadForm(), 'uploadFile')->fileInput() ?> 
-    <div class="col-sm-9 col-sm-offset-3">
-        <div class="form-group">
+    
     <?php
-        /*if($model->id > 0){
+        if($model->id > 0 && ($model->fileSrc)){
             ?>
-                <img src="<?= $model->fileSrc; ?>" width="100"/>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <img src="<?= $model->fileSrc; ?>" width="100"/>
+                </div>
+            </div>
             <?php
-        }*/
-    ?></div>
-    </div>
+        }
+    ?>
 
     <?php //$form->field($model, 'sender_id')->textInput() ?>
 
