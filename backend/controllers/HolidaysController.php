@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * HolidaysController implements the CRUD actions for Holidays model.
  */
-class HolidaysController extends Controller
+class HolidaysController extends BaseController
 {
     /**
      * @inheritdoc

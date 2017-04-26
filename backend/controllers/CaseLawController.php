@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * CaseLawController implements the CRUD actions for CaseLaw model.
  */
-class CaseLawController extends Controller
+class CaseLawController extends BaseController
 {
     /**
      * @inheritdoc

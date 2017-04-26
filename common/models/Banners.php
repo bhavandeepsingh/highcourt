@@ -27,9 +27,8 @@ class Banners extends BaseModel
     public function rules()
     {
         return [
-            [['url', 'index', 'status'], 'required'],
+            [['index', 'status'], 'required'],
             [['index', 'status'], 'integer'],
-            [['url'], 'string', 'max' => 255],
         ];
     }
 
@@ -40,13 +39,13 @@ class Banners extends BaseModel
     {
         return [
             'id' => 'ID',
-            'url' => 'Url',
             'index' => 'Index',
             'status' => 'Status',
         ];
     }
     
     public function afterSave($insert, $changedAttributes) {
+        UploadForm::deleteImage($this->id, UploadForm::$IMAGE_TYPE_BANNERS);
         UploadForm::uploadBannerProfilePic($this->id);
         parent::afterSave($insert, $changedAttributes);
     }

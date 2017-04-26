@@ -19,6 +19,7 @@ class m170424_105906_case_law extends Migration
     public function down()
     {
         $this->dropTable('case_law');
+<<<<<<< HEAD
         //echo "m170424_105906_case_law cannot be reverted.\n";
 
         //return false;
@@ -34,4 +35,7 @@ class m170424_105906_case_law extends Migration
     {
     }
     */
+=======
+    }
+>>>>>>> 77bfda9bfb8135bc7389c456b3aa1c5502e80a7b
 }
