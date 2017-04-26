@@ -14,7 +14,7 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Benches extends \yii\db\ActiveRecord
+class Benches extends BaseModel
 {
     
     public static $BENCH_TYPE_SINGLE = 1;

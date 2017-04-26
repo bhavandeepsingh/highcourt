@@ -16,6 +16,10 @@ use dosamigos\datepicker\DatePicker;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6, 'placeholder' => "Description"]) ?>
 
+    <?php
+        echo $form->field(new \common\models\HighcourtHolidays(), 'highcourt_id')->checkboxList(yii\helpers\ArrayHelper::map(\common\models\Highcourts::find()->all(), 'id', 'name'));
+    ?>
+    
     <?= $form->field($model, 'date')->widget(DatePicker::className(), [
         // inline too, not bad        
         // modify template for custom rendering

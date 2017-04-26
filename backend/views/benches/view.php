@@ -33,8 +33,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Bench Type',                
                 'value' => $model->getBenchTypes()[$model->type]
             ],
-            'created_at',
-            'updated_at',
+            [
+                'label' => 'Created At',
+                'value' => $model->getFormatedCreateAt(),
+            ],
+            [
+                'label' => 'Updated At',
+                'value' => $model->getFormatedUpdateAt(),
+            ],
+
         ],
     ]) ?>
 

@@ -54,6 +54,14 @@ class Notification extends \yii\db\ActiveRecord
         ];
     }
     
+    public function getFileSrc(){
+        $root = UploadForm::getNotificationFile($this->id);
+        if(file_exists($_SERVER['DOCUMENT_ROOT'].$root)){
+            return $root;
+        }
+        return false;
+    }
+    
     public function behaviors()
     {
         return [

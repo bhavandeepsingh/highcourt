@@ -3,7 +3,7 @@
 namespace common\models;
 
 use Yii;
-
+use yii\behaviors\TimestampBehavior;
 /**
  * This is the model class for table "clerks".
  *
@@ -31,7 +31,7 @@ class Clerks extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'name', 'phone', 'created_at', 'updated_at'], 'required'],
+            [['user_id', 'name', 'phone'], 'required'],
             [['user_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['name', 'phone'], 'string', 'max' => 255],
         ];
@@ -50,6 +50,24 @@ class Clerks extends \yii\db\ActiveRecord
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+        ];
+    }
+    
+    public static function saveClerk($id,$data){
+        self::deleteAll(["user_id"=>$id]);
+        for($i=0;$i<count($data["name"]);$i++){
+            $model = new self;
+            $model->user_id = $id;
+            $model->name = $data["name"][$i];
+            $model->phone = $data["contact"][$i];
+            $model->save();
+        }
+    }
+    
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
         ];
     }
 }

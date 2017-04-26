@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * HolidaysController implements the CRUD actions for Holidays model.
  */
-class HolidaysController extends Controller
+class HolidaysController extends BaseController
 {
     /**
      * @inheritdoc
@@ -78,12 +78,13 @@ class HolidaysController extends Controller
     public function actionCreate()
     {
         $model = new Holidays();
-
+        $highcourts = \common\models\Highcourts::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'highcourts' => $highcourts,
             ]);
         }
     }
@@ -97,7 +98,12 @@ class HolidaysController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+//        $highcourt_holidays = new \common\models\HighcourtHolidays();
+//        $highcourt_holidays->load(Yii::$app->request->post());
+//        $highcourt_holidays->holiday_id = 1;
+//        $highcourt_holidays->save();
+//        print_r($highcourt_holidays);
+//        die();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

@@ -78,6 +78,7 @@ return [
             'admins' => ['admin'],
             'modelMap' => [
                 'User'      => 'common\models\User',
+                'UserSearch'=> 'common\models\UserSearch',
                 'Profile'   => 'common\models\Profile',
             ],
         ],

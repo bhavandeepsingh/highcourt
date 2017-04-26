@@ -8,11 +8,11 @@ use common\models\NotificationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use common\models\UploadFile;
 /**
  * NotificationController implements the CRUD actions for Notification model.
  */
-class NotificationController extends Controller
+class NotificationController extends BaseController
 {
     /**
      * @inheritdoc
@@ -96,15 +96,20 @@ class NotificationController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        
+        $model = $this->findModel($id);       
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            \common\models\UploadForm::uploadNotificationFile($model->id);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
         }
+    }
+    
+    public function beforeAction($action) {  
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
     }
 
     /**

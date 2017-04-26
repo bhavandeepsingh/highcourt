@@ -77,7 +77,7 @@ class Members extends \yii\db\ActiveRecord
         return parent::beforeSave($insert);
     }
     
-    public function getBloodGroup(){
+    public function getBloodGroup(){        
         return $this->hasOne(BloodGroups::className(), ['id' => 'blood_group']);
     }
     

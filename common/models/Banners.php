@@ -2,7 +2,6 @@
 
 namespace common\models;
 
-use Yii;
 
 /**
  * This is the model class for table "Banner".
@@ -12,7 +11,7 @@ use Yii;
  * @property integer $index
  * @property integer $status
  */
-class Banners extends \yii\db\ActiveRecord
+class Banners extends BaseModel
 {
     /**
      * @inheritdoc
@@ -28,9 +27,8 @@ class Banners extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['url', 'index', 'status'], 'required'],
+            [['index', 'status'], 'required'],
             [['index', 'status'], 'integer'],
-            [['url'], 'string', 'max' => 255],
         ];
     }
 
@@ -41,7 +39,6 @@ class Banners extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'url' => 'Url',
             'index' => 'Index',
             'status' => 'Status',
         ];
@@ -52,7 +49,9 @@ class Banners extends \yii\db\ActiveRecord
         parent::afterSave($insert, $changedAttributes);
     }
     
-    public function getBannerPicSrc(){
+    public function getBannerPicSrc(){             
         return UploadForm::getBannerProfilePic($this->id);
     }
+    
+    
 }

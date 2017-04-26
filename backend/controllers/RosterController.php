@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * RosterController implements the CRUD actions for Roster model.
  */
-class RosterController extends Controller
+class RosterController extends BaseController
 {
     /**
      * @inheritdoc

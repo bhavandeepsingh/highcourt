@@ -12,7 +12,7 @@ use common\models\UploadForm;
 /**
  * JudgesController implements the CRUD actions for Judges model.
  */
-class JudgesController extends Controller
+class JudgesController extends BaseController
 {
     /**
      * @inheritdoc
@@ -104,7 +104,7 @@ class JudgesController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
+        UploadForm::deleteImage($id, UploadForm::$IMAGE_TYPE_JUDGES);   
         return $this->redirect(['index']);
     }
 

@@ -11,10 +11,24 @@ use yii\widgets\ActiveForm;
 <div class="notification-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
+    
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    
+    <?= $form->field(new \common\models\UploadForm(), 'uploadFile')->fileInput() ?> 
+    
+    <?php
+        if($model->id > 0 && ($model->fileSrc)){
+            ?>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <img src="<?= $model->fileSrc; ?>" width="100"/>
+                </div>
+            </div>
+            <?php
+        }
+    ?>
 
     <?php //$form->field($model, 'sender_id')->textInput() ?>
 
