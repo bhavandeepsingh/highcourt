@@ -31,5 +31,9 @@ class User extends BaseUser
         }
         return false;
     }
+
+    public function getProfile(){
+        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
+    }
     
 }
