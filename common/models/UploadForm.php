@@ -24,7 +24,7 @@ class UploadForm extends Model
     
     public $uploadFile;
 
-    public $currentType = [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg'];
+    public $currentType = [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg', 'maxSize' => 1024 * 1, 'tooBig' => 'Please upload image with size lower than or 300KB'];
     
     public function rules()
     {
@@ -43,7 +43,7 @@ class UploadForm extends Model
                 $this->imageFile->saveAs($path . '/' . ( (!empty($name))? $name: $this->imageFile->baseName) . '.' . $this->imageFile->extension);
             }
             if(isset($this->uploadFile)){
-                $this->currentType = [['uploadFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,xls,doc,pdf'];
+                //$this->currentType = [['uploadFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,xls,doc,pdf', 'maxSize' => 1024 * 1];
                 $this->uploadFile->saveAs($path . '/' . ( (!empty($name))? $name: $this->uploadFile->baseName) . '.' . $this->uploadFile->extension);
             }              
             return true;

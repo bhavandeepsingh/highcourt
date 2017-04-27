@@ -15,7 +15,7 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Notification extends \yii\db\ActiveRecord
+class Notification extends BaseModel
 {
     /**
      * @inheritdoc
