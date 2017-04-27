@@ -16,8 +16,13 @@ use dosamigos\datepicker\DatePicker;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6, 'placeholder' => "Description"]) ?>
 
-    <?php
-        echo $form->field(new \common\models\HighcourtHolidays(), 'highcourt_id')->checkboxList(yii\helpers\ArrayHelper::map(\common\models\Highcourts::find()->all(), 'id', 'name'));
+    <?php 
+    $holiday_model = new \common\models\HighcourtHolidays();
+    if($model->id > 0){
+        $holiday_model->holiday_id = array_keys(\yii\helpers\ArrayHelper::map(\common\models\HighcourtHolidays::find($model->id)->all(), 'holiday_id', 'holiday_id'));    
+    }
+    //print_r($holiday_model->holiday_id);
+     echo $form->field($holiday_model, 'holiday_id')->checkboxList(yii\helpers\ArrayHelper::map(\common\models\Highcourts::find()->all(), 'id', 'name'));          
     ?>
     
     <?= $form->field($model, 'date')->widget(DatePicker::className(), [

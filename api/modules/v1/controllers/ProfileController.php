@@ -19,7 +19,7 @@ class ProfileController extends ApiController{
         $model = \common\models\Profile::find()->andWhere(['user_id' => $this->login_user->id])->one();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-           UploadForm::uploadUserProfilePic($model->user_id);
+           UploadForm::uploadUserProfilePic($model->user_id);                                       
            return $this->success(['user' => $model->getProfileDataApi()]);
         } else {
             return $this->eror(['message' => $model->getFirstError()]);

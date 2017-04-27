@@ -204,7 +204,7 @@ class UploadForm extends Model
     public static function getFileSrc($type, $id){        
         $type_path = self::getTypePath($type). $id. "/file.jpg";
         return Yii::$app->urlManager->baseUrl.'/../../uploads/'.$type_path;
-    }    
+    }  
     
     public static function getTypePath($type){
         $type_path = self::typePath($type);

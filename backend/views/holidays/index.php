@@ -22,9 +22,16 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'id',
+            //'id',
             'title',
-            'description:ntext',
+            [
+                'label' => 'Description',
+                'value' => function($data){ return substr($data->description,0,60);}
+            ],
+            [
+                'label' => 'Holiday In',
+                //'value' => '',
+            ],
             'date',
             //'status',
             [
