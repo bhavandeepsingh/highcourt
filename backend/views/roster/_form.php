@@ -16,7 +16,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6, 'placeholder' => "Description"]) ?>
 
-    <?= $form->field($model, 'bench_id')->dropDownList(yii\helpers\ArrayHelper::map(\common\models\Benches::find()->all(), 'id', 'name'), ['prompt' => 'Select Bench'])?>
+    <?= $form->field($model, 'bench_id')->dropDownList(yii\helpers\ArrayHelper::map(\common\models\Benches::find()->all(), 'id', 'name'), ['prompt' => 'Select Bench']) ?>
+    
+    <?= $form->field($model, 'type')->dropDownList([1 => "Single", 2 => "Division"], ['prompt' => 'Select Bench Type'])?>
     
     <?= $form->field($modelJudges, 'judge_id[]')->dropDownList(yii\helpers\ArrayHelper::map(\common\models\Judges::find()->all(), 'id', 'name'), ['prompt' => 'Select Judges', 'multiple' => 'multiple', 'class'=>'chosen-select required', 'style' => 'width:100%;', 'options' => $model->getSelectedJudges()])?>
   
@@ -27,3 +29,15 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+    $this->registerJs('
+        $("#roster-type").on("change",function(){
+            if($(this).val()==1){
+                $("#rosterjudges-judge_id").removeAttr("multiple");
+            }else{
+                $("#rosterjudges-judge_id").attr({"multiple":true});
+            }
+        });
+    ');
+?>

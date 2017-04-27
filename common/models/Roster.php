@@ -33,7 +33,7 @@ class Roster extends BaseModel
     public function rules()
     {
         return [
-            [['description', 'bench_id'], 'required'],
+            [['description', 'bench_id', 'type'], 'required'],
             [['title', 'description'], 'string'],
             [['bench_id', 'created_at', 'updated_at'], 'integer'],
         ];
@@ -49,6 +49,7 @@ class Roster extends BaseModel
             'title' => 'Title',
             'description' => 'Description',
             'bench_id' => 'Bench ID',
+            'type' => 'Bench Type',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
