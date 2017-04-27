@@ -46,7 +46,7 @@ class RequestResetPassword extends \yii\base\Model
     }
     
     public function requestSend(){
-        return $this->_user->resetPassword();
+        return $this->_user->resetPassword(null);
     }
     
 }

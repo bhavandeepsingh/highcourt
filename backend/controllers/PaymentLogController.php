@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\MembershipTypes;
-use common\MembershipTypesSearch;
+use common\models\PaymentLog;
+use common\models\PaymentLogSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * MembershipTypesController implements the CRUD actions for MembershipTypes model.
+ * PaymentLogController implements the CRUD actions for PaymentLog model.
  */
-class MembershipTypesController extends BaseController
+class PaymentLogController extends BaseController
 {
     /**
      * @inheritdoc
@@ -31,12 +31,8 @@ class MembershipTypesController extends BaseController
                 'rules' => [
                     [
                         'allow' => true,
+                        'actions' => ['index'],
                         'roles' => ['admin'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['index','view','create','update'],
-                        'roles' => ['author'],
                     ],
                 ],
             ],
@@ -44,12 +40,12 @@ class MembershipTypesController extends BaseController
     }
 
     /**
-     * Lists all MembershipTypes models.
+     * Lists all PaymentLog models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new MembershipTypesSearch();
+        $searchModel = new PaymentLogSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -59,7 +55,7 @@ class MembershipTypesController extends BaseController
     }
 
     /**
-     * Displays a single MembershipTypes model.
+     * Displays a single PaymentLog model.
      * @param integer $id
      * @return mixed
      */
@@ -71,18 +67,16 @@ class MembershipTypesController extends BaseController
     }
 
     /**
-     * Creates a new MembershipTypes model.
+     * Creates a new PaymentLog model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new MembershipTypes();
-        
-        print_r(Yii::$app->request->post());
-        
+        $model = new PaymentLog();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -91,7 +85,7 @@ class MembershipTypesController extends BaseController
     }
 
     /**
-     * Updates an existing MembershipTypes model.
+     * Updates an existing PaymentLog model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -99,40 +93,18 @@ class MembershipTypesController extends BaseController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->load(Yii::$app->request->post());
-        //print_r($model);die;
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
             ]);
         }
     }
-    
-    public function actionLists($id)
-    {
-        $count = \common\models\MembershipTypes::find()
-                ->where(['parent_id' => $id])
-                ->count();
-        
-        $membershiptypes = \common\models\MembershipTypes::find()
-                ->where(["parent_id"=>$id])
-                ->all();
-        
-        if($count>0){
-            echo "<option value>Select a parent id</option>";
-            foreach($membershiptypes as $mt){
-                echo "<option value='".$mt->id."'>".$mt->name."</option>";
-            }
-        }
-        else{
-            echo "<option>-</option>";
-        }
-    }
 
     /**
-     * Deletes an existing MembershipTypes model.
+     * Deletes an existing PaymentLog model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -145,15 +117,15 @@ class MembershipTypesController extends BaseController
     }
 
     /**
-     * Finds the MembershipTypes model based on its primary key value.
+     * Finds the PaymentLog model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return MembershipTypes the loaded model
+     * @return PaymentLog the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = MembershipTypes::findOne($id)) !== null) {
+        if (($model = PaymentLog::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

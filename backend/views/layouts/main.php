@@ -4,6 +4,18 @@ use yii\helpers\Html;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+$userroles=Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
+$flag=true;
+foreach ($userroles as $key => $role){
+    if($key=="admin" || $key=="author"){
+        $flag=false;
+    }
+}
+if(!Yii::$app->user->isGuest && $flag==true){
+    echo "<html><body><p style='text-align:center;'>You are not authorized to view this page</p>";
+    echo "</body></html>";
+    exit;
+}
 
 if (Yii::$app->controller->action->id === 'login') { 
 /**

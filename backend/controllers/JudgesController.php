@@ -86,7 +86,8 @@ class JudgesController extends BaseController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-             UploadForm::uploadJudgeProfilePic($model->id);
+            UploadForm::deleteImage($model->id, UploadForm::$IMAGE_TYPE_JUDGES); 
+            UploadForm::uploadJudgeProfilePic($model->id);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [

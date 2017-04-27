@@ -41,6 +41,6 @@
         }
     },
     "scripts": {
-        "post-install-cmd": "php init --env=Development --overwrite=n"
+        "post-install-cmd": "php init --env=Development --overwrite=n && php yii migrate/up --migrationPath=@vendor/dektrium/yii2-user/migrations && php yii migrate/up --migrationPath=@yii/rbac/migrations && ./yii migrate"
     }
 }

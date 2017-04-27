@@ -12,15 +12,16 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
     
+    <?php /*
     <div class="form-group">
         <label form="parents">Parents</label>
-        <?= Html::dropDownList('parents', '', yii\helpers\ArrayHelper::map(common\models\MembershipTypes::find()->where(["parent_id"=>0])->all(), 'id', 'name'),['prompt' => 'Select Parent', 'class' => 'form-control','onchange'=>'
+        <?php Html::dropDownList('parents', '', yii\helpers\ArrayHelper::map(common\models\MembershipTypes::find()->where(["parent_id"=>0])->all(), 'id', 'name'),['prompt' => 'Select Parent', 'class' => 'form-control','onchange'=>'
                 $.post( "'.Yii::$app->urlManager->createUrl('membership-types/lists').'&id="+$(this).val(), function( data ) {
                     $( "select#membershiptypes-parent_id" ).html( data );
                 });
             ']); ?>
     </div>
-    <?php
+    <?php */
         $dataPost= yii\helpers\ArrayHelper::map(\common\models\MembershipTypes::find()->asArray()->all(), 'id', 'name');
         echo $form->field($model, 'parent_id')->dropDownList($dataPost, ['prompt' => 'Select a parent id']);
     ?>

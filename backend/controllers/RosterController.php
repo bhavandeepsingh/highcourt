@@ -81,9 +81,14 @@ class RosterController extends BaseController
         $modelJudges = new \common\models\RosterJudges();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $modelJudges->load(Yii::$app->request->post());
-            $modelJudges->roster_id = $model->id;
-            $modelJudges->save();
+            if(isset(Yii::$app->request->post("RosterJudges")["judge_id"])){
+                foreach(Yii::$app->request->post("RosterJudges")["judge_id"] as $judge){
+                   $modelJudges = new \common\models\RosterJudges();
+                   $modelJudges->judge_id = $judge;
+                   $modelJudges->roster_id = $model->id;
+                   $modelJudges->save();
+                }
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [

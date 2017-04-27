@@ -31,10 +31,10 @@ class MembershipTypes extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'created_at', 'updated_at'], 'integer'],
+            [['status','parent_id'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['amount'], 'match' ,
-                'pattern'=> '/^[0-9]+\.[0-9]{2}$/u',
+                'pattern'=> '/^[0-9\.]+$/u',
                 'message'=> 'Please enter a valid amount. (eg. 100.00)'
             ],
         ];

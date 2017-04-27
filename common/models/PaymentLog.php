@@ -4,28 +4,26 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
-
 /**
- * This is the model class for table "{{%benches}}".
+ * This is the model class for table "payment_log".
  *
  * @property integer $id
- * @property string $name
- * @property integer $type
+ * @property integer $order_id
+ * @property integer $payment_type
+ * @property string $payment_token
+ * @property integer $status
+ * @property string $response
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Benches extends BaseModel
+class PaymentLog extends \yii\db\ActiveRecord
 {
-    
-    public static $BENCH_TYPE_SINGLE = 1;
-    public static $BENCH_TYPE_DEVISION = 2;
-
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%benches}}';
+        return 'payment_log';
     }
 
     /**
@@ -34,10 +32,9 @@ class Benches extends BaseModel
     public function rules()
     {
         return [
-            //[['name', 'type'], 'required'],
-            [['name'], 'string'],
-            [['name'], 'unique'],
-            [['created_at', 'updated_at'], 'integer'],
+            [['order_id', 'payment_type', 'status'], 'integer'],
+            [['response'], 'string'],
+            [['payment_token'], 'string', 'max' => 255],
         ];
     }
 
@@ -48,8 +45,11 @@ class Benches extends BaseModel
     {
         return [
             'id' => 'ID',
-            'name' => 'Category Name',
-            //'type' => 'Type',
+            'order_id' => 'Order ID',
+            'payment_type' => 'Payment Type',
+            'payment_token' => 'Payment Token',
+            'status' => 'Status',
+            'response' => 'Response',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -59,13 +59,6 @@ class Benches extends BaseModel
     {
         return [
             TimestampBehavior::className(),
-        ];
-    }
-    
-    public function getBenchTypes(){
-        return [
-            self::$BENCH_TYPE_SINGLE => 'Single' ,
-            self::$BENCH_TYPE_DEVISION => 'Devision'
         ];
     }
 }
