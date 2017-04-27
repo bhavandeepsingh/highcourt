@@ -12,19 +12,17 @@ class ProfileController extends ApiController{
     }
 
 
-    public function actionUpdate($id)
+    public function actionUpdate()
     { 
-        $model = \common\models\Profile::find()->andWhere(['user_id'=>$id])->one();
+        if($this->loginId() <= 0) return $this->errorLoginRequierd();
+
+        $model = \common\models\Profile::find()->andWhere(['user_id' => $this->login_user->id])->one();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //echo $model->executive;die;
            UploadForm::uploadUserProfilePic($model->user_id);
-            
-            
-            return $this->redirect(['view', 'user_id' => $model->user_id]);
+           return $this->success(['user' => $model->getProfileDataApi()]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->eror(['message' => $model->getFirstError()]);
         }
         
     }

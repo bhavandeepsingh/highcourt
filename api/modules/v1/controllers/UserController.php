@@ -35,4 +35,10 @@ class UserController extends ApiController{
         return $this->error(['license_no' => $model->getFirstError('license_no')]);
     }
     
+
+    public function actionExecutive(){
+        return $this->dataProvider(\common\models\ProfileSearch::getApiList(Yii::$app->request->post(), null, true));
+    }
+
+
 }

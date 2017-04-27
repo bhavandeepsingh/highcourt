@@ -214,6 +214,11 @@ class UploadForm extends Model
     public static function getJudgeTypePathApi(){
         return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_JUDGES);
     }
+
+    public static function getUserTypePathApi(){
+        return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_USERS);
+    }
+
     
     /*
      * deleteImage function takes two parameters $id and $type
@@ -237,4 +242,6 @@ class UploadForm extends Model
     public static function getProfilePicPathApi($id){
         return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_USERS).$id.'/image.jpg';
     }
+
+
 }
