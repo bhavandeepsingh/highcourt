@@ -19,8 +19,8 @@ class ProfileController extends ApiController{
             //echo $model->executive;die;
            UploadForm::uploadUserProfilePic($model->user_id);
             
-            
-            return $this->redirect(['view', 'user_id' => $model->user_id]);
+            return \common\models\Profile::find()->andWhere(['user_id'=>$id])->one();
+            //return $this->redirect(['view', 'user_id' => $model->user_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,

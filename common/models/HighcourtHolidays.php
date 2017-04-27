@@ -16,6 +16,10 @@ use yii\behaviors\TimestampBehavior;
  */
 class HighcourtHolidays extends \yii\db\ActiveRecord
 {
+    
+    public $holydays_ids;
+    public $holidaydata;
+
     /**
      * @inheritdoc
      */
@@ -57,4 +61,45 @@ class HighcourtHolidays extends \yii\db\ActiveRecord
             TimestampBehavior::className(),
         ];
     }
+    
+    public static function updateHolidays($params, $highcourt_id){
+        $model = new self();
+        $model->load($params);
+        $model->highcourt_id = $highcourt_id; 
+        
+        if(is_array($model->holiday_id)){
+            $model->holydays_ids = $model->holiday_id;
+            $model->holidayDelete($model->holydays_ids);
+            foreach($model->holydays_ids as $id){
+                $model->holiday_id = $id;
+                $model->setIsNewRecord(true);
+                $model->id = null;
+                //$model->holidayDelete();
+                $model->checkExistsAndSave();
+            }
+        }
+    }
+    
+    public function checkExistsAndSave(){
+        if(!$this->find()->andWhere(['highcourt_id' => $this->highcourt_id, 'holiday_id' => $this->holiday_id])->one()){  
+            $this->save();
+        }
+    }
+    public function holidayDelete($id){
+        $holidaydata = $this->find()->andWhere(['highcourt_id' => $this->highcourt_id])->all();
+        $holidays = array();
+        foreach($holidaydata as $holiday){
+         
+            array_push($holidays, $holiday->holiday_id);
+           
+        }
+        
+        $result=array_diff($holidays,$id);
+        if(!empty($result)){
+           
+           HighcourtHolidays::find()->andWhere(['highcourt_id' => $this->highcourt_id,'holiday_id' => [implode(',',$result)]])->one()->delete(); 
+        } 
+        
+    }
+    
 }
