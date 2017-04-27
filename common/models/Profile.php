@@ -90,5 +90,12 @@ class Profile extends BaseProfile
     public static function findByEnrollmentNumberNo($enrollment_number){
         return self::find()->where(['enrollment_number' => $enrollment_number])->one();
     }
+
+    public function getProfileDataApi(){
+        $profile =  @$this->getAttributes();       
+        if($profile === null) return null;
+        $profile['profile_pic'] = @$this->getProfilePicPathApi();;                
+        return $profile;
+    }
     
 }

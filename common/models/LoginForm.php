@@ -109,10 +109,7 @@ class LoginForm extends Model
     }
 
     public function getProfileArray(){
-        $profile =  @$this->getProfile()->getAttributes();       
-        if($profile === null) return null;
-        $profile['profile_pic'] = @$this->getProfile()->getProfilePicPathApi();;                
-        return $profile;
+        return @$this->getProfile()->getProfileDataApi();
     }
     
 }

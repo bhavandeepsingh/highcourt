@@ -24,7 +24,7 @@ class UploadForm extends Model
     
     public $uploadFile;
 
-    public $currentType = [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg', 'maxSize' => 1024 * 1, 'tooBig' => 'Please upload image with size lower than or 300KB'];
+    public $currentType = [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg'];
     
     public function rules()
     {
@@ -43,7 +43,7 @@ class UploadForm extends Model
                 $this->imageFile->saveAs($path . '/' . ( (!empty($name))? $name: $this->imageFile->baseName) . '.' . $this->imageFile->extension);
             }
             if(isset($this->uploadFile)){
-                //$this->currentType = [['uploadFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,xls,doc,pdf', 'maxSize' => 1024 * 1];
+                $this->currentType = [['uploadFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,xls,doc,pdf'];
                 $this->uploadFile->saveAs($path . '/' . ( (!empty($name))? $name: $this->uploadFile->baseName) . '.' . $this->uploadFile->extension);
             }              
             return true;
@@ -197,13 +197,14 @@ class UploadForm extends Model
     public static function getImageSrc($type, $id){
         $type_path = self::typePath($type);
         $type_path .= $id. "/image.jpg";
-    return Yii::$app->urlManager->baseUrl.'/../../uploads/'.$type_path;
+
+        return Yii::$app->urlManager->baseUrl.'/../../uploads/'.$type_path;
     }
     
     public static function getFileSrc($type, $id){        
         $type_path = self::getTypePath($type). $id. "/file.jpg";
         return Yii::$app->urlManager->baseUrl.'/../../uploads/'.$type_path;
-    }
+    }    
     
     public static function getTypePath($type){
         $type_path = self::typePath($type);
@@ -213,6 +214,11 @@ class UploadForm extends Model
     public static function getJudgeTypePathApi(){
         return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_JUDGES);
     }
+
+    public static function getUserTypePathApi(){
+        return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_USERS);
+    }
+
     
     /*
      * deleteImage function takes two parameters $id and $type
@@ -232,4 +238,10 @@ class UploadForm extends Model
     }
     
     
+
+    public static function getProfilePicPathApi($id){
+        return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_USERS).$id.'/image.jpg';
+    }
+
+
 }

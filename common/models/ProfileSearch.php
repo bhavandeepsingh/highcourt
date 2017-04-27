@@ -12,16 +12,6 @@ use common\models\Profile;
  */
 class ProfileSearch extends Profile
 {
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['user_id', 'designation', 'executive'], 'integer'],
-            [['name', 'public_email', 'gravatar_email', 'gravatar_id', 'location', 'website', 'bio', 'timezone','profile','enrollment_number','membership_number','landline','mobile','residential_address','court_address','blood_group','lat1','long1','lat2','long2'], 'safe'],
-        ];
-    }
 
     /**
      * @inheritdoc
@@ -39,9 +29,11 @@ class ProfileSearch extends Profile
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params = [], $login_id = 0, $as_array = false)
     {
         $query = Profile::find();
+
+        $query->addSelect(['*', 'getImageSrc("'. \common\models\UploadForm::getUserTypePathApi() .'", user_id) as profilePic']);
 
         // add conditions that should always apply here
 
@@ -57,33 +49,15 @@ class ProfileSearch extends Profile
             return $dataProvider;
         }
 
-        // grid filtering conditions
-       /* $query->andFilterWhere([
-            'user_id' => $this->user_id,
-            'designation' => $this->designation,
-            'executive' => $this->executive,
-            
-        ]);
-'name', 'public_email', 'gravatar_email', 'gravatar_id', 'location', 'website', 'bio', 'timezone',
-        * 'profile','enrollment_number','membership_number','landline','mobile',
-        * 'residential_address','court_address','blood_group','lat1','long1','lat2','long2'
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'enrollment_no', $this->enrollment_no])
-            ->andFilterWhere(['like', 'membership_no', $this->membership_no])
-            ->andFilterWhere(['like', 'email_id', $this->email_id])
-            ->andFilterWhere(['like', 'landline_no', $this->landline_no])
-            ->andFilterWhere(['like', 'mobile_no', $this->mobile_no])
-            ->andFilterWhere(['like', 'residential_address', $this->residential_address])
-            ->andFilterWhere(['like', 'court_address', $this->court_address]);*/
+        if($as_array) $query->asArray(true);
 
         return $dataProvider;
     }
-     public static function getApiList($params = [], $login_id = 0, $as_array = false){
+
+    public static function getApiList($params = [], $login_id = 0, $as_array = false){
         $model = new ProfileSearch();
         return $model->search($params, $login_id, $as_array);
     }
-    
-    public static function editApiUser(){
-        return "qwe1";
-    }
+        
+
 }
