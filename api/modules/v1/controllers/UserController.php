@@ -5,11 +5,12 @@ use Yii;
 
 class UserController extends ApiController{
     
-    public function actionLogin(){
+    public function actionLogin(){           
+    	//return $this->success(['user' => @\common\models\User::find()->andWhere(['id' => 1])->one()->profile]);
         $login = new \common\models\LoginForm();
         $login->load(Yii::$app->request->post());        
         if($login->laywerLogin()){
-            return $this->success(['user' => $login->getLoginUser(), 'profile' => $login->getProfile()]);
+            return $this->success(['user' => $login->getProfileArray()]);
         }else{
             return $this->error(['error' => $login->getFirstError('password')]);
         }        

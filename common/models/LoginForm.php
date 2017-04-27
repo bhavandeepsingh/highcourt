@@ -43,8 +43,10 @@ class LoginForm extends Model
     public function validatePassword($attribute, $params)
     {
         if (!$this->hasErrors()) {
+            $user = null;
             if(!empty($this->enrollment_number)) $user = $this->getLaywerUser();
-            else $user = $this->getUser();               
+            else if(!empty($this->username)) $user = $this->getUser();               
+
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, 'Incorrect license or password.');
             }
@@ -103,7 +105,14 @@ class LoginForm extends Model
     }
     
     public function getProfile(){
-        return @$this->_user->profile;
+        return @$this->_user->profile;                
+    }
+
+    public function getProfileArray(){
+        $profile =  @$this->getProfile()->getAttributes();       
+        if($profile === null) return null;
+        $profile['profile_pic'] = @$this->getProfile()->getProfilePicPathApi();;                
+        return $profile;
     }
     
 }

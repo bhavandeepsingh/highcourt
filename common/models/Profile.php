@@ -5,6 +5,9 @@ use dektrium\user\models\Profile as BaseProfile;
 
 class Profile extends BaseProfile
 {
+
+    public $profile_pic;
+
     public function rules()
     {
         return [
@@ -75,6 +78,9 @@ class Profile extends BaseProfile
     
     public function getProfilePicSrc(){
         return UploadForm::getUserProfilePic($this->user_id);
+    }
+    public function getProfilePicPathApi(){
+        return UploadForm::getProfilePicPathApi($this->user_id);
     }
     
     public function getUser(){
