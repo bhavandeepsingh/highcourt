@@ -24,21 +24,6 @@ use yii\bootstrap\Nav;
             'url' => ['/user/admin/index'],
         ],
         [
-            'label' => Yii::t('user', 'Roles'),
-            'url' => ['/rbac/role/index'],
-            'visible' => isset(Yii::$app->extensions['dektrium/yii2-rbac']),
-        ],
-        [
-            'label' => Yii::t('user', 'Permissions'),
-            'url' => ['/rbac/permission/index'],
-            'visible' => isset(Yii::$app->extensions['dektrium/yii2-rbac']),
-        ],
-        [
-            'label' => \Yii::t('user', 'Rules'),
-            'url'   => ['/rbac/rule/index'],
-            'visible' => isset(Yii::$app->extensions['dektrium/yii2-rbac']),
-        ],
-        [
             'label' => Yii::t('user', 'Create'),
             'items' => [
                 [
@@ -62,5 +47,20 @@ use yii\bootstrap\Nav;
                 ]
             ],
         ],
+        [
+            'label' => Yii::t('user', 'Roles'),
+            'url' => ['/rbac/role/index'],
+            'visible' => isset(Yii::$app->extensions['dektrium/yii2-rbac']),
+        ],
+        [
+            'label' => Yii::t('user', 'Permissions'),
+            'url' => ['/rbac/permission/index'],
+            'visible' => isset(Yii::$app->extensions['dektrium/yii2-rbac']),
+        ],
+//        [
+//            'label' => \Yii::t('user', 'Rules'),
+//            'url'   => ['/rbac/rule/index'],
+//            'visible' => isset(Yii::$app->extensions['dektrium/yii2-rbac']),
+//        ]
     ],
 ]) ?>
