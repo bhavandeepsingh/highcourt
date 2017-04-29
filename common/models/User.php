@@ -2,6 +2,7 @@
 namespace common\models;
 
 use dektrium\user\models\User as BaseUser;
+use dektrium\user\helpers\Password as Password;
 use Yii;
 
 class User extends BaseUser
@@ -16,13 +17,15 @@ class User extends BaseUser
     
     public function afterValidate() {
         $var = parent::afterValidate();
-        if($this->hasErrors("email") && empty($this->mobile)){
-            $this->clearErrors("email");
-            $this->addError("mobile","You need to fill either Mobile or Email");
-            $this->addError("email","You need to fill either Mobile or Email");
-        }else if(!empty($this->mobile)){
-            $this->clearErrors("email");
+        //if($this->hasErrors("email") && empty($this->mobile)){
+        if(empty($this->mobile)){
+            //$this->clearErrors("email");
+            $this->addError("mobile","Mobile number is required.");
+            //$this->addError("email","You need to fill either Mobile or Email");
         }
+        //else if(!empty($this->mobile)){
+        //    $this->clearErrors("email");
+        //}
         $mobile = \common\models\Profile::find()->where(["mobile" => $this->mobile])->one();
         if(@$mobile->mobile){
             $this->addError("mobile","Mobile number already in use.");
@@ -50,12 +53,20 @@ class User extends BaseUser
             
             $this->confirm();
             
-            if(empty($this->email)){
-                \common\helpers\SmsHelper::send($this->mobile, 'Your CHDBAR association account has been created, Your Username is '.$this->username.' and Password is '.$this->password);
+            if(!empty($this->mobile)){
+                \common\helpers\SmsHelper::send($this->mobile, $this->message($this->username, $this->password));
             }
-            if(!empty($this->email)){
-                $this->mailer->sendWelcomeMessage($this, null, true);
+
+            $settings = \common\models\Settings::find()->where(["name" => "settings"])->one();
+            $settings = json_decode(@$settings->value);
+            
+            if(@$settings->admin_email){
+                Yii::$app->params["adminEmail"] = $settings->admin_email;
+                // setting admin email form database
             }
+            
+            $this->mailer->sendWelcomeMessage($this, null, true);
+            
             $this->trigger(self::AFTER_CREATE);
             
             $this->profile->mobile=$this->mobile;
@@ -69,6 +80,22 @@ class User extends BaseUser
             \Yii::warning($e->getMessage());
             throw $e;
         }
+    }
+    
+    public function message($username,$password){
+        return 'Your CHDBAR association account has been created, Your Username is '.$username.' and Password is '.$password;
+    }
+    
+    public function resendPassword()
+    {
+        $this->password = Password::generate(8);
+        $this->save(false, ['password_hash']);
+        
+        if(!empty(@$this->profile->mobile)){
+            \common\helpers\SmsHelper::send($this->profile->mobile, $this->message($this->username, $this->password));
+        }
+        
+        return $this->mailer->sendGeneratedPassword($this, $this->password);
     }
     
     /**
