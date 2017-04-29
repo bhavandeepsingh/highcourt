@@ -16,7 +16,7 @@
 ?>
 
 <?= $form->field($user, 'email')->textInput(['maxlength' => 255,'placeholder' => 'Email Id']) ?>
-<div class="col-sm-9 col-sm-offset-3" style="margin-bottom:20px; color:#dd4b39;">You need to fill either Mobile or Email</div>
-<?= $form->field($user, 'mobile')->textInput(['maxlength' => 255,'placeholder' => 'Mobile']) ?>
+<?php /*<div class="col-sm-9 col-sm-offset-3" style="margin-bottom:20px; color:#dd4b39;">You need to fill either Mobile or Email</div> */ ?>
+<?= $form->field($user, 'mobile')->textInput(['value' => @$user->profile->mobile,'maxlength' => 255,'placeholder' => 'Mobile']) ?>
 <?= $form->field($user, 'username')->textInput(['maxlength' => 255,'placeholder' => 'Username']) ?>
 <?= $form->field($user, 'password')->passwordInput() ?>
