@@ -80,7 +80,9 @@ class NotificationController extends BaseController
         $model = new Notification();
         $model->sender_id = Yii::$app->user->id;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            \common\models\UploadForm::uploadNotificationFile($model->id);
+            if(\common\models\UploadForm::uploadNotificationFile($model->id)){
+              $model->hasFile();
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -99,7 +101,9 @@ class NotificationController extends BaseController
     {
         $model = $this->findModel($id);       
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            \common\models\UploadForm::uploadNotificationFile($model->id);
+            if(\common\models\UploadForm::uploadNotificationFile($model->id) || $model->getFileSrc()){
+              $model->hasFile();
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
