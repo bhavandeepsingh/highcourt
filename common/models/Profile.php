@@ -94,8 +94,13 @@ class Profile extends BaseProfile
     public function getProfileDataApi(){
         $profile =  @$this->getAttributes();       
         if($profile === null) return null;
-        $profile['profile_pic'] = @$this->getProfilePicPathApi();;                
+        $profile['profile_pic'] = @$this->getProfilePicPathApi();          
+        $profile['designation'] = $this->getDesignation()->one()->getAttributes();
         return $profile;
+    }
+    
+    public function getDesignation(){
+        return $this->hasOne(MembershipTypes::class, ['id' => 'designation']);
     }
     
 }
