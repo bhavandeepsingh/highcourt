@@ -12,11 +12,15 @@ use yii\behaviors\TimestampBehavior;
  * @property string $description
  * @property integer $sender_id
  * @property integer $reciever_id
+ * @property integer $is_file
  * @property integer $created_at
  * @property integer $updated_at
  */
 class Notification extends BaseModel
 {
+    
+    public static $_NOTIFICTION_HAS_FILE = 1;
+
     /**
      * @inheritdoc
      */
@@ -33,6 +37,7 @@ class Notification extends BaseModel
         return [
             [['title', 'description'], 'required'],
             [['description'], 'string'],
+            [['is_file'], 'integer'],
             //[['sender_id', 'reciever_id', 'created_at', 'updated_at'], 'integer'],
             [['title'], 'string', 'max' => 255],
         ];
@@ -67,5 +72,10 @@ class Notification extends BaseModel
         return [
             TimestampBehavior::className(),
         ];
+    }
+    
+    public function hasFile(){
+        $this->is_file = self::$_NOTIFICTION_HAS_FILE;
+        $this->save();
     }
 }

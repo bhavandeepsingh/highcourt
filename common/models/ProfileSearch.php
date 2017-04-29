@@ -48,6 +48,8 @@ class ProfileSearch extends Profile
             // $query->where('0=1');
             return $dataProvider;
         }
+        
+        $query->joinWith(['designation']);
 
         if($as_array) $query->asArray(true);
 

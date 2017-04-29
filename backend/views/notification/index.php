@@ -28,6 +28,13 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
+            [
+                'label' => 'Files',
+                'format' => 'raw',
+                'value' => function($data){ 
+                    return Html::img(\common\models\UploadForm::getNotificationFile($data->id), ['width' => 100]);
+                }
+            ],
             'title',
             'description:ntext',
             //'sender_id',

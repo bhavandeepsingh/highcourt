@@ -16,4 +16,9 @@ class BaseModel extends \yii\db\ActiveRecord{
         return date('Y-m-d', $timestamp);
     }
     
+    public static function getInstance(){
+        $className = get_called_class();
+         return new $className();         
+    }
+    
 }

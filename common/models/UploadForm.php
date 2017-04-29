@@ -214,6 +214,10 @@ class UploadForm extends Model
     public static function getJudgeTypePathApi(){
         return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_JUDGES);
     }
+    
+    public static function getNotificationTypePathApi(){
+        return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$FILE_TYPE_NOTIFICATIONS);
+    }
 
     public static function getUserTypePathApi(){
         return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_USERS);
