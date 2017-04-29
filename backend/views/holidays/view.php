@@ -9,6 +9,12 @@ use yii\widgets\DetailView;
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Holidays', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+echo "<pre>";
+foreach ($model->highcourtHoliday as $h){
+    print_r($h);
+    
+};die;
 ?>
 <div class="holidays-view">
 
@@ -25,12 +31,18 @@ $this->params['breadcrumbs'][] = $this->title;
         ]); endif; ?>
     </p>
 
-    <?= DetailView::widget([
+    <?= 
+        DetailView::widget([
         'model' => $model,
         'attributes' => [
             //'id',
             'title',
             'description:ntext',
+            [
+                //'class' => DataColumn::className(),
+                'label' => 'Holiday In',
+                'value' => $model->courtHolidayIn($model->id),
+            ],
             'date',
             'status',
         ],

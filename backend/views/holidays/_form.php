@@ -19,9 +19,8 @@ use dosamigos\datepicker\DatePicker;
     <?php 
     $holiday_model = new \common\models\HighcourtHolidays();
     if($model->id > 0){
-        $holiday_model->holiday_id = array_keys(\yii\helpers\ArrayHelper::map(\common\models\HighcourtHolidays::find($model->id)->all(), 'holiday_id', 'holiday_id'));    
+        $holiday_model->holiday_id = array_keys(\yii\helpers\ArrayHelper::map(\common\models\HighcourtHolidays::find($model->id)->andWhere(['highcourt_id' => $model->id])->all(), 'holiday_id', 'holiday_id'));    
     }
-    //print_r($holiday_model->holiday_id);
      echo $form->field($holiday_model, 'holiday_id')->checkboxList(yii\helpers\ArrayHelper::map(\common\models\Highcourts::find()->all(), 'id', 'name'));          
     ?>
     

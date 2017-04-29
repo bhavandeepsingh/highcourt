@@ -102,4 +102,8 @@ class HighcourtHolidays extends \yii\db\ActiveRecord
         
     }
     
+    public function getHighcourts(){
+        return $this->hasOne(Highcourts::class, ['id' => 'highcourt_id']);
+    }
+    
 }
