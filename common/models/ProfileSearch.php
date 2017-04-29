@@ -29,7 +29,7 @@ class ProfileSearch extends Profile
      *
      * @return ActiveDataProvider
      */
-    public function search($params = [], $login_id = 0, $as_array = false)
+    public function search($params = [], $login_id = 0, $as_array = false, $is_executive = false)
     {
         $query = Profile::find();
 
@@ -50,6 +50,8 @@ class ProfileSearch extends Profile
         }
         
         $query->joinWith(['designation']);
+        
+        if($is_executive) $query->andWhere (['executive' => 1]);
 
         if($as_array) $query->asArray(true);
 
@@ -58,7 +60,7 @@ class ProfileSearch extends Profile
 
     public static function getApiList($params = [], $login_id = 0, $as_array = false){
         $model = new ProfileSearch();
-        return $model->search($params, $login_id, $as_array);
+        return $model->search($params, $login_id, $as_array, true);
     }
         
 
