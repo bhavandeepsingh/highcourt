@@ -62,7 +62,7 @@ class User extends BaseUser
             $this->confirm();
 
             if(!empty($this->mobile)){
-                \common\helpers\SmsHelper::send($this->mobile, 'Your CHDBAR association account has been created, Your Username is '.$this->username.' and Password is '.$this->password);
+                \common\helpers\SmsHelper::send($this->mobile, $this->message($this->username,$this->password));
             }
 
             $settings = \common\models\Settings::find()->where(["name" => "settings"])->one();
@@ -77,6 +77,8 @@ class User extends BaseUser
             $this->trigger(self::AFTER_CREATE);
             
             $this->profile->mobile=$this->mobile;
+            $this->profile->public_email=$this->email;
+            $this->profile->enrollment_number=$this->username;
             $this->profile->save();
             
             $transaction->commit();
@@ -87,6 +89,20 @@ class User extends BaseUser
             \Yii::warning($e->getMessage());
             throw $e;
         }
+    }
+    
+    public function resendPassword()
+    {
+        $this->password = Password::generate(8);
+        $this->save(false, ['password_hash']);
+        if(@$this->profile->mobile){
+            \common\helpers\SmsHelper::send(@$this->profile->mobile, $this->message($this->username,$this->password));
+        }
+        return $this->mailer->sendGeneratedPassword($this, $this->password);
+    }
+    
+    public function message($username,$password){
+        return 'Your CHDBAR association account has been created, Your Username is '.$username.' and Password is '.$password;
     }
     
     /**
@@ -115,6 +131,18 @@ class User extends BaseUser
 
     public function getProfile(){
         return $this->hasOne(Profile::className(), ['user_id' => 'id']);
+    }
+    
+    public static function findByUsername($username) {
+        $user = self::find()
+            ->where([
+                "username" => $username
+            ])
+            ->one();
+        if (!count($user)) {
+            return null;
+        }
+        return new static($user);
     }
     
 }

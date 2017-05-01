@@ -36,7 +36,7 @@ class ProfileSearch extends Profile
             'query' => $this->getQueryDataProvider($params, $login_id, $as_array),
         ]);
 
-        $this->load($params);
+        
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -47,38 +47,33 @@ class ProfileSearch extends Profile
         return $dataProvider;
     }
     
-    public static function getQueryDataProvider($params = [], $login_id = 0, $as_array = false){
+    public function getQueryDataProvider($params = [], $login_id = 0, $as_array = false){
         
         $query = Profile::find();
-        
+        $this->load($params);
         $query->alias('p');
-
         $query->addSelect(['p.*', 'getImageSrc("'. \common\models\UploadForm::getUserTypePathApi() .'", p.user_id) as profilePic']);
-
-        //$query->addSelect(['*', 'getImageSrc("'. \common\models\UploadForm::getUserTypePathApi() .'", user_id) as profilePic']);
-
+        $query->andFilterCompare("name", $this->name);
         // add conditions that should always apply here
 
         $query->joinWith(['designation as du']);
-        
         if($as_array) $query->asArray(true);
-        
         return  $query;
-
     }
 
-    public static function getApiExecutiveList($params = [], $login_id = 0, $as_array = false){                                        
-        $query = self::getQueryDataProvider($params, $login_id, $as_array);
+    public static function getApiExecutiveList($params = [], $login_id = 0, $as_array = false){
+        $model= new self();
+        $query = $model->getQueryDataProvider($params, $login_id, $as_array);
         return new ActiveDataProvider([
             'query' => $query->andWhere(['executive' => 1])
         ]);
     }
     
     public static function getApiMemberList($params = [], $login_id = 0, $as_array = false){
-        $query = self::getQueryDataProvider($params, $login_id, $as_array);
+        $model = new self;
+        $query = $model->getQueryDataProvider($params, $login_id, $as_array);
          
-        $query->leftJoin("auth_assignment aA", ['aA.user_id' => 'p.user_id']);
-        $query->andWhere("aA.item_name != 'admin' && aA.item_name != 'author'");
+        $query->leftJoin("auth_assignment aA", ['and','aA.user_id','p.user_id', ['!=','aA.item_name','admin'], ['!=','aA.item_name','author']]);
         
         return new ActiveDataProvider([
             'query' => $query,
