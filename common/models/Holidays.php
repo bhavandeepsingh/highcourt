@@ -13,7 +13,7 @@ use Yii;
  * @property string $date
  * @property integer $status
  */
-class Holidays extends \yii\db\ActiveRecord
+class Holidays extends BaseModel
 {
     /**
      * @inheritdoc
@@ -49,5 +49,17 @@ class Holidays extends \yii\db\ActiveRecord
             'date' => 'Date',
             'status' => 'Status',
         ];
+    }
+    
+    public function getHighcourtHoliday(){
+        return $this->hasMany(HighcourtHolidays::class, ['holiday_id' => 'id']);
+    }
+    public function holidaysCourts($holidayIn){
+        $holidayCourt ="";
+        foreach($holidayIn as $h){
+        $holidayCourt .= "  "; 
+        $holidayCourt  .= $h->highcourts->name;
+        }
+        return $holidayCourt;
     }
 }

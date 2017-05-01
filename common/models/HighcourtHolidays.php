@@ -63,15 +63,16 @@ class HighcourtHolidays extends \yii\db\ActiveRecord
     }
     
     public static function updateHolidays($params, $highcourt_id){
+         //print_r($params);die;
         $model = new self();
         $model->load($params);
-        $model->highcourt_id = $highcourt_id; 
+        $model->holiday_id = $highcourt_id; 
         
-        if(is_array($model->holiday_id)){
+        if(is_array($model->highcourt_id)){
             $model->holydays_ids = $model->holiday_id;
-            $model->holidayDelete($model->holydays_ids);
-            foreach($model->holydays_ids as $id){
-                $model->holiday_id = $id;
+            $model->holidayDelete($model->highcourt_id);
+            foreach($model->highcourt_id as $id){
+                $model->highcourt_id = $id;
                 $model->setIsNewRecord(true);
                 $model->id = null;
                 //$model->holidayDelete();
@@ -86,20 +87,24 @@ class HighcourtHolidays extends \yii\db\ActiveRecord
         }
     }
     public function holidayDelete($id){
-        $holidaydata = $this->find()->andWhere(['highcourt_id' => $this->highcourt_id])->all();
+        $holidaydata = $this->find()->andWhere(['holiday_id' => $this->holiday_id])->all();
         $holidays = array();
         foreach($holidaydata as $holiday){
          
-            array_push($holidays, $holiday->holiday_id);
+            array_push($holidays, $holiday->highcourt_id);
            
         }
         
         $result=array_diff($holidays,$id);
         if(!empty($result)){
            
-           HighcourtHolidays::find()->andWhere(['highcourt_id' => $this->highcourt_id,'holiday_id' => [implode(',',$result)]])->one()->delete(); 
+           HighcourtHolidays::find()->andWhere(['holiday_id' => $this->holiday_id,'highcourt_id' => [implode(',',$result)]])->one()->delete(); 
         } 
         
+    }
+    
+    public function getHighcourts(){
+        return $this->hasOne(Highcourts::class, ['id' => 'highcourt_id']);
     }
     
 }
