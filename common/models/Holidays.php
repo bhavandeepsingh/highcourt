@@ -54,4 +54,12 @@ class Holidays extends BaseModel
     public function getHighcourtHoliday(){
         return $this->hasMany(HighcourtHolidays::class, ['holiday_id' => 'id']);
     }
+    public function holidaysCourts($holidayIn){
+        $holidayCourt ="";
+        foreach($holidayIn as $h){
+        $holidayCourt .= "  "; 
+        $holidayCourt  .= $h->highcourts->name;
+        }
+        return $holidayCourt;
+    }
 }

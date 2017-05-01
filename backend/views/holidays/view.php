@@ -10,11 +10,6 @@ $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => 'Holidays', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-echo "<pre>";
-foreach ($model->highcourtHoliday as $h){
-    print_r($h);
-    
-};die;
 ?>
 <div class="holidays-view">
 
@@ -41,7 +36,7 @@ foreach ($model->highcourtHoliday as $h){
             [
                 //'class' => DataColumn::className(),
                 'label' => 'Holiday In',
-                'value' => $model->courtHolidayIn($model->id),
+                'value' => $model->holidaysCourts($model->highcourtHoliday),
             ],
             'date',
             'status',
