@@ -37,6 +37,8 @@ class ProfileSearch extends Profile
 
         $query->addSelect(['p.*', 'getImageSrc("'. \common\models\UploadForm::getUserTypePathApi() .'", user_id) as profilePic']);
 
+        $query->addSelect(['*', 'getImageSrc("'. \common\models\UploadForm::getUserTypePathApi() .'", user_id) as profilePic']);
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -53,6 +55,8 @@ class ProfileSearch extends Profile
     
         $query->joinWith(['designation as du']);
 
+        if($is_executive) $query->andWhere (['executive' => 1]);
+        
         if($is_executive) $query->andWhere (['executive' => 1]);
 
         if($as_array) $query->asArray(true);

@@ -42,12 +42,18 @@ return [
             'errorAction' => 'site/error',
         ],
         'urlManager' => [
+<<<<<<< HEAD
             'class' => 'yii\web\UrlManager',
             // Hide index.php
             'showScriptName' => false,
             // Use pretty URLs
             'enablePrettyUrl' => true,
         ],
+=======
+             'enablePrettyUrl' => true,
+             'showScriptName' => false,
+        ]
+>>>>>>> 124c9e4484bca44fb2a7faa3c19a6e290e227a15
     ],
     'modules' => [
         'user' => [

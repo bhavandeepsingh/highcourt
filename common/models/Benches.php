@@ -34,9 +34,10 @@ class Benches extends BaseModel
     public function rules()
     {
         return [
-            [['name', 'type'], 'required'],
+            //[['name', 'type'], 'required'],
             [['name'], 'string'],
-            [['type', 'created_at', 'updated_at'], 'integer'],
+            [['name'], 'unique'],
+            [['created_at', 'updated_at'], 'integer'],
         ];
     }
 
@@ -48,7 +49,7 @@ class Benches extends BaseModel
         return [
             'id' => 'ID',
             'name' => 'Category Name',
-            'type' => 'Type',
+            //'type' => 'Type',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

@@ -29,10 +29,10 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
 
             //'id',
             'name:ntext',
-            [
-                'label' => 'Bench Type',
-                'value' => function($data){return $data->getBenchTypes()[$data->type];}
-            ],
+//            [
+//                'label' => 'Bench Type',
+//                'value' => function($data){return $data->getBenchTypes()[$data->type];}
+//            ],
             //'created_at',
             //'updated_at',
 

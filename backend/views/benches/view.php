@@ -29,10 +29,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [            
             'name:ntext',
-            [
-                'label' => 'Bench Type',                
-                'value' => $model->getBenchTypes()[$model->type]
-            ],
+//            [
+//                'label' => 'Bench Type',                
+//                'value' => $model->getBenchTypes()[$model->type]
+//            ],
             [
                 'label' => 'Created At',
                 'value' => $model->getFormatedCreateAt(),

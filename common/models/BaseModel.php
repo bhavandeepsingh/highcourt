@@ -13,7 +13,12 @@ class BaseModel extends \yii\db\ActiveRecord{
     }
     
     public function getFormateddate($timestamp){
-        return date('m/d/Y', $timestamp);
+        return date('Y-m-d', $timestamp);
+    }
+    
+    public static function getInstance(){
+        $className = get_called_class();
+         return new $className();         
     }
     
 }

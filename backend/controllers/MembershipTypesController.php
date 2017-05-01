@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * MembershipTypesController implements the CRUD actions for MembershipTypes model.
  */
-class MembershipTypesController extends Controller
+class MembershipTypesController extends BaseController
 {
     /**
      * @inheritdoc
@@ -78,7 +78,9 @@ class MembershipTypesController extends Controller
     public function actionCreate()
     {
         $model = new MembershipTypes();
-
+        
+        print_r(Yii::$app->request->post());
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
@@ -97,7 +99,8 @@ class MembershipTypesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        
+        $model->load(Yii::$app->request->post());
+        //print_r($model);die;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {

@@ -5,6 +5,9 @@ use dektrium\user\models\Profile as BaseProfile;
 
 class Profile extends BaseProfile
 {
+
+    public $profile_pic;
+
     public function rules()
     {
         return [
@@ -64,6 +67,7 @@ class Profile extends BaseProfile
     }
     
     public function afterSave($insert, $changedAttributes) {
+        UploadForm::deleteImage($this->user_id, UploadForm::$IMAGE_TYPE_USERS);
         UploadForm::uploadUserProfilePic($this->user_id);
         if(isset($_POST["clerks"])){
             $data=$_POST["clerks"];
@@ -75,6 +79,9 @@ class Profile extends BaseProfile
     public function getProfilePicSrc(){
         return UploadForm::getUserProfilePic($this->user_id);
     }
+    public function getProfilePicPathApi(){
+        return UploadForm::getProfilePicPathApi($this->user_id);
+    }
     
     public function getUser(){
         return $this->hasOne(User::className(), ['id' => 'user_id']);
@@ -82,6 +89,18 @@ class Profile extends BaseProfile
     
     public static function findByEnrollmentNumberNo($enrollment_number){
         return self::find()->where(['enrollment_number' => $enrollment_number])->one();
+    }
+
+    public function getProfileDataApi(){
+        $profile =  @$this->getAttributes();       
+        if($profile === null) return null;
+        $profile['profile_pic'] = @$this->getProfilePicPathApi();          
+        $profile['designation'] = $this->getDesignation()->one()->getAttributes();
+        return $profile;
+    }
+    
+    public function getDesignation(){
+        return $this->hasOne(MembershipTypes::class, ['id' => 'designation']);
     }
     
 }

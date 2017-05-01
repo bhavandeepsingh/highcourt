@@ -14,54 +14,30 @@ use dosamigos\datepicker\DatePicker;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => "Name"]) ?>
     
-    <?= $form->field(new \common\models\UploadForm(), 'imageFile')->fileInput() ?> 
+    <?= $form->field(new \common\models\UploadForm(), 'imageFile')->fileInput(["onChange" => "readURL(this);"]) ?> 
+    
     <?php
-    if($model->id > 0){
-        ?>
-            <img src="<?= \common\models\UploadForm::getJudgeProfilePic($model->id); ?>" width="100"/>
-        <?php
-    }
+        if($model->id > 0 && ($model->JudgePicSrc)){
+            ?>
+                <img src="<?= $model->JudgePicSrc; ?>" width="100"/>
+            <?php
+        }
     ?>
 
+    <?= $form->field($model, 'address')->textarea(['maxlength' => true, 'placeholder' => "Address", 'rows' => 5]) ?>
 
-    <?= $form->field($model, 'address')->textInput(['maxlength' => true, 'placeholder' => "Address"]) ?>
-            
-    <?= $form->field($model, 'landline')->textInput(['type' => 'number']) ?>
-
-    <?= $form->field($model, 'dob')->widget(DatePicker::className(), [
-        // inline too, not bad        
-        // modify template for custom rendering
-        'clientOptions' => [
-            'autoclose' => true,
-            'format' => 'yyyy-mm-dd'
-        ]
-    ]) ?>
+    <?= $form->field($model, 'dob')->textInput(["placeholder" => "Date Of Birth"]) ?>
     
     <?= $form->field($model, 'ext_no')->input('number', ['min' => 0, 'placeholder' => "Ext Number"]) ?>
     
     <?= $form->field($model, 'court_room')->input('number', ['min' => 0, 'placeholder' => "Court Room"]) ?>
 
-    <?= $form->field($model, 'date_of_appointment')->widget(DatePicker::className(), [
-        // inline too, not bad        
-        // modify template for custom rendering
-        'clientOptions' => [
-            'autoclose' => true,
-            'format' => 'yyyy-mm-dd',
-        ]
-    ]); ?>    
-
-    <?= $form->field($model, 'date_of_retirement')->widget(DatePicker::className(), [
-        // inline too, not bad        
-        // modify template for custom rendering
-        'clientOptions' => [
-            'autoclose' => true,
-            'format' => 'yyyy-mm-dd'
-        ]
-    ]) ?>
+    <?= $form->field($model, 'date_of_appointment')->textInput(["placeholder" => "Date of Appointment"]); ?>    
 
     <?= $form->field($model, 'bio_graphy')->textarea(['rows' => 5, 'placeholder' => "Biography"]) ?>
 
-            
+    <?= $form->field($model, 'date_of_retirement')->textInput(["placeholder" => "Date of Retirement"]); ?>
+        
     <?= $form->field($model, 'landline')->textInput(['type' => 'number']) ?>
    
 
@@ -72,3 +48,27 @@ use dosamigos\datepicker\DatePicker;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php
+    $this->registerCssFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css");
+    $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js", ['depends' => [yii\web\JqueryAsset::className()]]);
+    echo $this->registerJs('
+        $("#judges-dob").datepicker({format : "yyyy-mm-dd",endDate:"0d"});
+        $("#judges-date_of_appointment").datepicker({format : "yyyy-mm-dd",endDate:"0d"});
+        $("#judges-date_of_retirement").datepicker({format : "yyyy-mm-dd",startDate:"0d"});
+    ');
+?>
+<script type="text/javascript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $("form img")
+                    .attr("src", e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

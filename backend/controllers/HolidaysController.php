@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * HolidaysController implements the CRUD actions for Holidays model.
  */
-class HolidaysController extends Controller
+class HolidaysController extends BaseController
 {
     /**
      * @inheritdoc
@@ -79,7 +79,10 @@ class HolidaysController extends Controller
     {
         $model = new Holidays();
         $highcourts = \common\models\Highcourts::find()->all();
+        
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            \common\models\HighcourtHolidays::updateHolidays(Yii::$app->request->post(), $model->id);            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -98,13 +101,11 @@ class HolidaysController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-//        $highcourt_holidays = new \common\models\HighcourtHolidays();
-//        $highcourt_holidays->load(Yii::$app->request->post());
-//        $highcourt_holidays->holiday_id = 1;
-//        $highcourt_holidays->save();
-//        print_r($highcourt_holidays);
-//        die();
+
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            \common\models\HighcourtHolidays::updateHolidays(Yii::$app->request->post(), $model->id);            
+            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -145,4 +146,5 @@ class HolidaysController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
 }

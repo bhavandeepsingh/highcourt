@@ -39,7 +39,7 @@ class NotificationSearch extends Notification
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params = [], $login_id = 0, $as_array = false)
     {
         $query = Notification::find();
 
@@ -68,7 +68,16 @@ class NotificationSearch extends Notification
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description]);
+        
+        $query->addSelect(['*', 'getNotificationImageSrc("'.UploadForm::getNotificationTypePathApi().'", id) as notification_src']);
+        
+        if($as_array) $query->asArray(true); 
 
         return $dataProvider;
     }
+    
+    public static function getNotifactionDataApi($params = [], $login_id = 0, $as_array = false){
+        return self::getInstance()->search($params, $login_id, $as_array);
+    }
+    
 }

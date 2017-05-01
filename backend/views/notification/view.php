@@ -33,8 +33,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
             //'sender_id',
             //'reciever_id',
-            'created_at',
-            'updated_at',
+            [
+                'label' => 'Created At',
+                'value' => $model->getFormatedCreateAt(),
+            ],
+            [
+                'label' => 'Updated At',
+                'value' => $model->getFormatedUpdateAt(),
+            ],
         ],
     ]) ?>
 
