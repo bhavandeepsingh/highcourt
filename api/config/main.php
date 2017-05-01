@@ -41,6 +41,13 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'urlManager' => [
+            'class' => 'yii\web\UrlManager',
+            // Hide index.php
+            'showScriptName' => false,
+            // Use pretty URLs
+            'enablePrettyUrl' => true,
+        ],
     ],
     'modules' => [
         'user' => [

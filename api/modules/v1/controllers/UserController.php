@@ -33,5 +33,9 @@ class UserController extends ApiController{
         }        
         return $this->error(['license_no' => $model->getFirstError('license_no')]);
     }
+
+    public function actionBloodGroupList(){
+        return $this->success(['list' => \common\models\BloodGroups::find()->all()]);
+    }
     
 }
