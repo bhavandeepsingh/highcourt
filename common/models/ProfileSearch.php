@@ -31,18 +31,9 @@ class ProfileSearch extends Profile
      */
     public function search($params = [], $login_id = 0, $as_array = false, $is_executive = false)
     {
-        $query = Profile::find();
         
-        $query->alias('p');
-
-        $query->addSelect(['p.*', 'getImageSrc("'. \common\models\UploadForm::getUserTypePathApi() .'", user_id) as profilePic']);
-
-        $query->addSelect(['*', 'getImageSrc("'. \common\models\UploadForm::getUserTypePathApi() .'", user_id) as profilePic']);
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => $this->getQueryDataProvider($params, $login_id, $as_array),
         ]);
 
         $this->load($params);
@@ -52,22 +43,48 @@ class ProfileSearch extends Profile
             // $query->where('0=1');
             return $dataProvider;
         }
-    
-        $query->joinWith(['designation as du']);
-
-        if($is_executive) $query->andWhere (['executive' => 1]);
-        
-        if($is_executive) $query->andWhere (['executive' => 1]);
-
-        if($as_array) $query->asArray(true);
-
+      
         return $dataProvider;
     }
-
-    public static function getApiList($params = [], $login_id = 0, $as_array = false){
-        $model = new ProfileSearch();
-        return $model->search($params, $login_id, $as_array, true);
-    }
+    
+    public static function getQueryDataProvider($params = [], $login_id = 0, $as_array = false){
         
+        $query = Profile::find();
+        
+        $query->alias('p');
+
+        $query->addSelect(['p.*', 'getImageSrc("'. \common\models\UploadForm::getUserTypePathApi() .'", p.user_id) as profilePic']);
+
+        //$query->addSelect(['*', 'getImageSrc("'. \common\models\UploadForm::getUserTypePathApi() .'", user_id) as profilePic']);
+
+        // add conditions that should always apply here
+
+        $query->joinWith(['designation as du']);
+        
+        if($as_array) $query->asArray(true);
+        
+        return  $query;
+
+    }
+
+    public static function getApiExecutiveList($params = [], $login_id = 0, $as_array = false){                                        
+        $query = self::getQueryDataProvider($params, $login_id, $as_array);
+        return new ActiveDataProvider([
+            'query' => $query->andWhere(['executive' => 1])
+        ]);
+    }
+    
+    public static function getApiMemberList($params = [], $login_id = 0, $as_array = false){
+        $query = self::getQueryDataProvider($params, $login_id, $as_array);
+         
+        $query->leftJoin("auth_assignment aA", ['aA.user_id' => 'p.user_id']);
+        $query->andWhere("aA.item_name != 'admin' && aA.item_name != 'author'");
+        
+        return new ActiveDataProvider([
+            'query' => $query,
+        ]);
+    }
+    
+    
 
 }
