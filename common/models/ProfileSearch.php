@@ -56,7 +56,7 @@ class ProfileSearch extends Profile
         $query->andFilterCompare("name", $this->name);
         // add conditions that should always apply here
 
-        $query->joinWith(['designation as du']);
+        $query->joinWith(['designation as du', 'bloodGroup as bG']);
         if($as_array) $query->asArray(true);
         return  $query;
     }
