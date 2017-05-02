@@ -45,7 +45,6 @@ class Banners extends BaseModel
     }
     
     public function afterSave($insert, $changedAttributes) {
-        UploadForm::deleteImage($this->id, UploadForm::$IMAGE_TYPE_BANNERS);
         UploadForm::uploadBannerProfilePic($this->id);
         parent::afterSave($insert, $changedAttributes);
     }

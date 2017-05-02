@@ -55,6 +55,15 @@ class ProfileSearch extends Profile
         $query->addSelect(['p.*', 'getImageSrc("'. \common\models\UploadForm::getUserTypePathApi() .'", p.user_id) as profilePic']);
         $query->andFilterCompare("name", $this->name);
         // add conditions that should always apply here
+        if($this->name) {
+            $query->andFilterWhere(['LIKE', 'p.name', $this->name]);
+            $query->andFilterWhere(['LIKE', 'p.public_email', $this->name]);
+            $query->andFilterWhere(['LIKE', 'p.profile', $this->name]);
+            $query->andFilterWhere(['LIKE', 'p.enrollment_number', $this->name]);
+            $query->andFilterWhere(['LIKE', 'p.membership_number', $this->name]);
+            $query->andFilterWhere(['LIKE', 'p.landline', $this->name]);
+            $query->andFilterWhere(['LIKE', 'p.mobile', $this->name]);
+        }
 
         $query->joinWith(['designation as du', 'bloodGroup as bG']);
         if($as_array) $query->asArray(true);

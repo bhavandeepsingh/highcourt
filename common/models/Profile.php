@@ -67,7 +67,7 @@ class Profile extends BaseProfile
     }
     
     public function afterSave($insert, $changedAttributes) {
-        UploadForm::deleteImage($this->user_id, UploadForm::$IMAGE_TYPE_USERS);
+        //UploadForm::deleteImage($this->user_id, UploadForm::$IMAGE_TYPE_USERS);
         UploadForm::uploadUserProfilePic($this->user_id);
         if(isset($_POST["clerks"])){
             $data=$_POST["clerks"];
@@ -113,9 +113,7 @@ class Profile extends BaseProfile
         return $this->hasOne(MembershipTypes::class, ['id' => 'designation']);
     }
 
-
     public function getBloodGroup(){
         return $this->hasOne(BloodGroups::className(), ['id' => 'blood_group']);
-    }
-    
+    }    
 }

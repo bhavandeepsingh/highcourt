@@ -91,6 +91,14 @@ class User extends BaseUser
         }
     }
     
+    public function afterSave($insert, $changedAttributes) {
+        parent::afterSave($insert, $changedAttributes);
+        $this->profile->mobile=$this->mobile;
+        $this->profile->public_email=$this->email;
+        $this->profile->enrollment_number=$this->username;
+        $this->profile->save();
+    }
+    
     public function resendPassword()
     {
         $this->password = Password::generate(8);

@@ -40,7 +40,10 @@ class UploadForm extends Model
                 mkdir($path, 0777, true);
             }
             if(isset($this->imageFile)){
-                $this->imageFile->saveAs($path . '/' . ( (!empty($name))? $name: $this->imageFile->baseName) . '.' . $this->imageFile->extension);
+                $filename = (!empty($name))? $name : $this->imageFile->baseName;
+                $filename .= '.' . $this->imageFile->extension;
+                self::removeImage($path . '/' . $filename);//die;
+                $this->imageFile->saveAs($path . '/' . $filename);
             }
             if(isset($this->uploadFile)){
                 $this->currentType = [['uploadFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,xls,doc,pdf'];
@@ -228,7 +231,14 @@ class UploadForm extends Model
      * This will them remove the images as well as folder from location
      */
     
+    public static function removeImage($src){
+        if(file_exists($src)){ unlink($src); }
+    }
+    
     public static function deleteImage($id,$type){
+        $var = $_FILES["UploadForm"];
+        if(isset($var["name"]) && isset($var["name"]["imageFile"]) && strlen($var["name"]["imageFile"])==0) return false;
+       
         $root = $_SERVER["DOCUMENT_ROOT"];
         $src='';
         $src = self::getPicSrcByType($id, $type);
