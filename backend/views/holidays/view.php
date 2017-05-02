@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 //'class' => DataColumn::className(),
                 'label' => 'Holiday In',
-                'value' => $model->holidaysCourts($model->highcourtHoliday),
+                'value' => $model->holidayNames,
             ],
             'date',
             'status',

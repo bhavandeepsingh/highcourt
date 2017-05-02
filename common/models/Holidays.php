@@ -55,6 +55,7 @@ class Holidays extends BaseModel
         return $this->hasMany(HighcourtHolidays::class, ['holiday_id' => 'id']);
     }
     public function holidaysCourts($holidayIn){
+       //return $holidayIn;
         $holidayCourt ="";
         foreach($holidayIn as $h){
         $holidayCourt .= "  "; 
@@ -62,4 +63,15 @@ class Holidays extends BaseModel
         }
         return $holidayCourt;
     }
+    
+    public function getHolidayNames(){
+        $names = "";
+        if($this->highcourtHoliday != null){
+            foreach($this->highcourtHoliday as $h){
+                $names .= ((!empty($names))?", ": "") . $h->highcourts->name;
+            }
+        }
+        return $names;
+    }
+   
 }
