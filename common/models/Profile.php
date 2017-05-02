@@ -101,11 +101,21 @@ class Profile extends BaseProfile
         }else{
             $profile['designation'] = [];
         }
+
+        if($bloodGroup != null){
+          $profile['bloodGroup'] = $bloodGroup;
+        }else{ $profile['bloodGroup'] = null;}
+
         return $profile;
     }
     
     public function getDesignation(){
         return $this->hasOne(MembershipTypes::class, ['id' => 'designation']);
+    }
+
+
+    public function getBloodGroup(){
+        return $this->hasOne(BloodGroups::className(), ['id' => 'blood_group']);
     }
     
 }
