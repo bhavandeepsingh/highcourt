@@ -42,7 +42,11 @@ class UserController extends ApiController{
     
 
     public function actionExecutive(){
-        return $this->dataProvider(\common\models\ProfileSearch::getApiList(Yii::$app->request->post(), null, true));
+        return $this->dataProvider(\common\models\ProfileSearch::getApiExecutiveList(Yii::$app->request->post(), null, true));
+    }
+    
+    public function actionMembers(){
+        return $this->dataProvider(\common\models\ProfileSearch::getApiMemberList(Yii::$app->request->post(), null, true));
     }
 
 

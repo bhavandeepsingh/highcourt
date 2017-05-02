@@ -10,6 +10,7 @@
         height: 30px;
     }
 </style>
+<?php if(!Yii::$app->user->isGuest): ?>
 <aside class="main-sidebar">
 
     <section class="sidebar">
@@ -61,7 +62,7 @@
                 if($key=="admin"){
                     //$menu[]=['label' => 'Gii', 'icon' => 'fa fa-file-code-o', 'url' => ['/gii']];
                     $menu[]=['label' => 'Subscription', 'icon' => 'fa fa-user-plus', 'url' => ['/membership-types']];
-                    $menu[]=['label' => 'Users', 'icon' => 'fa fa-user', 'url' => ['/rbac']];
+                    $menu[]=['label' => 'Users', 'icon' => 'fa fa-user', 'url' => ['/user/admin/index']];
                     //$menu[]=['label' => 'Debug', 'icon' => 'fa fa-dashboard', 'url' => ['/debug']];
                 }
             }
@@ -90,3 +91,4 @@
     </section>
 
 </aside>
+<?php endif; ?>

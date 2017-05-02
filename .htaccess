@@ -1,31 +1,18 @@
-<<<<<<< HEAD
 Options +FollowSymLinks
 IndexIgnore */*
 
 RewriteEngine on
 
-# if a directory or a file exists, use it directly
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-# otherwise forward it to index.php
-RewriteRule . index.php
-=======
-Options +Indexes
-
 <IfModule mod_rewrite.c> 
   RewriteEngine on
 
   RewriteCond %{REQUEST_URI} !^public
-  RewriteRule ^(.*)$ frontend/web/$1 [L] 
+  RewriteRule ^(.*)$ backend/web/$1 [L] 
 </IfModule>
 
-# Deny accessing below extensions
 <Files ~ "(.json|.lock|.git)">
 Order allow,deny
 Deny from all
 </Files>
-
-# Deny accessing dot files
-RewriteRule (^\.|/\.) - [F]
->>>>>>> 124c9e4484bca44fb2a7faa3c19a6e290e227a15
+# otherwise forward it to index.php
+RewriteRule . index.php

@@ -16,6 +16,11 @@ if(!Yii::$app->user->isGuest && $flag==true){
     echo "</body></html>";
     exit;
 }
+//echo urldecode(Yii::$app->request->url);die;
+//echo preg_match("/(user\/registration\/resend|user\/registration\/register)/", urldecode(Yii::$app->request->url));
+if(Yii::$app->user->isGuest && !preg_match("/user\/security\/login/", urldecode(Yii::$app->request->url))){
+    Yii::$app->getResponse()->redirect(Yii::$app->urlManager->createUrl('/user/security/login'));
+}
 
 if (Yii::$app->controller->action->id === 'login') { 
 /**

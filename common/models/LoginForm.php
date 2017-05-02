@@ -82,7 +82,12 @@ class LoginForm extends Model
     protected function getLaywerUser(){       
         if($this->_user === null){
             $this->_user = @Profile::findByEnrollmentNumberNo($this->enrollment_number)->user;
-        }        
+            if($this->_user === null){
+            	 $this->username = $this->enrollment_number;
+            	 $this->getUser();
+            }
+        }       
+       
         return $this->_user;    
     }
 

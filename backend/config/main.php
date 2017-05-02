@@ -13,7 +13,13 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [
-        'as backend' => 'dektrium\user\filters\BackendFilter',
+        'user' => [
+            'as backend' => [
+                'loginUrl' => ['user/security/login'],
+                'class' => 'dektrium\user\filters\BackendFilter',
+                'controllers' => ['profile', 'recovery', 'registration', 'settings']
+            ],
+        ],
     ],
     'components' => [
         'request' => [
