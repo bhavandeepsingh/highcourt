@@ -56,13 +56,13 @@ class ProfileSearch extends Profile
         $query->andFilterCompare("name", $this->name);
         // add conditions that should always apply here
         if($this->name) {
-            $query->andFilterWhere(['LIKE', 'p.name', $this->name]);
-            $query->andFilterWhere(['LIKE', 'p.public_email', $this->name]);
-            $query->andFilterWhere(['LIKE', 'p.profile', $this->name]);
-            $query->andFilterWhere(['LIKE', 'p.enrollment_number', $this->name]);
-            $query->andFilterWhere(['LIKE', 'p.membership_number', $this->name]);
-            $query->andFilterWhere(['LIKE', 'p.landline', $this->name]);
-            $query->andFilterWhere(['LIKE', 'p.mobile', $this->name]);
+            $query->orFilterWhere(['LIKE', 'p.name', $this->name]);
+            $query->orFilterWhere(['LIKE', 'p.public_email', $this->name]);
+            $query->orFilterWhere(['LIKE', 'p.profile', $this->name]);
+            $query->orFilterWhere(['LIKE', 'p.enrollment_number', $this->name]);
+            $query->orFilterWhere(['LIKE', 'p.membership_number', $this->name]);
+            $query->orFilterWhere(['LIKE', 'p.landline', $this->name]);
+            $query->orFilterWhere(['LIKE', 'p.mobile', $this->name]);
         }
 
         $query->joinWith(['designation as du', 'bloodGroup as bG']);

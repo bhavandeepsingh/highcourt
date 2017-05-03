@@ -94,7 +94,7 @@ class Profile extends BaseProfile
     public function getProfileDataApi(){
         $profile =  @$this->getAttributes();       
         if($profile === null) return null;
-        $profile['profile_pic'] = @$this->getProfilePicPathApi();
+        $profile['profilePic'] = @$this->getProfilePicPathApi();
         $designation = @$this->getDesignation()->one();
         if($designation != null ){
             $profile['designation'] = $designation->getAttributes();
