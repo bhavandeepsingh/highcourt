@@ -52,11 +52,11 @@ class JudgesSearch extends Judges
 
         $this->load($params);
 
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
-        }
+//        if (!$this->validate()) {
+//            // uncomment the following line if you do not want to return any records when validation fails
+//            // $query->where('0=1');
+//            return $dataProvider;
+//        }
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -67,13 +67,15 @@ class JudgesSearch extends Judges
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'bio_graphy', $this->bio_graphy]);
+        if(is_numeric($this->name)){
+            $query->andWhere([ 'court_room'=> $this->name]);
+        }
+        else{
+            $query->andFilterWhere(['like', 'name', $this->name]);
+        }
         
         $query->addSelect(['*', 'getImageSrc("'.$this->getImageTypePathApi().'", id) as image_src']);
-
+        $query->limit(100);
         if($as_array) $query->asArray(true);
                       
         
@@ -84,4 +86,5 @@ class JudgesSearch extends Judges
         $model = new JudgesSearch();
         return $model->search($params, $login_id, $as_array);
     }
+    
 }

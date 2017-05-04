@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             //'id',
-            //'title:ntext',
+            'title:ntext',
             'description:ntext',
             [
                 'label' => 'Bench Name',
@@ -38,6 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Judges',
                 'value' => @$model->judgesString
+            ],
+            [
+                'label' => 'Date',
+                'value' => @$model->date
             ],
             [
                 'label' => 'Created At',

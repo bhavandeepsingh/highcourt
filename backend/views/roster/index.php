@@ -27,7 +27,7 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             
-            //'title:ntext',
+            'title:ntext',
             //'description:ntext',
             [
                 'label' => 'Description',
@@ -40,7 +40,11 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
             [
                 'label' => 'Judges',
                 'value' => function($data){ return @$data->judgesString; }
-            ],        
+            ],
+            [
+                'label' => 'Date',
+                'value' => function($data){return $data->date;}
+            ],
             //'created_at',
             // 'updated_at',
 
