@@ -40,11 +40,11 @@ class HolidaysSearch extends Holidays
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'date', $this->date]);
-        $query->joinWith(['highcourtHoliday' => function($q) {
-            $q->joinWith(['highcourts']);            
-        } ]);
+            ->andFilterWhere(['like', 'date', $this->date])
+                ->andFilterWhere(['like', 'date', date("Y")]);
         
+        $query->with('highcourts') ;
+        $query->orderBy('date ASC');
         if($as_array) $query->asArray(true);
                       
         
