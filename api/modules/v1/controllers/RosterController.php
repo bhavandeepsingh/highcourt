@@ -8,7 +8,6 @@ use common\models\RosterSearch;
 class RosterController extends ApiController{
     
     public function actionList(){
-        //echo 'qwe';die;
         return $this->dataProvider(RosterSearch::getApiList(Yii::$app->request->post(), null, true));
     }
     

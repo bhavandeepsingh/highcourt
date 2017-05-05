@@ -102,6 +102,8 @@ class Profile extends BaseProfile
         }else{
             $profile['designation'] = [];
         }
+        
+        $bloodGroup = @$this->getBloodGroup()->one();
 
         if($bloodGroup != null){
           $profile['bloodGroup'] = $bloodGroup;

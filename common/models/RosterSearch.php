@@ -70,7 +70,8 @@ class RosterSearch extends Roster
         
         if($as_array) $query->asArray(true);  
         
-        $query->joinWith(['judges', 'bench'], true);
+        $query->joinWith('judge');
+        $query->joinWith(['bench'], true);
 
         return $dataProvider;
     }

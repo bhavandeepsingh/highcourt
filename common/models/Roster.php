@@ -89,5 +89,8 @@ class Roster extends BaseModel
             }
         }return $str;
     }
+    public function getJudge() {
+        return $this->hasMany(Judges::class, ['id' =>'judge_id'])->viaTable(RosterJudges::tableName(), ['roster_id' => 'id']);
+    }
     
  }
