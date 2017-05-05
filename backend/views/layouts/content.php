@@ -50,7 +50,7 @@ if(Yii::$app->user->isGuest){
     <strong>Copyright &copy; <?php echo (date("Y")-1); ?>-<?php echo date("Y"); ?> <a href="http://uniquecoders.in" target="_blank">Unique Coders</a>.</strong> All rights
     reserved.
 </footer>
-
+<?php /*
 <!-- Control Sidebar -->
 <aside class="control-sidebar control-sidebar-dark">
     <!-- Create the tabs -->
@@ -237,7 +237,7 @@ if(Yii::$app->user->isGuest){
         </div>
         <!-- /.tab-pane -->
     </div>
-</aside><!-- /.control-sidebar -->
-<!-- Add the sidebar's background. This div must be placed
+</aside><!-- /.control-sidebar --> */ ?>
+ <!-- Add the sidebar's background. This div must be placed
      immediately after the control sidebar -->
 <div class='control-sidebar-bg'></div>

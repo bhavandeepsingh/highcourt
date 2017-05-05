@@ -24,20 +24,25 @@ class UploadForm extends Model
     
     public $uploadFile;
 
-    public $currentType = [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg'];
+    public $currentType = [
+        ['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg',
+        ['uploadFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,pdf'
+    ];
     
     public function rules()
     {
         return [
-            $this->currentType,
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg'],
+            [['uploadFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,pdf']
         ];
     }
     
     public function upload($path, $name = "", $type=null)
-    {        
+    {           
         if ($this->validate()) {            
             if (!is_dir($path)) {                
                 mkdir($path, 0777, true);
+                chmod($path, 0777);
             }
             if(isset($this->imageFile)){
                 $filename = (!empty($name))? $name : $this->imageFile->baseName;
@@ -45,11 +50,12 @@ class UploadForm extends Model
                 self::removeImage($path . '/' . $filename);//die;
                 $this->imageFile->saveAs($path . '/' . $filename);
             }
+           
             if(isset($this->uploadFile)){
-                $this->currentType = [['uploadFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,xls,doc,pdf'];
+                //$this->currentType = [['uploadFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,xls,doc,pdf'];
                 $this->uploadFile->saveAs($path . '/' . ( (!empty($name))? $name: $this->uploadFile->baseName) . '.' . $this->uploadFile->extension);
             }              
-            return true;
+            return ( (!empty($name))? $name: $this->uploadFile->baseName) . '.' . $this->uploadFile->extension;
         } else {
             return false;
         }
@@ -111,8 +117,8 @@ class UploadForm extends Model
     public static function uploadFile($id, $type){          
         $model = self::getFileInstance();          
         if(!empty($model->uploadFile)){
-            if($model->upload($model->getPathWithType($type). $id, "file")){                 
-                return true;
+            if($name = $model->upload($model->getPathWithType($type). $id, "file")){                 
+                return $name;
             }
         }        
         return false;
@@ -146,7 +152,7 @@ class UploadForm extends Model
         return self::uploadProfilePic($id, self::$IMAGE_TYPE_BANNERS);
     }
     
-    public static function uploadNotificationFile($id){
+    public static function uploadNotificationFile($id){        
         return self::uploadFile($id, self::$FILE_TYPE_NOTIFICATIONS);
     }
     

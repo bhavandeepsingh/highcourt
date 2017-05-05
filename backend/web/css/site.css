@@ -118,3 +118,15 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+html body table.table.table-striped.table-bordered tr > td{
+    white-space: normal !important;
+    word-break:break-word !important;
+}
+html body table.table.table-striped.table-bordered tr > td:last-child {
+    white-space: nowrap !important;
+}
+
+html body .judges-view table.table.table-striped.table-bordered.detail-view tr > td, html body .holidays-view table.table.table-striped.table-bordered.detail-view tr > td, html body .notification-view table.table.table-striped.table-bordered.detail-view tr > td{
+    white-space: normal !important;
+    word-break:break-word !important;
+}

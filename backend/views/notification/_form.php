@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 
 <div class="notification-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
     
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
@@ -28,6 +28,7 @@ use yii\widgets\ActiveForm;
             </div>
             <?php
         }
+        
     ?>
 
     <?php //$form->field($model, 'sender_id')->textInput() ?>
@@ -39,7 +40,12 @@ use yii\widgets\ActiveForm;
     <?php //$form->field($model, 'updated_at')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?php
+            if($model->is_file){
+                echo "<a class='btn btn-success' style='margin-bottom:10px;' href='".Yii::$app->urlManager->baseUrl."/../../uploads/notifications/".$model->id."/".$model->filename."'>"
+                     ."<span class='glyphicon glyphicon-download-alt'></span></a><div class='clearfix'></div>";
+            }
+        ?> <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -47,6 +47,7 @@ class Profile extends BaseProfile
             /*'gravatar_email' => \Yii::t('user', 'Gravatar email'),
             'website'        => \Yii::t('user', 'Website'),*/
             'location'              => \Yii::t('user', 'Location'),
+            'weight'                => \Yii::t('user', 'Sort Position'),
             'bio'                   => \Yii::t('user', 'About'),
             'timezone'              => \Yii::t('user', 'Time zone'),
             'designation'           => \Yii::t('user', 'Designation'),
