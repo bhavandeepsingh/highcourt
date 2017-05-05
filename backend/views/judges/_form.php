@@ -34,10 +34,10 @@ use dosamigos\datepicker\DatePicker;
 
     <?= $form->field($model, 'date_of_appointment')->textInput(["placeholder" => "Date of Appointment"]); ?>    
 
-    <?= $form->field($model, 'date_of_retirement')->textInput(["placeholder" => "Date of Retirement"]); ?>
+    <?= $form->field($model, 'bio_graphy')->textarea(['rows' => 5, 'placeholder' => "Biography"]) ?>
 
-    <?= $form->field($model, 'bio_graphy')->textarea(['rows' => 6, 'placeholder' => "Biography"]) ?>
-            
+    <?= $form->field($model, 'date_of_retirement')->textInput(["placeholder" => "Date of Retirement"]); ?>
+        
     <?= $form->field($model, 'landline')->textInput(['type' => 'number']) ?>
    
 

@@ -1,7 +1,15 @@
 <?php
 use yii\widgets\Breadcrumbs;
 use dmstr\widgets\Alert;
-
+if(Yii::$app->user->isGuest){
+    ?>
+        <style>
+            .content-wrapper, .right-side, .main-footer{
+                margin-left:0px;
+            }
+        </style>
+    <?php
+}
 ?>
 <div class="content-wrapper">
     <section class="content-header">

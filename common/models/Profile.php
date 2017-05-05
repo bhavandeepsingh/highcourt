@@ -67,7 +67,7 @@ class Profile extends BaseProfile
     }
     
     public function afterSave($insert, $changedAttributes) {
-        UploadForm::deleteImage($this->user_id, UploadForm::$IMAGE_TYPE_USERS);
+        //UploadForm::deleteImage($this->user_id, UploadForm::$IMAGE_TYPE_USERS);
         UploadForm::uploadUserProfilePic($this->user_id);
         if(isset($_POST["clerks"])){
             $data=$_POST["clerks"];
@@ -94,13 +94,26 @@ class Profile extends BaseProfile
     public function getProfileDataApi(){
         $profile =  @$this->getAttributes();       
         if($profile === null) return null;
-        $profile['profile_pic'] = @$this->getProfilePicPathApi();          
-        $profile['designation'] = $this->getDesignation()->one()->getAttributes();
+        $profile['profilePic'] = @$this->getProfilePicPathApi();
+        $designation = @$this->getDesignation()->one();
+        if($designation != null ){
+            $profile['designation'] = $designation->getAttributes();
+        }else{
+            $profile['designation'] = [];
+        }
+
+        if($bloodGroup != null){
+          $profile['bloodGroup'] = $bloodGroup;
+        }else{ $profile['bloodGroup'] = null;}
+
         return $profile;
     }
     
     public function getDesignation(){
         return $this->hasOne(MembershipTypes::class, ['id' => 'designation']);
     }
-    
+
+    public function getBloodGroup(){
+        return $this->hasOne(BloodGroups::className(), ['id' => 'blood_group']);
+    }    
 }

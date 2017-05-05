@@ -44,6 +44,8 @@ class NotificationSearch extends Notification
         $query = Notification::find();
 
         // add conditions that should always apply here
+        
+        $query->orderBy(["id" => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

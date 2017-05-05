@@ -1,4 +1,4 @@
-<?php
+    <?php
 use yii\helpers\Html;
 
 /* @var $this \yii\web\View */
@@ -6,9 +6,9 @@ use yii\helpers\Html;
 ?>
 
 <header class="main-header">
-
+<?php if(!Yii::$app->user->isGuest): ?>
     <?= Html::a('<span class="logo-mini">HBA</span><span class="logo-lg">' . Yii::$app->name . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
-
+    
     <nav class="navbar navbar-static-top" role="navigation">
 
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
@@ -71,4 +71,5 @@ use yii\helpers\Html;
             </ul>
         </div>
     </nav>
+    <?php endif; ?>
 </header>

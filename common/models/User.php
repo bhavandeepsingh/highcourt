@@ -8,6 +8,8 @@ use Yii;
 class User extends BaseUser
 {   
     public $mobile = "";
+
+    public static $usernameRegexp = '/^[-a-zA-Z0-9_\.@\/]+$/';
     
     public function rules() {
         $rules = parent::rules();
@@ -26,7 +28,13 @@ class User extends BaseUser
         //else if(!empty($this->mobile)){
         //    $this->clearErrors("email");
         //}
-        $mobile = \common\models\Profile::find()->where(["mobile" => $this->mobile])->one();
+        $isPost=\Yii::$app->request->isPost;
+        $userid= Yii::$app->request->get("id",0);
+        if(isset($isPost) && $userid)
+            $mobile = \common\models\Profile::find()->where(["mobile" => $this->mobile])->andWhere(['!=', 'user_id', $userid])->one();
+        else   
+            $mobile = \common\models\Profile::find()->where(["mobile" => $this->mobile])->one();
+        
         if(@$mobile->mobile){
             $this->addError("mobile","Mobile number already in use.");
         }
@@ -52,24 +60,25 @@ class User extends BaseUser
             }
             
             $this->confirm();
-            
+
             if(!empty($this->mobile)){
-                \common\helpers\SmsHelper::send($this->mobile, $this->message($this->username, $this->password));
+                \common\helpers\SmsHelper::send($this->mobile, $this->message($this->username,$this->password));
             }
 
             $settings = \common\models\Settings::find()->where(["name" => "settings"])->one();
             $settings = json_decode(@$settings->value);
-            
             if(@$settings->admin_email){
                 Yii::$app->params["adminEmail"] = $settings->admin_email;
                 // setting admin email form database
             }
             
             $this->mailer->sendWelcomeMessage($this, null, true);
-            
+
             $this->trigger(self::AFTER_CREATE);
             
             $this->profile->mobile=$this->mobile;
+            $this->profile->public_email=$this->email;
+            $this->profile->enrollment_number=$this->username;
             $this->profile->save();
             
             $transaction->commit();
@@ -82,20 +91,26 @@ class User extends BaseUser
         }
     }
     
-    public function message($username,$password){
-        return 'Your CHDBAR association account has been created, Your Username is '.$username.' and Password is '.$password;
+    public function afterSave($insert, $changedAttributes) {
+        parent::afterSave($insert, $changedAttributes);
+        $this->profile->mobile=$this->mobile;
+        $this->profile->public_email=$this->email;
+        $this->profile->enrollment_number=$this->username;
+        $this->profile->save();
     }
     
     public function resendPassword()
     {
         $this->password = Password::generate(8);
         $this->save(false, ['password_hash']);
-        
-        if(!empty(@$this->profile->mobile)){
-            \common\helpers\SmsHelper::send($this->profile->mobile, $this->message($this->username, $this->password));
+        if(@$this->profile->mobile){
+            \common\helpers\SmsHelper::send(@$this->profile->mobile, $this->message($this->username,$this->password));
         }
-        
         return $this->mailer->sendGeneratedPassword($this, $this->password);
+    }
+    
+    public function message($username,$password){
+        return 'Your CHDBAR association account has been created, Your Username is '.$username.' and Password is '.$password;
     }
     
     /**
@@ -124,6 +139,18 @@ class User extends BaseUser
 
     public function getProfile(){
         return $this->hasOne(Profile::className(), ['user_id' => 'id']);
+    }
+    
+    public static function findByUsername($username) {
+        $user = self::find()
+            ->where([
+                "username" => $username
+            ])
+            ->one();
+        if (!count($user)) {
+            return null;
+        }
+        return new static($user);
     }
     
 }

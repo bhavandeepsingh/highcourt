@@ -5,7 +5,8 @@ use Yii;
 
 class UserController extends ApiController{
     
-    public function actionLogin(){           
+    public function actionLogin(){ 
+        
     	//return $this->success(['user' => @\common\models\User::find()->andWhere(['id' => 1])->one()->profile]);
         $login = new \common\models\LoginForm();
         $login->load(Yii::$app->request->post());        
@@ -34,10 +35,18 @@ class UserController extends ApiController{
         }        
         return $this->error(['license_no' => $model->getFirstError('license_no')]);
     }
+
+    public function actionBloodGroupList(){
+        return $this->success(['list' => \common\models\BloodGroups::find()->all()]);
+    }
     
 
     public function actionExecutive(){
-        return $this->dataProvider(\common\models\ProfileSearch::getApiList(Yii::$app->request->post(), null, true));
+        return $this->dataProvider(\common\models\ProfileSearch::getApiExecutiveList(Yii::$app->request->post(), null, true));
+    }
+    
+    public function actionMembers(){
+        return $this->dataProvider(\common\models\ProfileSearch::getApiMemberList(Yii::$app->request->post(), null, true));
     }
 
 

@@ -19,6 +19,7 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
     </p>
 <?php Pjax::begin(); ?>
     <?= GridView::widget([
+        
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -30,8 +31,9 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
             ],
             [
                 'label' => 'Holiday In',
-                //'value' => '',
+                'value' => function($data){ return $data->holidayNames;},
             ],
+            
             'date',
             //'status',
             [
