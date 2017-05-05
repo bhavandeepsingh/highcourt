@@ -54,8 +54,11 @@ use dosamigos\datepicker\DatePicker;
     $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js", ['depends' => [yii\web\JqueryAsset::className()]]);
     echo $this->registerJs('
         $("#judges-dob").datepicker({format : "yyyy-mm-dd",endDate:"0d"});
-        $("#judges-date_of_appointment").datepicker({format : "yyyy-mm-dd",endDate:"0d"});
-        $("#judges-date_of_retirement").datepicker({format : "yyyy-mm-dd",startDate:"0d"});
+        $("#judges-date_of_appointment").datepicker({format : "yyyy-mm-dd",endDate:"0d"}).on("changeDate", function (selected) {
+            var minDate = new Date(selected.date.valueOf());
+            $("#judges-date_of_retirement").datepicker("setStartDate", minDate);
+        });
+        $("#judges-date_of_retirement").datepicker({format : "yyyy-mm-dd",setStartDate:$("#judges-date_of_appointment").val()});
     ');
 ?>
 <script type="text/javascript">

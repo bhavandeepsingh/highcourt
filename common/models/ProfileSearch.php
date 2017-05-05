@@ -72,7 +72,7 @@ class ProfileSearch extends Profile
 
     public static function getApiExecutiveList($params = [], $login_id = 0, $as_array = false){
         $model= new self();
-        $query = $model->getQueryDataProvider($params, $login_id, $as_array);
+        $query = $model->getQueryDataProvider($params, $login_id, $as_array)->orderBy(["weight" => SORT_ASC]);
         return new ActiveDataProvider([
             'query' => $query->andWhere(['executive' => 1])
         ]);

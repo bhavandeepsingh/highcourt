@@ -48,6 +48,7 @@ if($profile->user_id > 0 && ($profile->profilePicSrc)){
 ?>
 <?= $form->field($profile, 'executive')->checkbox(['label' => 'Mark as Executive Member']) ?>
 <?= $form->field($profile, 'public_email')->textInput(['placeholder' => 'Email Address']) ?>
+<?= $form->field($profile, 'weight')->textInput(['placeholder' => 'Sort Position']) ?>
 <?php //$form->field($profile, 'website') ?>
 <?php //$form->field($profile, 'location')->textInput(['placeholder' => 'Location']) ?>
 <?php //$form->field($profile, 'gravatar_email') ?>

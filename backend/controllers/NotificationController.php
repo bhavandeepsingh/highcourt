@@ -17,7 +17,7 @@ class NotificationController extends BaseController
     /**
      * @inheritdoc
      */
-    public function behaviors()
+  /* public function behaviors()
     {
         return [
             'verbs' => [
@@ -41,7 +41,7 @@ class NotificationController extends BaseController
                 ],
             ],
         ];
-    }
+    }*/
 
     /**
      * Lists all Notification models.
@@ -78,10 +78,11 @@ class NotificationController extends BaseController
     public function actionCreate()
     {
         $model = new Notification();
-        $model->sender_id = Yii::$app->user->id;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if(\common\models\UploadForm::uploadNotificationFile($model->id)){
-              $model->hasFile();
+        $model->sender_id = Yii::$app->user->id;               
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {            
+            $model->filename = \common\models\UploadForm::uploadNotificationFile($model->id);
+            if($model->filename || $model->getFileSrc()){
+                $model->hasFile();
             }
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -90,7 +91,7 @@ class NotificationController extends BaseController
             ]);
         }
     }
-
+    
     /**
      * Updates an existing Notification model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -101,8 +102,9 @@ class NotificationController extends BaseController
     {
         $model = $this->findModel($id);       
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if(\common\models\UploadForm::uploadNotificationFile($model->id) || $model->getFileSrc()){
-              $model->hasFile();
+            $model->filename = \common\models\UploadForm::uploadNotificationFile($model->id);
+            if($model->filename || $model->getFileSrc()){
+                $model->hasFile();
             }
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -112,10 +114,10 @@ class NotificationController extends BaseController
         }
     }
     
-    public function beforeAction($action) {  
+    /*public function beforeAction($action) {  
         $this->enableCsrfValidation = false;
         return parent::beforeAction($action);
-    }
+    }*/
 
     /**
      * Deletes an existing Notification model.

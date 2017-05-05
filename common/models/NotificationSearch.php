@@ -71,10 +71,10 @@ class NotificationSearch extends Notification
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description]);
         
-        $query->addSelect(['*', 'getNotificationImageSrc("'.UploadForm::getNotificationTypePathApi().'", id) as notification_src']);
+        $query->addSelect(['*', 'getNotificationImageSrc("'.UploadForm::getNotificationTypePathApi().'", id, filename) as notification_src']);
         
-        if($as_array) $query->asArray(true); 
-
+        if($as_array) $query->asArray(true);
+        
         return $dataProvider;
     }
     

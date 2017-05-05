@@ -40,11 +40,11 @@ use yii\bootstrap\Nav;
                     'url' => ['/rbac/permission/create'],
                     'visible' => isset(Yii::$app->extensions['dektrium/yii2-rbac']),
                 ],
-                [
-                    'label' => \Yii::t('user', 'New rule'),
-                    'url'   => ['/rbac/rule/create'],
-                    'visible' => isset(Yii::$app->extensions['dektrium/yii2-rbac']),
-                ]
+//                [
+//                    'label' => \Yii::t('user', 'New rule'),
+//                    'url'   => ['/rbac/rule/create'],
+//                    'visible' => isset(Yii::$app->extensions['dektrium/yii2-rbac']),
+//                ]
             ],
         ],
         [

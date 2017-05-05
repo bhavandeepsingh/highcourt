@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php //$this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
 
-<?= $this->render('/admin/_menu') ?>
+<?= $this->render('//user/admin/_menu') ?>
 
 <?php Pjax::begin() ?>
 
@@ -40,6 +40,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'username',
         'email:email',
         [
+            'attribute' => 'flags',
+            'label' => 'Executive',
+            'format' => 'raw',
+            'filter' => true,
+            'value' => function($data){
+                if($data->id==1){
+                    return 'Active';
+                }
+                return 'Inactive';
+            }
+        ],
+        /*[
             'attribute' => 'registration_ip',
             'value' => function ($model) {
                 return $model->registration_ip == null
@@ -47,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     : $model->registration_ip;
             },
             'format' => 'html',
-        ],
+        ],*/
         [
             'attribute' => 'created_at',
             'value' => function ($model) {
@@ -110,7 +122,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         [
             'class' => 'yii\grid\ActionColumn',
-            'template' => '{switch} {resend_password} {update} {delete}',
+            'template' => '{switch} {resend_password} {change} {update} {delete}',
             'buttons' => [
                 'resend_password' => function ($url, $model, $key) {
                     if (!$model->isAdmin) {
@@ -128,6 +140,21 @@ $this->params['breadcrumbs'][] = $this->title;
 //                            'data-method' => 'POST',
 //                        ]);
                     }
+                },
+                'change' => function($url,$model,$key){
+                    if ($model->isAdmin && $model->id == Yii::$app->user->id) {
+                        return '
+                            <a href="' . Url::to(["admin/update","id" => $key]) . '">
+                            <span title="' . Yii::t('user', 'Update admin details') . '" class="glyphicon glyphicon-cog">
+                            </span> </a>';
+                    }
+                },
+                'update' => function($url,$model,$key){
+                    return '
+                        <a href="' . Url::to(["admin/update-profile","id" => $key]) . '">
+                        <span title="' . Yii::t('user', 'Generate and send new password to user') . '" class="glyphicon glyphicon-pencil">
+                        </span> </a>';
+                    //return "<a href='".Url::to(["user/admin/update-profile","id" => $key])."><span class='glyphicon glyphicon-pencil'></span></a>";//$key;
                 }
             ]
         ],

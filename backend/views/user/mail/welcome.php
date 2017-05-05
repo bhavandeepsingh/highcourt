@@ -40,6 +40,9 @@ use yii\helpers\Html;
     <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
         <?= Yii::t('user', 'If you cannot click the link, please try pasting the text into your browser') ?>.
     </p>
+    <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
+        You can download Android App from <a href="https://goo.gl/L1jNZX">Google Playstore</a> and IOS App from <a href="#">IOS App Store</a>.
+    </p>
 <?php endif ?>
 
 <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">

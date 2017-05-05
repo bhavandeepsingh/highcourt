@@ -38,6 +38,7 @@ class Notification extends BaseModel
             [['title', 'description'], 'required'],
             [['description'], 'string'],
             [['is_file'], 'integer'],
+            [['filename'],'string'],
             //[['sender_id', 'reciever_id', 'created_at', 'updated_at'], 'integer'],
             [['title'], 'string', 'max' => 255],
         ];
