@@ -13,7 +13,7 @@ class User extends BaseUser
     
     public function rules() {
         $rules = parent::rules();
-        $rules[] = [["mobile"],"integer"];
+        $rules[] = [["mobile"], "integer", "max" => 9999999999, "message" => "Please enter a valid mobile number"];
         return $rules;
     }
     
