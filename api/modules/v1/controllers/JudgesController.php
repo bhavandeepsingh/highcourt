@@ -6,7 +6,8 @@ use common\models\JudgesSearch;
 
 class JudgesController extends ApiController{
     
-    public function actionList(){        
+    public function actionList(){ 
+        
         return $this->dataProvider(JudgesSearch::getApiList(Yii::$app->request->post(), null, true));
     }
     

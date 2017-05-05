@@ -28,7 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'name',
+            //'name',
+            [
+                'label' => 'Name',
+                'value' => function($model){return \common\models\Judges::gender($model);},
+            ],
             'address',
             'landline',
             'dob',

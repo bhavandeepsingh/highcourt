@@ -33,8 +33,9 @@ class Roster extends BaseModel
     public function rules()
     {
         return [
-            [['description', 'bench_id', 'type'], 'required'],
+            [['title','description', 'bench_id', 'type','date'], 'required'],
             [['title', 'description'], 'string'],
+            [['date'], 'safe'],
             [['bench_id', 'created_at', 'updated_at'], 'integer'],
         ];
     }
@@ -50,6 +51,7 @@ class Roster extends BaseModel
             'description' => 'Description',
             'bench_id' => 'Bench ID',
             'type' => 'Bench Type',
+            'date' => 'Date',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -86,6 +88,9 @@ class Roster extends BaseModel
                 $str .= (!empty($str)? ", ": "") .@$j->judge->name;
             }
         }return $str;
+    }
+    public function getJudge() {
+        return $this->hasMany(Judges::class, ['id' =>'judge_id'])->viaTable(RosterJudges::tableName(), ['roster_id' => 'id']);
     }
     
  }

@@ -11,9 +11,12 @@ use dosamigos\datepicker\DatePicker;
 <div class="judges-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
+    <div style="float: left;width: 15%;padding-right: 5%;" >
+    <?= $form->field($model, 'gender')->dropDownList([1 => 'Mr',2 => 'Miss',3 => 'Mrs',4 => 'Ms'],['prompt' => 'Select Gender Type']) ?>
+</div>
+    <div style="float: left;width: 80%;" >
     <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => "Name"]) ?>
-    
+    </div>
     <?= $form->field(new \common\models\UploadForm(), 'imageFile')->fileInput(["onChange" => "readURL(this);"]) ?> 
     
     <?php

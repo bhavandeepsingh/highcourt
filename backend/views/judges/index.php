@@ -34,7 +34,11 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
                     return Html::img(\common\models\UploadForm::getJudgeProfilePic($data->id), ['width' => 100]);
                 }
             ],
-            'name',
+            //'name',
+            [
+                'label' => 'Name',
+                'value' => function($data){return \common\models\Judges::gender($data);},
+            ],
             'address',
             'dob',
             'date_of_appointment',

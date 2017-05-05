@@ -37,8 +37,8 @@ class Judges extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'address', 'dob', 'ext_no', 'date_of_appointment', 'date_of_retirement', 'court_room', 'bio_graphy'], 'required'],
-            [['dob', 'date_of_appointment', 'date_of_retirement'], 'safe'],
+            [['name','gender', 'address', 'dob', 'ext_no', 'date_of_appointment', 'date_of_retirement', 'court_room', 'bio_graphy'], 'required'],
+            [['dob','gender', 'date_of_appointment', 'date_of_retirement'], 'safe'],
             [['bio_graphy', 'landline'], 'string'],
             [['created_at', 'updated_at'], 'integer'],
             [['name', 'address'], 'string', 'max' => 255],
@@ -53,6 +53,7 @@ class Judges extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
+            'gender' => 'Gender',
             'address' => 'Address',
             'dob' => 'Dob',
             'date_of_appointment' => 'Date Of Appointment',
@@ -77,6 +78,9 @@ class Judges extends \yii\db\ActiveRecord
     
     public function getJudgePicSrc(){             
         return UploadForm::getJudgeProfilePic($this->id);
+    }
+    public static function gender($data){
+        if($data->gender == 1){return 'Ms'.' '.$data->name;}elseif($data->gender == 2){return 'Miss'.' '.$data->name;}elseif($data->gender == 3){return 'Mrs'.' '.$data->name;}elseif($data->gender == 4){return 'Ms'.' '.$data->name;}
     }
     
 }

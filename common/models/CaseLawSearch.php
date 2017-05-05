@@ -39,7 +39,7 @@ class CaseLawSearch extends CaseLaw
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $login_id = 0, $as_array = false)
     {
         $query = CaseLaw::find();
 
@@ -68,5 +68,9 @@ class CaseLawSearch extends CaseLaw
             ->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
+    }
+    public static function getApiList($params = [], $login_id = 0, $as_array = false){
+        $model = new CaseLawSearch();
+        return $model->search($params, $login_id, $as_array);
     }
 }

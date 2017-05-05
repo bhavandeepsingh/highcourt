@@ -73,5 +73,10 @@ class Holidays extends BaseModel
         }
         return $names;
     }
+    
+    
+    public function getHighcourts() {
+        return $this->hasMany(Highcourts::class, ['id' =>'highcourt_id'])->viaTable(HighcourtHolidays::tableName(), ['holiday_id' => 'id']);
+    }
    
 }

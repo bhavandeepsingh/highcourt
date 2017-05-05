@@ -44,9 +44,9 @@ return [
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
             // Hide index.php
-            //'showScriptName' => false,
+            'showScriptName' => false,
             // Use pretty URLs
-            //'enablePrettyUrl' => true,
+            'enablePrettyUrl' => true,
         ]
 
     ],
