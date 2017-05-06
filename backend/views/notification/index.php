@@ -34,7 +34,7 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
                 'format' => 'raw',
                 'value' => function($data){
                     if($data->is_file && strlen($data->filename)){
-                        return "<a class='btn btn-success' style='margin-bottom:10px;' href='".Yii::$app->urlManager->baseUrl."/../../uploads/notifications/".$data->id."/".$data->filename."'>"
+                        return "<a class='btn btn-success' target='_blank' style='margin-bottom:10px;' href='".Yii::$app->urlManager->baseUrl."/../../uploads/notifications/".$data->id."/".$data->filename."'>"
                              ."<span class='glyphicon glyphicon-download-alt'></span></a><div class='clearfix'></div>";
                     }else{ return "No file selected.";}
                 }
