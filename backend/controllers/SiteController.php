@@ -60,6 +60,12 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+//        $users=\common\models\User::find()
+//            ->join('LEFT JOIN','auth_assignment','auth_assignment.user_id = id')
+//            ->where(['auth_assignment.item_name' => "author"])
+//            ->all();
+//        print_r($users);
+        //print_r(\Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));
         return $this->render('index');
     }
 

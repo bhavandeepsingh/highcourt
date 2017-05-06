@@ -18,6 +18,7 @@ return [
             ]
         ]
     ],
+    'timeZone' => 'Asia/Kolkata',
     'modules' => [
         'user' => [
             'class' => 'dektrium\user\Module',

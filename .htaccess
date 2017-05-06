@@ -1,0 +1,18 @@
+Options +FollowSymLinks
+IndexIgnore */*
+
+RewriteEngine on
+
+<IfModule mod_rewrite.c> 
+  RewriteEngine on
+
+  RewriteCond %{REQUEST_URI} !^public
+  RewriteRule ^(.*)$ backend/web/$1 [L] 
+</IfModule>
+
+<Files ~ "(.json|.lock|.git)">
+Order allow,deny
+Deny from all
+</Files>
+# otherwise forward it to index.php
+RewriteRule . index.php

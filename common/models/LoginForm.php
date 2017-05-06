@@ -12,6 +12,7 @@ class LoginForm extends Model
     public $username;
     public $password;
     public $rememberMe = true;
+    public $enrollment_number;
 
     private $_user;
 
@@ -23,9 +24,10 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['username', 'password'], 'required'],
+            [['password'], 'required'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
+            [['enrollment_number', 'username'], 'string'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
         ];
@@ -41,9 +43,12 @@ class LoginForm extends Model
     public function validatePassword($attribute, $params)
     {
         if (!$this->hasErrors()) {
-            $user = $this->getUser();
+            $user = null;
+            if(!empty($this->enrollment_number)) $user = $this->getLaywerUser();
+            else if(!empty($this->username)) $user = $this->getUser();               
+
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, 'Incorrect license or password.');
             }
         }
     }
@@ -61,6 +66,30 @@ class LoginForm extends Model
             return false;
         }
     }
+    
+    /**
+     * Login with enrollment_number no
+     * @return boolean
+     */
+    public function laywerLogin()
+    {
+        if ($this->validate()) {
+            return Yii::$app->user->login($this->getLaywerUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);            
+        } else {            
+            return false;
+        }
+    }
+    protected function getLaywerUser(){       
+        if($this->_user === null){
+            $this->_user = @Profile::findByEnrollmentNumberNo($this->enrollment_number)->user;
+            if($this->_user === null){
+            	 $this->username = $this->enrollment_number;
+            	 $this->getUser();
+            }
+        }       
+       
+        return $this->_user;    
+    }
 
     /**
      * Finds user by [[username]]
@@ -75,4 +104,17 @@ class LoginForm extends Model
 
         return $this->_user;
     }
+    
+    public function getLoginUser(){
+        return @$this->_user;
+    }
+    
+    public function getProfile(){
+        return @$this->_user->profile;                
+    }
+
+    public function getProfileArray(){
+        return @$this->getProfile()->getProfileDataApi();
+    }
+    
 }

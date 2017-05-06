@@ -8,11 +8,18 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
+    'name' => 'HBA',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [
-        'as backend' => 'dektrium\user\filters\BackendFilter',
+        'user' => [
+            'as backend' => [
+                'loginUrl' => ['user/security/login'],
+                'class' => 'dektrium\user\filters\BackendFilter',
+                'controllers' => ['profile', 'recovery', 'registration', 'settings']
+            ],
+        ],
     ],
     'components' => [
         'request' => [
@@ -24,15 +31,23 @@ return [
             //'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
             'identityCookie' => [
                 'name'     => '_backendIdentity',
-                'path'     => '/admin',
+                'path'     => 'backend/',
                 'httpOnly' => true,
+            ],
+        ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@dektrium/user/views' => '@app/views/user',
+                    '@dektrium/rbac/views' => '@app/views/rbac'
+                ],
             ],
         ],
         'session' => [
             'name' => 'BACKENDSESSID',
             'cookieParams' => [
                 'httpOnly' => true,
-                'path'     => '/admin',
+                'path'     => 'backend/',
             ],
         ],
         /*'session' => [
@@ -60,5 +75,21 @@ return [
         ],
         */
     ],
+    'modules' => [
+        'user' => [
+            // following line will restrict access to admin controller from backend application
+            'as backend' => 'dektrium\user\filters\BackendFilter',
+            'enableUnconfirmedLogin' => true,
+            'confirmWithin' => 21600,
+            'cost' => 12,
+            'admins' => ['admin'],
+            'modelMap' => [
+                'User'      => 'common\models\User',
+                'UserSearch'=> 'common\models\UserSearch',
+                'Profile'   => 'common\models\Profile',
+            ],
+        ],
+    ],
     'params' => $params,
 ];
+

@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
 /**
  * HolidaysController implements the CRUD actions for Holidays model.
  */
-class HolidaysController extends Controller
+class HolidaysController extends BaseController
 {
     /**
      * @inheritdoc
@@ -24,6 +24,20 @@ class HolidaysController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['admin'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index','view','create','update'],
+                        'roles' => ['author'],
+                    ],
                 ],
             ],
         ];
@@ -64,12 +78,16 @@ class HolidaysController extends Controller
     public function actionCreate()
     {
         $model = new Holidays();
+        $highcourts = \common\models\Highcourts::find()->all();
+        
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            \common\models\HighcourtHolidays::updateHolidays(Yii::$app->request->post(), $model->id);            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'highcourts' => $highcourts,
             ]);
         }
     }
@@ -84,7 +102,10 @@ class HolidaysController extends Controller
     {
         $model = $this->findModel($id);
 
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            \common\models\HighcourtHolidays::updateHolidays(Yii::$app->request->post(), $model->id);            
+            
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -101,6 +122,10 @@ class HolidaysController extends Controller
      */
     public function actionDelete($id)
     {
+        if(!Yii::$app->user->can("deletePost")){
+            return "Unauthorized Access";
+            die;
+        }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -121,4 +146,5 @@ class HolidaysController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
 }

@@ -4,6 +4,23 @@ use yii\helpers\Html;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+$userroles=Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
+$flag=true;
+foreach ($userroles as $key => $role){
+    if($key=="admin" || $key=="author"){
+        $flag=false;
+    }
+}/*
+if(!Yii::$app->user->isGuest && $flag==true){
+    echo "<html><body><p style='text-align:center;'>You are not authorized to view this page</p>";
+    echo "</body></html>";
+    exit;
+}*/
+//echo urldecode(Yii::$app->request->url);die;
+//echo preg_match("/(user\/registration\/resend|user\/registration\/register)/", urldecode(Yii::$app->request->url));
+if(Yii::$app->user->isGuest && !preg_match("/user\/security\/login/", urldecode(Yii::$app->request->url))){
+    Yii::$app->getResponse()->redirect(Yii::$app->urlManager->createUrl('/user/security/login'));
+}
 
 if (Yii::$app->controller->action->id === 'login') { 
 /**
@@ -36,7 +53,7 @@ if (Yii::$app->controller->action->id === 'login') {
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
     </head>
-    <body class="hold-transition skin-blue sidebar-mini">
+    <body class="hold-transition skin-yellow sidebar-mini">
     <?php $this->beginBody() ?>
     <div class="wrapper">
 

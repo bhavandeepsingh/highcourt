@@ -26,10 +26,12 @@ return [
                 ],
             ],
         ],
-        'authManager'  => [
-        'class'        => 'yii\rbac\DbManager',
-        //            'defaultRoles' => ['guest'],
-        ],        
+                
+    ],
+    'modules' => [
+        'gii' => 'yii\gii\Module',
+        'rbac' => 'dektrium\rbac\RbacConsoleModule',
     ],
     'params' => $params,
 ];
+ 

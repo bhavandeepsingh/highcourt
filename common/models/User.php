@@ -1,147 +1,118 @@
 <?php
 namespace common\models;
 
+use dektrium\user\models\User as BaseUser;
+use dektrium\user\helpers\Password as Password;
 use Yii;
-use yii\base\NotSupportedException;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
-use yii\web\IdentityInterface;
 
-/**
- * User model
- *
- * @property integer $id
- * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $email
- * @property string $auth_key
- * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
- * @property string $password write-only password
- */
-class User extends ActiveRecord implements IdentityInterface
-{
-    const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 10;
+class User extends BaseUser
+{   
+    public $mobile = "";
 
-
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '{{%user}}';
+    public static $usernameRegexp = '/^[-a-zA-Z0-9_\.@\/]+$/';
+    
+    public function rules() {
+        $rules = parent::rules();
+        $rules[] = [["mobile"], "integer", "max" => 9999999999, "message" => "Please enter a valid mobile number"];
+        return $rules;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className(),
-        ];
+    
+    public function afterValidate() {
+        $var = parent::afterValidate();
+        //if($this->hasErrors("email") && empty($this->mobile)){
+        if(empty($this->mobile)){
+            //$this->clearErrors("email");
+            $this->addError("mobile","Mobile number is required.");
+            //$this->addError("email","You need to fill either Mobile or Email");
+        }
+        //else if(!empty($this->mobile)){
+        //    $this->clearErrors("email");
+        //}
+        $isPost=\Yii::$app->request->isPost;
+        $userid= Yii::$app->request->get("id",0);
+        if(isset($isPost) && $userid)
+            $mobile = \common\models\Profile::find()->where(["mobile" => $this->mobile])->andWhere(['!=', 'user_id', $userid])->one();
+        else   
+            $mobile = \common\models\Profile::find()->where(["mobile" => $this->mobile])->one();
+        
+        if(@$mobile->mobile){
+            $this->addError("mobile","Mobile number already in use.");
+        }
+        return $var;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
+    
+    public function create()
     {
-        return [
-            ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentity($id)
-    {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
-    }
-
-    /**
-     * Finds user by password reset token
-     *
-     * @param string $token password reset token
-     * @return static|null
-     */
-    public static function findByPasswordResetToken($token)
-    {
-        if (!static::isPasswordResetTokenValid($token)) {
-            return null;
+        if ($this->getIsNewRecord() == false) {
+            throw new \RuntimeException('Calling "' . __CLASS__ . '::' . __METHOD__ . '" on existing user');
         }
 
-        return static::findOne([
-            'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
-        ]);
-    }
+        $transaction = $this->getDb()->beginTransaction();
 
-    /**
-     * Finds out if password reset token is valid
-     *
-     * @param string $token password reset token
-     * @return bool
-     */
-    public static function isPasswordResetTokenValid($token)
-    {
-        if (empty($token)) {
-            return false;
+        try {
+            $this->password = $this->password == null ? Password::generate(8) : $this->password;
+
+            $this->trigger(self::BEFORE_CREATE);
+
+            if (!$this->save()) {
+                $transaction->rollBack();
+                return false;
+            }
+            
+            $this->confirm();
+
+            if(!empty($this->mobile)){
+                \common\helpers\SmsHelper::send($this->mobile, $this->message($this->username,$this->password));
+            }
+
+            $settings = \common\models\Settings::find()->where(["name" => "settings"])->one();
+            $settings = json_decode(@$settings->value);
+            if(@$settings->admin_email){
+                Yii::$app->params["adminEmail"] = $settings->admin_email;
+                // setting admin email form database
+            }
+            
+            $this->mailer->sendWelcomeMessage($this, null, true);
+
+            $this->trigger(self::AFTER_CREATE);
+            
+            $this->profile->mobile=$this->mobile;
+            $this->profile->public_email=$this->email;
+            $this->profile->enrollment_number=$this->username;
+            $this->profile->save();
+            
+            $transaction->commit();
+            
+            return true;
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            \Yii::warning($e->getMessage());
+            throw $e;
         }
-
-        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
-        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
-        return $timestamp + $expire >= time();
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getId()
+    
+    public function afterSave($insert, $changedAttributes) {
+        parent::afterSave($insert, $changedAttributes);
+        $this->profile->mobile=$this->mobile;
+        $this->profile->public_email=$this->email;
+        $this->profile->enrollment_number=$this->username;
+        $this->profile->save();
+    }
+    
+    public function resendPassword()
     {
-        return $this->getPrimaryKey();
+        $this->password = Password::generate(8);
+        $this->save(false, ['password_hash']);
+        if(@$this->profile->mobile){
+            \common\helpers\SmsHelper::send(@$this->profile->mobile, $this->message($this->username,$this->password));
+        }
+        return $this->mailer->sendGeneratedPassword($this, $this->password);
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAuthKey()
-    {
-        return $this->auth_key;
+    
+    public function message($username,$password){
+        return 'Your CHDBAR association account has been created, Your Username is '.$username.' and Password is '.$password;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->getAuthKey() === $authKey;
-    }
-
+    
     /**
      * Validates password
      *
@@ -152,38 +123,34 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
-
-    /**
-     * Generates password hash from password and sets it to the model
-     *
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+    
+    
+    public function resetPassword($password){        
+        return $this->sendNewPasswordToUser(Yii::$app->security->generateRandomString(8));
+    }
+    
+    
+    public function sendNewPasswordToUser($password){
+        if(parent::resetPassword($password)){            
+            return $password;
+        }
+        return false;
     }
 
-    /**
-     * Generates "remember me" authentication key
-     */
-    public function generateAuthKey()
-    {
-        $this->auth_key = Yii::$app->security->generateRandomString();
+    public function getProfile(){
+        return $this->hasOne(Profile::className(), ['user_id' => 'id']);
     }
-
-    /**
-     * Generates new password reset token
-     */
-    public function generatePasswordResetToken()
-    {
-        $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+    
+    public static function findByUsername($username) {
+        $user = self::find()
+            ->where([
+                "username" => $username
+            ])
+            ->one();
+        if (!count($user)) {
+            return null;
+        }
+        return new static($user);
     }
-
-    /**
-     * Removes password reset token
-     */
-    public function removePasswordResetToken()
-    {
-        $this->password_reset_token = null;
-    }
+    
 }
