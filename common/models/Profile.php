@@ -101,7 +101,7 @@ class Profile extends BaseProfile
         if($designation != null ){
             $profile['designation'] = $designation->getAttributes();
         }else{
-            $profile['designation'] = [];
+            $profile['designation'] = null;
         }
         
         $bloodGroup = @$this->getBloodGroup()->one();
