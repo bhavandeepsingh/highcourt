@@ -26,10 +26,7 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            //'identityClass' => 'common\models\User',
-            //'enableAutoLogin' => true,
-            //'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
-            'identityCookie' => [
+           'identityCookie' => [
                 'name'     => '_backendIdentity',
                 'path'     => 'backend/',
                 'httpOnly' => true,
