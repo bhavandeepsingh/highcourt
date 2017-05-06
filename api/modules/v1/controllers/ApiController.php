@@ -75,4 +75,16 @@ class ApiController extends \yii\rest\Controller{
         $this->dataprovider = $dataprovider;
         return $this->success(['list' => $dataprovider->getModels(), 'pagination' => $this->pagination()], $debug); 
     }
+    
+    public function getErrorMessage($error){
+        $message = "";
+        if(is_array($error) && count($error) > 0){
+            foreach($error as $v){
+                $message = $v;
+                break;
+            }
+        }
+        return $message;
+    }
+    
 }

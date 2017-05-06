@@ -18,6 +18,7 @@ class Profile extends BaseProfile
             /*'websiteUrl'           => ['website', 'url'],*/
             'nameLength'           => ['name', 'string', 'max' => 255],
             'publicEmailLength'    => ['public_email', 'string', 'max' => 255],
+            'publicEmailUnique'    => ['public_email', 'unique'],
             /*'gravatarEmailLength'  => ['gravatar_email', 'string', 'max' => 255],*/
             'locationLength'       => ['location', 'string', 'max' => 255],
             'websiteLength'        => ['website', 'string', 'max' => 255],
