@@ -37,7 +37,7 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
             //'name',
             [
                 'label' => 'Name',
-                'value' => function($data){return \common\models\Judges::gender($data);},
+                'value' => function($data){return $data->nameWithSubtitle;},
             ],
             'address',
             'dob',

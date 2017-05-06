@@ -7,7 +7,6 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Notification */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
 <div class="notification-form">
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
