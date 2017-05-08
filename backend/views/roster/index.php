@@ -31,6 +31,7 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
             //'description:ntext',
             [
                 'label' => 'Description',
+                'format'=> 'raw',
                 'value' => function($data){ return substr($data->description,0,30);}
             ],
             [

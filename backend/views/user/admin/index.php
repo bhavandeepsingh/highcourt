@@ -40,15 +40,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'username',
         'email:email',
         [
-            'attribute' => 'flags',
+            'attribute' => 'is_executive',
             'label' => 'Executive',
             'format' => 'raw',
-            'filter' => true,
+            'filter' => [0 => "Member",1 => "Executive"],
             'value' => function($data){
-                if($data->id==1){
-                    return 'Active';
+                if($data->profile->executive==1){
+                    return 'Executive';
                 }
-                return 'Inactive';
+                return 'Member';
             }
         ],
         /*[
@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
             },
         ],
 
-        [
+        /*[
           'attribute' => 'last_login_at',
           'value' => function ($model) {
             if (!$model->last_login_at || $model->last_login_at == 0) {
@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 return date('Y-m-d G:i:s', $model->last_login_at);
             }
           },
-        ],
+        ],*/
         [
             'header' => Yii::t('user', 'Confirmation'),
             'value' => function ($model) {

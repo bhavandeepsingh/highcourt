@@ -5,25 +5,15 @@
 <body>
 <center>
 
-<?php include('Crypto.php') ?>
+<?php include('Crypto.php')?>
 <?php 
 
 	error_reporting(0);
 	
-	$merchant_data='131798';
-	$access_code='AVVI70ED44CC60IVCC';//Shared by CCAVENUES
-	$working_key='9859EA98A108D305C1EB7DA60B03EA23';//Shared by CCAVENUES
-
-	// $arr=[
-	// 	"order_id"		=>	"CHB0001",
-	// 	"currency"		=>	"INR",
-	// 	"currency"		=>	200,
-	// 	"language"		=>	"en",
-	// 	"redirect_url"	=>	"http://www.squareloops.com/success",
-	// 	"cancel_url"	=>	"http://www.squareloops.com/cancel",
-	// 	"SUB-MERCHANT TEST" => 1,
-	// ];
-
+	$merchant_data='';
+	$working_key='';//Shared by CCAVENUES
+	$access_code='';//Shared by CCAVENUES
+	
 	foreach ($_POST as $key => $value){
 		$merchant_data.=$key.'='.$value.'&';
 	}

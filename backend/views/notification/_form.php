@@ -7,7 +7,6 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\Notification */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
 <div class="notification-form">
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
@@ -42,7 +41,7 @@ use yii\widgets\ActiveForm;
     <div class="form-group">
         <?php
             if($model->is_file){
-                echo "<a class='btn btn-success' style='margin-bottom:10px;' href='".Yii::$app->urlManager->baseUrl."/../../uploads/notifications/".$model->id."/".$model->filename."'>"
+                echo "<a class='btn btn-success' target='_blank' style='margin-bottom:10px;' href='".Yii::$app->urlManager->baseUrl."/../../uploads/notifications/".$model->id."/".$model->filename."'>"
                      ."<span class='glyphicon glyphicon-download-alt'></span></a><div class='clearfix'></div>";
             }
         ?> <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

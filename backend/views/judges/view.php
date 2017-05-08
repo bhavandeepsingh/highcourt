@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'name',
             [
                 'label' => 'Name',
-                'value' => function($model){return \common\models\Judges::gender($model);},
+                'value' => function($model){return $model->nameWithSubtitle;},
             ],
             'address',
             'landline',

@@ -15,9 +15,8 @@ return [
     'modules' => [
         'user' => [
             'as backend' => [
-                'loginUrl' => ['user/security/login'],
                 'class' => 'dektrium\user\filters\BackendFilter',
-                'controllers' => ['profile', 'recovery', 'registration', 'settings']
+                'controllers' => ['profile', 'recovery', 'registration', 'settings'],
             ],
         ],
     ],
@@ -34,6 +33,7 @@ return [
                 'path'     => 'backend/',
                 'httpOnly' => true,
             ],
+            
         ],
         'view' => [
             'theme' => [
@@ -88,6 +88,8 @@ return [
                 'UserSearch'=> 'common\models\UserSearch',
                 'Profile'   => 'common\models\Profile',
             ],
+            'enableRegistration' => false,
+            'enableConfirmation' => true,
         ],
     ],
     'params' => $params,

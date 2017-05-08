@@ -37,7 +37,7 @@ class Judges extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','gender', 'address', 'dob', 'ext_no', 'date_of_appointment', 'date_of_retirement', 'court_room', 'bio_graphy'], 'required'],
+            [['name','gender', 'address', 'dob', 'ext_no', 'date_of_appointment', 'court_room', 'bio_graphy'], 'required'],
             [['dob','gender', 'date_of_appointment', 'date_of_retirement'], 'safe'],
             [['bio_graphy', 'landline'], 'string'],
             [['created_at', 'updated_at'], 'integer'],
@@ -79,8 +79,23 @@ class Judges extends \yii\db\ActiveRecord
     public function getJudgePicSrc(){             
         return UploadForm::getJudgeProfilePic($this->id);
     }
-    public static function gender($data){
-        if($data->gender == 1){return 'Ms'.' '.$data->name;}elseif($data->gender == 2){return 'Miss'.' '.$data->name;}elseif($data->gender == 3){return 'Mrs'.' '.$data->name;}elseif($data->gender == 4){return 'Ms'.' '.$data->name;}
+    public function getSubtitleText(){
+        return $this->getSubtitle($this->gender);
+    }
+    public function getSubtitle($index = NULL){
+        $array = [
+            1 => "Mr.",
+            2 => "Miss",
+            3 => "Mrs",
+            4 => "Ms",
+        ];
+        if($index!=NULL){
+            return $array[$index];
+        }
+        return $array;
     }
     
+    public function getNameWithSubtitle(){
+        return "Hon'ble ".$this->getSubtitleText()." ".$this->name;
+    }
 }

@@ -10,12 +10,12 @@ foreach ($userroles as $key => $role){
     if($key=="admin" || $key=="author"){
         $flag=false;
     }
-}
+}/*
 if(!Yii::$app->user->isGuest && $flag==true){
     echo "<html><body><p style='text-align:center;'>You are not authorized to view this page</p>";
     echo "</body></html>";
     exit;
-}
+}*/
 //echo urldecode(Yii::$app->request->url);die;
 //echo preg_match("/(user\/registration\/resend|user\/registration\/register)/", urldecode(Yii::$app->request->url));
 if(Yii::$app->user->isGuest && !preg_match("/user\/security\/login/", urldecode(Yii::$app->request->url))){
@@ -42,6 +42,8 @@ if (Yii::$app->controller->action->id === 'login') {
     dmstr\web\AdminLteAsset::register($this);
 
     $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
+    //$this->registerJsFile('https://cloud.tinymce.com/stable/tinymce.min.js?api_key=pd5o516w1etfa6ix6afk0kurj1kuahvwfbwsd276lbqw6zu7', [yii\web\JqueryAsset::className()]);
+    //$this->registerJs("tinymce.init({ selector:'textarea' });");
     ?>
     <?php $this->beginPage() ?>
     <!DOCTYPE html>

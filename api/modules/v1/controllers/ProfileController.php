@@ -22,7 +22,7 @@ class ProfileController extends ApiController{
            UploadForm::uploadUserProfilePic($model->user_id);                                       
            return $this->success(['user' => $model->getProfileDataApi()]);
         } else {
-            return $this->eror(['message' => $model->getFirstError()]);
+            return $this->error(['message' => $this->getErrorMessage($model->getFirstErrors())]);
         }
         
     }

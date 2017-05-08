@@ -63,10 +63,10 @@
 		        	<td>Billing Country	:</td><td><input type="text" name="billing_country" value="India"/></td>
 		        </tr>
 		        <tr>
-		        	<td>Billing Tel	:</td><td><input type="text" name="billing_tel" value="9876543210"/></td>
+		        	<td>Billing Tel	:</td><td><input type="text" name="billing_tel" value="9595226054"/></td>
 		        </tr>
 		        <tr>
-		        	<td>Billing Email	:</td><td><input type="text" name="billing_email" value="test@test.com"/></td>
+		        	<td>Billing Email	:</td><td><input type="text" name="billing_email" value="atul.kadam@avenues.info"/></td>
 		        </tr>
 		        <tr>
 		        	<td colspan="2">Shipping information(optional)</td>
@@ -90,7 +90,7 @@
 		        	<td>shipping Country	:</td><td><input type="text" name="delivery_country" value="India"/></td>
 		        </tr>
 		        <tr>
-		        	<td>Shipping Tel	:</td><td><input type="text" name="delivery_tel" value="9876543210"/></td>
+		        	<td>Shipping Tel	:</td><td><input type="text" name="delivery_tel" value="9595226054"/></td>
 		        </tr>
 		        <tr>
 		        	<td>Merchant Param1	:</td><td><input type="text" name="merchant_param1" value="additional Info."/></td>

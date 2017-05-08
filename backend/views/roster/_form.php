@@ -46,7 +46,7 @@ use dosamigos\datepicker\DatePicker;
     $this->registerCssFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css");
     $this->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js", ['depends' => [yii\web\JqueryAsset::className()]]);
     echo $this->registerJs('
-        $("#roster-date").datepicker({format : "yyyy-mm-dd",endDate:"0d"});
+        $("#roster-date").datepicker({format : "yyyy-mm-dd"});
         
     ');
 ?>

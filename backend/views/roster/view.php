@@ -30,7 +30,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             //'id',
             'title:ntext',
-            'description:ntext',
+            [
+                'attribute' => 'description',
+                'format' => 'raw',
+                'value' => @$model->description,
+            ],
             [
                 'label' => 'Bench Name',
                 'value' => @$model->bench->name

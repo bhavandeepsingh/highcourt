@@ -25,18 +25,20 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
+            //['class' => 'yii\grid\SerialColumn'],
+            //'id',
+            'title',
+            'description:ntext',
             [
                 'label' => 'Files',
                 'format' => 'raw',
-                'value' => function($data){ 
-                    return Html::img(\common\models\UploadForm::getNotificationFile($data->id), ['width' => 100]);
+                'value' => function($data){
+                    if($data->is_file && strlen($data->filename)){
+                        return "<a class='btn btn-success' target='_blank' style='margin-bottom:10px;' href='".Yii::$app->urlManager->baseUrl."/../../uploads/notifications/".$data->id."/".$data->filename."'>"
+                             ."<span class='glyphicon glyphicon-download-alt'></span></a><div class='clearfix'></div>";
+                    }else{ return "No file selected.";}
                 }
             ],
-            'title',
-            'description:ntext',
             //'sender_id',
             //'reciever_id',
             // 'created_at',
