@@ -41,11 +41,13 @@ class NotificationSearch extends Notification
      */
     public function search($params = [], $login_id = 0, $as_array = false)
     {
-        $query = Notification::find();
+        $this->login_id = $login_id;
+        
+        $query = Notification::find()->alias('n');
 
         // add conditions that should always apply here
         
-        $query->orderBy(["id" => SORT_DESC]);
+        $query->orderBy(["n.id" => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -71,7 +73,11 @@ class NotificationSearch extends Notification
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description]);
         
-        $query->addSelect(['*', 'getNotificationImageSrc("'.UploadForm::getNotificationTypePathApi().'", id, filename) as notification_src']);
+        $query->joinWith(['isRead' => function($q){
+            $q->onCondition(['nS.user_id' => $this->login_id]);
+        }], false, 'LEFT JOIN');
+        
+        $query->addSelect(['n.*', 'getNotificationImageSrc("'.UploadForm::getNotificationTypePathApi().'", n.id, n.filename) as notification_src', 'nS.id as isRead']);
         
         if($as_array) $query->asArray(true);
         
