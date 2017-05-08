@@ -87,5 +87,16 @@ class NotificationSearch extends Notification
     public static function getNotifactionDataApi($params = [], $login_id = 0, $as_array = false){
         return self::getInstance()->search($params, $login_id, $as_array);
     }
-    
+     public static function getUnReadCountApi($params = [], $login_id = 0, $as_array = false){
+        return self::getInstance()->unReadCoun($params, $login_id, $as_array);
+    }
+    public function unReadCoun($params = [], $login_id = 0, $as_array = false){
+         $this->login_id = $login_id;
+        $query = Notification::find()->alias('n');
+        $query->JoinWith(['isRead'=> function($q){
+            $q->onCondition(['nS.user_id' => $this->login_id]);
+        }], false, 'LEFT JOIN');
+        return $query->where('nS.user_id IS NULL')->count();
+         
+    }
 }
