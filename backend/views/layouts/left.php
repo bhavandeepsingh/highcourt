@@ -77,6 +77,10 @@
             $menu[]=['label' => 'Banners', 'icon' => 'fa fa-picture-o', 'url' => ['/banners']];
             $menu[]=['label' => 'Holidays', 'icon' => 'fa fa-tree', 'url' => ['/holidays']];
             $menu[]=['label' => 'Settings', 'icon' => 'fa fa-cog', 'url' => ['/settings']];
+
+            $menu[]=['label' => 'Import users', 'icon' => 'fa fa-file-excel-o', 'url' => ['/excel']];
+
+
             $menu[]=['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest];
             
         ?>
