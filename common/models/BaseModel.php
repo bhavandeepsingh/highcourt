@@ -3,7 +3,9 @@ namespace common\models;
 
 class BaseModel extends \yii\db\ActiveRecord{        
    
-    
+    public $login_id;
+
+
     public function getFormatedCreateAt(){
         return $this->getFormateddate($this->created_at);
     }

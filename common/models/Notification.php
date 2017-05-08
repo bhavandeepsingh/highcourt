@@ -79,4 +79,9 @@ class Notification extends BaseModel
         $this->is_file = self::$_NOTIFICTION_HAS_FILE;
         $this->save();
     }
+    
+    public function getIsRead(){
+        return $this->hasOne(NotificationStatus::className(), ['notification_id' => 'id'])->alias('nS');
+    }
+    
 }
