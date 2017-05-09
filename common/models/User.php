@@ -40,6 +40,81 @@ class User extends BaseUser
         }
         return $var;
     }
+
+    public function insert_import_data($data){
+
+           if ($this->getIsNewRecord() == false) 
+           {
+             throw new \RuntimeException('Calling "' . __CLASS__ . '::' . __METHOD__ . '" on existing user');
+            }
+
+
+
+        $transaction = $this->getDb()->beginTransaction();
+
+        try {
+            $this->password = $this->password == null ? Password::generate(8) : $this->password;
+
+            
+
+            $this->trigger(self::BEFORE_CREATE);
+
+            if (!$this->save()) {
+                $transaction->rollBack();
+                return false;
+            }
+            
+            $this->confirm();
+
+            if(!empty($this->mobile))
+            {
+                //\common\helpers\SmsHelper::send($this->mobile, $this->message($this->username,$this->password));
+            }
+
+            $settings = \common\models\Settings::find()->where(["name" => "settings"])->one();
+            $settings = json_decode(@$settings->value);
+
+            echo $settings->admin_email;
+
+            //die;
+            
+            if(@$settings->admin_email)
+            {
+                Yii::$app->params["adminEmail"] = $settings->admin_email;
+                // setting admin email form database
+            }
+
+           
+            
+            $this->mailer->sendWelcomeMessage($this, null, true);
+
+            $this->trigger(self::AFTER_CREATE);
+            
+            $this->profile->mobile=$this->mobile;
+            $this->profile->public_email=$this->email;
+            $this->profile->enrollment_number=$this->username;
+
+            /*  @abr  */
+
+            $this->profile->name=$data['name'];
+            $this->profile->residential_address=$data['address'];
+           
+            /*  @abr  */
+            
+
+            $this->profile->save();
+            
+            $transaction->commit();
+            
+            return true;
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            \Yii::warning($e->getMessage());
+            throw $e;
+        }
+    
+
+    }
     
     public function create()
     {

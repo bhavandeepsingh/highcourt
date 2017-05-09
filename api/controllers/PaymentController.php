@@ -15,23 +15,24 @@ class PaymentController extends Controller
     public $enableCsrfValidation = false;
     
     protected $merchant_id = '131798';
-    protected $access_code = 'AVVI70ED44CC60IVCC';//Shared by CCAVENUES
-    protected $working_key = '9859EA98A108D305C1EB7DA60B03EA23';//Shared by CCAVENUES
+    protected $access_code = 'AVEI70EE66AS85IESA';//Shared by CCAVENUES
+    protected $working_key = 'BF0E1C147318F719F0C6E7CF49A56C47';//Shared by CCAVENUES
     
     public function actionIndex()
     {
         //return $this->redirect(\yii\helpers\Url::to("success"));die;
         $req = Yii::$app->request;
-        if(!$req->post("user_id")){ return "Invalid User ID."; die;}
-        if(empty($req->post("amount"))){ return "Please Enter a valid amount."; die;}
+        //if(!$req->post("user_id")){ return "Invalid User ID."; die;}
+        //if(empty($req->post("amount"))){ return "Please Enter a valid amount."; die;}
+        $profile = Profile::find()->where(["user_id" => 1])->one();//$req->post("user_id")
         $payment = new PaymentLog();
-        $payment->user_id           =   $req->post("user_id");
-        $payment->amount            =   $req->post("amount");
+        $payment->user_id           =   1;//$req->post("user_id");
+        $payment->amount            =   1;//$req->post("amount");
         $payment->payment_type      =   1;
         $payment->status            =   PaymentLog::$INIT;//$req->post("payment_type");
         $payment->save();
         
-        $profile = Profile::find(1)->one();//$req->post("user_id")
+        
         $data = [
             'access_code'   =>  $this->access_code,
             'working_key'   =>  $this->working_key,
@@ -65,14 +66,13 @@ class PaymentController extends Controller
         include(__DIR__."/../../../NON_SEAMLESS_KIT/Crypto.php");
     	$req = Yii::$app->request;
         
-        //$encResponse=$req->post("encResp");			//This is the response sent by the CCAvenue Server
-	$encResponse=$req->post("encRequest");
-        $rcvdString=decrypt($encResponse, $this->working_key);		//Crypto Decryption used as per the specified working key.
+        $encResponse=$req->post("encResp");			//This is the response sent by the CCAvenue Server
+	$rcvdString=decrypt($encResponse, $this->working_key);		//Crypto Decryption used as per the specified working key.
 	$order_status="";
 	$decryptValues=explode('&', $rcvdString);
 	$dataSize=sizeof($decryptValues);
 	
-        echo "<center>";
+        //echo "<center>";
         
         for($i = 0; $i < $dataSize; $i++) 
 	{
@@ -87,27 +87,34 @@ class PaymentController extends Controller
             default: $this->Illegal($decryptValues); break;
         }
         
-	echo "<br><br>";
-	echo "<table cellspacing=4 cellpadding=4>";
-	for($i = 0; $i < $dataSize; $i++) 
-	{
-            $information=explode('=',$decryptValues[$i]);
-            if($information[0] == "language" || $information[0] == "redirect_url" || $information[0] == "cancel_url") continue;
-            echo '<tr><td>'.$information[0].'</td><td>'.$information[1].'</td></tr>';
-	}
-	echo "</table><br>";
-	echo "</center>";
-        
-        //require(__DIR__."/../../../NON_SEAMLESS_KIT/ccavRequestHandler.php");
+//	echo "<br><br>";
+//	echo "<table cellspacing=4 cellpadding=4>";
+//	for($i = 0; $i < $dataSize; $i++) 
+//	{
+//            $information=explode('=',$decryptValues[$i]);
+//            if($information[0] == "language" || $information[0] == "redirect_url" || $information[0] == "cancel_url") continue;
+//            echo '<tr><td>'.$information[0].'</td><td>'.$information[1].'</td></tr>';
+//	}
+//	echo "</table><br>";
+//	echo "</center>";
     }
     
     public function Success($res){
-//        $order_id   = explode("=",$res[0]);
-//        $payment_id = str_replace("CHB00", "", $order_id[1]);
-//        $payment = PaymentLog::find($payment_id)->one();
-//        $payment->status = PaymentLog::$SUCCESS;
-//        $payment->save();
-        echo "<br>Your credit card has been charged and your transaction is successful. We will be shipping your order to you soon.";
+        $order_id   = explode("=",$res[0]);
+        $payment_id = str_replace("CHB00", "", $order_id[1]);
+        $payment = PaymentLog::find()->where(["id" => $payment_id])->one();
+        $resArray = [];
+        foreach($res as $key=>$value){
+            $data = explode("=",$value);
+            $resArray[$data[0]] = $data[1];
+        }
+        if($payment){
+            $payment->response = json_encode($resArray);
+            $payment->status = PaymentLog::$SUCCESS;
+            $payment->save();
+            echo json_encode((array)$payment->attributes);
+        }
+        exit;
     }
     
     public function Aborted($res){
