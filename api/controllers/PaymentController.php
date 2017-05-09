@@ -13,5 +13,20 @@ class PaymentController extends Controller
     {
     	require(__DIR__."/../../../NON_SEAMLESS_KIT/ccavRequestHandler.php");
     }
+    
+    public function actionSuccess()
+    {
+    	require(__DIR__."/../../../NON_SEAMLESS_KIT/ccavRequestHandler.php");
+    }
+    
+    public function actionCancel()
+    {
+    	require(__DIR__."/../../../NON_SEAMLESS_KIT/ccavRequestHandler.php");
+    }
+    
+    public function actionError()
+    {
+    	require(__DIR__."/../../../NON_SEAMLESS_KIT/ccavRequestHandler.php");
+    }
 
 }

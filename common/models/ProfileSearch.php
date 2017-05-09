@@ -72,15 +72,15 @@ class ProfileSearch extends Profile
 
     public static function getApiExecutiveList($params = [], $login_id = 0, $as_array = false){
         $model= new self();
-        $query = $model->getQueryDataProvider($params, $login_id, $as_array)->orderBy(["weight" => SORT_ASC]);
+        $query = $model->getQueryDataProvider($params, $login_id, $as_array)->orderBy(["weight" => SORT_DESC]);
         return new ActiveDataProvider([
-            'query' => $query->andWhere(['executive' => 1])
+            'query' => $query->andWhere(['executive' => 1])->limit(100)
         ]);
     }
     
     public static function getApiMemberList($params = [], $login_id = 0, $as_array = false){
         $model = new self;
-        $query = $model->getQueryDataProvider($params, $login_id, $as_array);
+        $query = $model->getQueryDataProvider($params, $login_id, $as_array)->orderBy(["name" => SORT_ASC]);
          
         $query->leftJoin("auth_assignment aA", ['and','aA.user_id','p.user_id', ['!=','aA.item_name','admin'], ['!=','aA.item_name','author']]);
         
