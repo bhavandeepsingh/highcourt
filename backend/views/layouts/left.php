@@ -77,6 +77,7 @@
             $menu[]=['label' => 'Case Law', 'icon' => 'fa fa-legal', 'url' => ['/case-law']];
             $menu[]=['label' => 'Payment History', 'icon' => 'fa fa-money', 'url' => ['/payment-log']];
             $menu[]=['label' => 'Notification', 'icon' => 'fa fa-envelope', 'url' => ['/notification']];
+            $menu[]=['label' => 'Case Law', 'icon' => 'fa fa-briefcase ', 'url' => ['/case-law']];
             $menu[]=['label' => 'Banners', 'icon' => 'fa fa-picture-o', 'url' => ['/banners']];
             $menu[]=['label' => 'Holidays', 'icon' => 'fa fa-tree', 'url' => ['/holidays']];
             $menu[]=['label' => 'Settings', 'icon' => 'fa fa-cog', 'url' => ['/settings']];

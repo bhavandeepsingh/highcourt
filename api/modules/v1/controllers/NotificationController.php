@@ -17,7 +17,8 @@ class NotificationController extends ApiController {
     }
     
     public function actionUnReadCount(){
-        return $this->success(["un_read_count" => 101]);
+        //return $this->success(["un_read_count" => 101]);
+        return $this->success(["un_read_count" => \common\models\NotificationSearch::getUnReadCountApi(\Yii::$app->request->post(),$this->loginId(),true)]);
     }
     
 }
