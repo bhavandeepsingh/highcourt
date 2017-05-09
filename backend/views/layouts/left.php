@@ -74,6 +74,7 @@
                 ['label' => 'Create Roster', 'icon' => 'fa fa-picture-o', 'url' => ['/roster']],
             ]];
             $menu[]=['label' => 'Notification', 'icon' => 'fa fa-envelope', 'url' => ['/notification']];
+            $menu[]=['label' => 'Case Law', 'icon' => 'fa fa-briefcase ', 'url' => ['/case-law']];
             $menu[]=['label' => 'Banners', 'icon' => 'fa fa-picture-o', 'url' => ['/banners']];
             $menu[]=['label' => 'Holidays', 'icon' => 'fa fa-tree', 'url' => ['/holidays']];
             $menu[]=['label' => 'Settings', 'icon' => 'fa fa-cog', 'url' => ['/settings']];
