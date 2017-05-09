@@ -9,7 +9,8 @@
 <?php 
 
 	error_reporting(0);
-	
+	echo "est";
+        die();
 	$merchant_data='131798';
 	$access_code='AVVI70ED44CC60IVCC';//Shared by CCAVENUES
 	$working_key='9859EA98A108D305C1EB7DA60B03EA23';//Shared by CCAVENUES

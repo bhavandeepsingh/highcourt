@@ -18,6 +18,12 @@ use yii\behaviors\TimestampBehavior;
  */
 class PaymentLog extends \yii\db\ActiveRecord
 {
+    public static $INIT  =   0;
+    public static $SUCCESS  =   1;
+    public static $ABORT    =   2;
+    public static $FAILURE  =   3;
+    public static $ILLEGAL  =   4;
+    public static $ERROR    =   5;
     /**
      * @inheritdoc
      */
@@ -32,7 +38,7 @@ class PaymentLog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['order_id', 'payment_type', 'status'], 'integer'],
+            [['user_id', 'payment_type', 'status'], 'integer'],
             [['response'], 'string'],
             [['payment_token'], 'string', 'max' => 255],
         ];
@@ -45,7 +51,7 @@ class PaymentLog extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'order_id' => 'Order ID',
+            'user_id' => 'User ID',
             'payment_type' => 'Payment Type',
             'payment_token' => 'Payment Token',
             'status' => 'Status',
