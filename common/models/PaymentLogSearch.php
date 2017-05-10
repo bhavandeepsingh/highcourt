@@ -18,7 +18,7 @@ class PaymentLogSearch extends PaymentLog
     public function rules()
     {
         return [
-            [['id', 'order_id', 'payment_type', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'user_id', 'payment_type', 'status', 'created_at', 'updated_at'], 'integer'],
             [['payment_token', 'response'], 'safe'],
         ];
     }
@@ -60,7 +60,7 @@ class PaymentLogSearch extends PaymentLog
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'order_id' => $this->order_id,
+            'user_id' => $this->user_id,
             'payment_type' => $this->payment_type,
             'status' => $this->status,
             'created_at' => $this->created_at,

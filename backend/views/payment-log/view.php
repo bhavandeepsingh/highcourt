@@ -29,9 +29,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'order_id',
+            'user_id',
             'payment_type',
-            'payment_token',
+            //'payment_token',
             'status',
             'response:ntext',
             'created_at',
