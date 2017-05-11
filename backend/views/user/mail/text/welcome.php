@@ -21,6 +21,8 @@
 <?= $user->password ?>
 <?php endif ?>
 
+<?= Yii::t('user', 'You can download Android App from https://goo.gl/L1jNZX and IOS App from https://goo.gl/GrKfnO') ?>.
+
 <?php if ($token !== null): ?>
 <?= Yii::t('user', 'In order to complete your registration, please click the link below') ?>.
 
@@ -30,5 +32,3 @@
 <?php endif ?>
 
 <?= Yii::t('user', 'If you did not make this request you can ignore this email') ?>.
-
-<?= Yii::t('user', 'You can download Android App from https://goo.gl/L1jNZX and IOS App from https://goo.gl/GrKfnO') ?>.
