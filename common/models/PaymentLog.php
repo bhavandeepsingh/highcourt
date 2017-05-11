@@ -16,7 +16,7 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class PaymentLog extends \yii\db\ActiveRecord
+class PaymentLog extends BaseModel
 {
     public static $INIT  =   0;
     public static $SUCCESS  =   1;
@@ -24,6 +24,17 @@ class PaymentLog extends \yii\db\ActiveRecord
     public static $FAILURE  =   3;
     public static $ILLEGAL  =   4;
     public static $ERROR    =   5;
+
+    public $_user;
+    
+    public static $_SUBSCRIPTION_PAYMENT = 1;
+    public static $_WELFAIR_PAYMENT = 2;
+    
+    public $subscription_log;
+    
+    public $welfair_log;
+
+
     /**
      * @inheritdoc
      */
@@ -63,12 +74,12 @@ class PaymentLog extends \yii\db\ActiveRecord
     
     public function getLog()
     {
-        return $this->hasMany(PaymentDatetime::class, ['payment_id' => 'id']);
+        return $this->hasMany(PaymentDatetime::className(), ['payment_id' => 'id']);
     }
     
     public function getUser()
     {
-        return $this->hasOne(\common\models\Profile::class, ['user_id' => 'user_id']);
+        return $this->hasOne(\common\models\Profile::className(), ['user_id' => 'user_id']);
     }
     
     public function behaviors()
@@ -76,5 +87,82 @@ class PaymentLog extends \yii\db\ActiveRecord
         return [
             TimestampBehavior::className(),
         ];
+    }
+    
+    public static function getUserLog(User $user){
+        $return = "";
+        $model = self::getInstance();
+        $model->_user = $user;
+        $return['subscription'] = $model->getSubscriptionPayments();
+        $return['welfair'] = $model->getWelfairPayments();
+        return $return;
+    }
+    
+    public function getSubscriptionPayments(){
+        return [
+            'log' => $this->getPaymentsLog(self::$_SUBSCRIPTION_PAYMENT, true),
+            'pending_from' => $this->getPendingFrom(self::$_SUBSCRIPTION_PAYMENT),
+            'pending_to' => $this->getPendingTo(self::$_SUBSCRIPTION_PAYMENT),
+            'amount' => $this->getPendingAmount(self::$_SUBSCRIPTION_PAYMENT)
+        ];
+    }        
+   
+    
+    public function getWelfairPayments(){
+        return [
+            'log' => $this->getPaymentsLog(self::$_WELFAIR_PAYMENT, true),
+            'pending_from' => $this->getPendingFrom(self::$_WELFAIR_PAYMENT),
+            'pending_to' => $this->getPendingTo(self::$_WELFAIR_PAYMENT),
+            'amount' => $this->getPendingAmount(self::$_WELFAIR_PAYMENT)
+        ];
+    }
+    
+    public function getPendingFrom($type){
+        return $this->getFromDate(($type == self::$_SUBSCRIPTION_PAYMENT)? $this->subscription_log: $this->welfair_log);
+    }
+    
+    public function getPendingTo($type){
+        return date('Y-m-d', time());
+    }
+    
+    public function getPendingAmount($type){        
+        $month = self::diffInMonths(date_create($this->getPendingFrom($type)), date_create($this->getPendingTo($type)));        
+        if($type == self::$_SUBSCRIPTION_PAYMENT){            
+            return $month * $this->_user->profile->designations->amount;
+        }else if($type == self::$_WELFAIR_PAYMENT){
+            return (($month >= 12)? ($month/12)+1 : 1) * 200;
+        }
+    }
+    
+    
+    public function getFromDate($data){        
+        if(isset($data[0]) && isset($data[0]['log'][0]) && isset($data[0]['log'][0]['date']))
+            return $data[0]['log'][0]['date'];
+        else 
+            return date("Y-m-d", $this->_user->created_at);
+    }
+
+
+
+
+    public function getPaymentsLog($type = "", $asArray = false){        
+        $log = PaymentLog::find()
+                ->with(['log' => function($q){
+                    $q->orderBy(['date'=> SORT_DESC]);
+                }])
+                ->andWhere(['payment_type' => $type])
+                ->asArray($asArray)->all();
+        if($type == self::$_SUBSCRIPTION_PAYMENT) $this->subscription_log = $log;
+        if($type == self::$_WELFAIR_PAYMENT) $this->welfair_log = $log;
+        return $log;
+    }
+    
+    public static function diffInMonths(\DateTime $date1, \DateTime $date2)
+    {
+        $diff =  $date1->diff($date2);
+
+        $months = $diff->y * 12 + $diff->m + $diff->d / 30;
+
+        return (int) round($months);
     }
 }

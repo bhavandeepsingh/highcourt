@@ -114,7 +114,11 @@ class Profile extends BaseProfile
     }
     
     public function getDesignation(){
-        return $this->hasOne(MembershipTypes::class, ['id' => 'designation']);
+        return $this->hasOne(MembershipTypes::className(), ['id' => 'designation']);
+    }
+    
+    public function getDesignations(){
+        return $this->hasOne(MembershipTypes::className(), ['id' => 'designation']);
     }
 
     public function getBloodGroup(){
