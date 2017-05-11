@@ -40,7 +40,7 @@ class PaymentLog extends \yii\db\ActiveRecord
         return [
             [['user_id', 'payment_type', 'status'], 'integer'],
             [['response'], 'string'],
-            [['payment_token'], 'string', 'max' => 255],
+            [['subscription_id'], 'safe'],
         ];
     }
 
@@ -53,12 +53,22 @@ class PaymentLog extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'payment_type' => 'Payment Type',
-            'payment_token' => 'Payment Token',
+            'subscription_id' => 'Subscription Id',
             'status' => 'Status',
             'response' => 'Response',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+    
+    public function getLog()
+    {
+        return $this->hasMany(PaymentDatetime::class, ['payment_id' => 'id']);
+    }
+    
+    public function getUser()
+    {
+        return $this->hasOne(\common\models\Profile::class, ['user_id' => 'user_id']);
     }
     
     public function behaviors()

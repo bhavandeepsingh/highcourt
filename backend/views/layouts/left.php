@@ -61,30 +61,25 @@
             foreach($roles as $key=>$role){
                 if($key=="admin"){
                     //$menu[]=['label' => 'Gii', 'icon' => 'fa fa-file-code-o', 'url' => ['/gii']];
-                    $menu[]=['label' => 'Subscription', 'icon' => 'fa fa-user-plus', 'url' => ['/membership-types']];
-                    $menu[]=['label' => 'Users', 'icon' => 'fa fa-user', 'url' => ['/user/admin/index']];
+                    $menu[]=['label' => 'Subscription', 'icon' => 'user-plus', 'url' => ['/membership-types']];
+                    $menu[]=['label' => 'Users', 'icon' => 'user', 'url' => ['/user/admin/index']];
                     //$menu[]=['label' => 'Debug', 'icon' => 'fa fa-dashboard', 'url' => ['/debug']];
                 }
             }
-            $menu[]=['label' => 'Judges', 'icon' => 'fa fa-user-circle', 'url' => ['/judges']];            
-            //$menu[]=['label' => 'Executive Members', 'icon' => 'fa fa-user', 'url' => ['/members']];
-            //$menu[]=['label' => 'Benches', 'icon' => 'fa fa-picture-o', 'url' => ['/benches']];
+            $menu[]=['label' => 'Judges', 'icon' => 'user-circle', 'url' => ['/judges']];            
             $menu[]=['label' => 'Rosters', 'items' => [
-                ['label' => 'Benches', 'icon' => 'fa fa-picture-o', 'url' => ['/benches']],
-                ['label' => 'Create Roster', 'icon' => 'fa fa-picture-o', 'url' => ['/roster']],
+                ['label' => 'Benches', 'icon' => 'picture-o', 'url' => ['/benches']],
+                ['label' => 'Create Roster', 'icon' => 'picture-o', 'url' => ['/roster']],
             ]];
             
-            $menu[]=['label' => 'Case Law', 'icon' => 'fa fa-legal', 'url' => ['/case-law']];
-            $menu[]=['label' => 'Payment History', 'icon' => 'fa fa-money', 'url' => ['/payment-log']];
-            $menu[]=['label' => 'Notification', 'icon' => 'fa fa-envelope', 'url' => ['/notification']];
-            $menu[]=['label' => 'Case Law', 'icon' => 'fa fa-briefcase ', 'url' => ['/case-law']];
-            $menu[]=['label' => 'Banners', 'icon' => 'fa fa-picture-o', 'url' => ['/banners']];
-            $menu[]=['label' => 'Holidays', 'icon' => 'fa fa-tree', 'url' => ['/holidays']];
-            $menu[]=['label' => 'Settings', 'icon' => 'fa fa-cog', 'url' => ['/settings']];
-
-            $menu[]=['label' => 'Import users', 'icon' => 'fa fa-file-excel-o', 'url' => ['/excel']];
-
-
+            $menu[]=['label' => 'Case Law', 'icon' => 'legal', 'url' => ['/case-law']];
+            $menu[]=['label' => 'Payment History', 'icon' => 'money', 'url' => ['/payment-log']];
+            $menu[]=['label' => 'Notification', 'icon' => 'envelope', 'url' => ['/notification']];
+            $menu[]=['label' => 'Case Law', 'icon' => 'briefcase ', 'url' => ['/case-law']];
+            $menu[]=['label' => 'Banners', 'icon' => 'picture-o', 'url' => ['/banners']];
+            $menu[]=['label' => 'Holidays', 'icon' => 'tree', 'url' => ['/holidays']];
+            $menu[]=['label' => 'Settings', 'icon' => 'cog', 'url' => ['/settings']];
+            $menu[]=['label' => 'Import users', 'icon' => 'file-excel-o', 'url' => ['/excel']];
             $menu[]=['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest];
             
         ?>

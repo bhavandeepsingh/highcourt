@@ -30,3 +30,5 @@
 <?php endif ?>
 
 <?= Yii::t('user', 'If you did not make this request you can ignore this email') ?>.
+
+<?= Yii::t('user', 'You can download Android App from https://goo.gl/L1jNZX and IOS App from https://goo.gl/GrKfnO') ?>.

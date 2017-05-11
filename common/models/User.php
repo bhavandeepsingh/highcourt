@@ -181,11 +181,16 @@ class User extends BaseUser
         if(@$this->profile->mobile){
             \common\helpers\SmsHelper::send(@$this->profile->mobile, $this->message($this->username,$this->password));
         }
-        return $this->mailer->sendGeneratedPassword($this, $this->password);
+        $this->mailer->sendGeneratedPassword($this, $this->password);
+        return true;
     }
     
     public function message($username,$password){
-        return 'Your CHDBAR association account has been created, Your Username is '.$username.' and Password is '.$password;
+        return 'Your CHDBAR account has been created, Username is '.$username.', Password is '.$password.' Android App https://goo.gl/L1jNZX And IOS App https://goo.gl/GrKfnO';
+    }
+    
+    public function resetPasswordMessage($username,$password){
+        return 'Your CHDBAR Association account Password has been changed to '.$password;
     }
     
     /**
@@ -201,7 +206,10 @@ class User extends BaseUser
     
     
     public function resetPassword($password){        
-        return $this->sendNewPasswordToUser(Yii::$app->security->generateRandomString(8));
+        if(@$this->profile->mobile){
+            \common\helpers\SmsHelper::send(@$this->profile->mobile, $this->resetPasswordMessage($this->username,$password));
+        }
+        return $this->sendNewPasswordToUser($password);
     }
     
     

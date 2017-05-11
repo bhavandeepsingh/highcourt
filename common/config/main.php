@@ -22,7 +22,13 @@ return [
     'modules' => [
         'user' => [
             'class' => 'dektrium\user\Module',
-            'admins' => ['admin']
+            'admins' => ['admin'],
+            'mailer' => [
+                'welcomeSubject'        => 'Welcome to Highcourt Bar Association',
+                //'confirmationSubject'   => 'Confirmation subject',
+                //'reconfirmationSubject' => 'Email change subject',
+                //'recoverySubject'       => 'Recovery subject',
+            ],
         ],
         'rbac' => 'dektrium\rbac\RbacWebModule',
     ],

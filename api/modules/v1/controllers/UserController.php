@@ -20,6 +20,7 @@ class UserController extends ApiController{
     public function actionResetPassword(){
         if(!$this->loginId()) return $this->errorLoginRequierd();            
         $model = new \common\models\PasswordResetForm($this->login_user);
+        $model->load(Yii::$app->request->post());
         if($model->load(Yii::$app->request->post()) && $model->validate()){
             return $this->success(['passwordReset' => $model->resetPassword()]);
         }
@@ -40,7 +41,6 @@ class UserController extends ApiController{
         return $this->success(['list' => \common\models\BloodGroups::find()->all()]);
     }
     
-
     public function actionExecutive(){
         return $this->dataProvider(\common\models\ProfileSearch::getApiExecutiveList(Yii::$app->request->post(), null, true));
     }

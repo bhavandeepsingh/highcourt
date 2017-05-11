@@ -19,7 +19,7 @@ class PaymentLogSearch extends PaymentLog
     {
         return [
             [['id', 'user_id', 'payment_type', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['payment_token', 'response'], 'safe'],
+            [['subscription_id', 'response'], 'safe'],
         ];
     }
 
@@ -67,7 +67,7 @@ class PaymentLogSearch extends PaymentLog
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'payment_token', $this->payment_token])
+        $query->andFilterWhere(['like', 'subscription_id', $this->subscription_id])
             ->andFilterWhere(['like', 'response', $this->response]);
 
         return $dataProvider;

@@ -42,7 +42,7 @@ class PaymentController extends Controller
                 "merchant_id"           =>      $this->merchant_id,
                 "order_id"		=>	"CHB00".$payment->id,
                 "currency"		=>	"INR",
-                "amount"		=>	200,
+                "amount"		=>	$payment->amount,
                 "language"		=>	"EN",
                 "redirect_url"          =>	\yii\helpers\Url::toRoute("success",true),
                 "cancel_url"            =>	\yii\helpers\Url::toRoute("cancel",true),
@@ -63,7 +63,7 @@ class PaymentController extends Controller
     
     public function actionSuccess()
     {
-        include(__DIR__."/../../../NON_SEAMLESS_KIT/Crypto.php");
+        include(__DIR__."/../../NON_SEAMLESS_KIT/Crypto.php");
     	$req = Yii::$app->request;
         
         $encResponse=$req->post("encResp");			//This is the response sent by the CCAvenue Server
@@ -104,16 +104,51 @@ class PaymentController extends Controller
         $payment_id = str_replace("CHB00", "", $order_id[1]);
         $payment = PaymentLog::find()->where(["id" => $payment_id])->one();
         $resArray = [];
-        foreach($res as $key=>$value){
-            $data = explode("=",$value);
+        foreach($res as $key => $value){
+            $data = explode("=", $value);
             $resArray[$data[0]] = $data[1];
         }
         if($payment){
             $payment->response = json_encode($resArray);
             $payment->status = PaymentLog::$SUCCESS;
             $payment->save();
-            echo json_encode((array)$payment->attributes);
+            
+            $payments = PaymentLog::find()->where(["user_id" => $payment->user_id, "status" => 1])
+            ->with(["log" => function($q){
+                $q->orderBy(["date" => SORT_DESC]);
+            }])->orderBy(["id" => SORT_DESC])->asArray()->all();
+            
+            if(!$payment){
+                $payments = Profile::find()->alias("p")->select("mT.amount,u.created_at,p.designation,p.user_id")
+                ->joinWith("designation mT", false, "RIGHT JOIN")
+                ->joinWith("user u",false,"RIGHT JOIN")->andWhere("u.id = 1")->asArray()->one();
+            }
+            return json_encode($payments);
+            //echo json_encode((array)$payment->attributes);
         }
+        exit;
+    }
+    
+    public function actionTest(){
+//        $payments = PaymentLog::find()->select("id,payment_type, subscription_id, amount,created_at")->where(["id" => 1, "status" => 1])->with(["log" => function($q){
+//            $q->orderBy(["date" => SORT_DESC]);
+//        }])->orderBy(["id" => SORT_DESC])->asArray()->all();
+        
+//        $payments = PaymentLog::find()->where(["id" => 1, "status" => 1])->with(["log" => function($q){
+//            $q->orderBy(["date" => SORT_DESC]);
+//        }])->orderBy(["id" => SORT_DESC])->asArray()->all();
+        
+        $payments = Profile::find()->alias("p")->select("mT.amount,u.created_at,p.designation,p.user_id")
+                ->joinWith("designation mT", false, "RIGHT JOIN")
+                ->joinWith("user u",false,"RIGHT JOIN")->andWhere("u.id = 1")->asArray()->one();
+        
+        print_r($payments);
+        //print_r($payments[0]->log[0]->date);
+        
+//        $payment = \common\models\PaymentDatetime::find()->alias("pD")->where(["pL.id" => 1])->joinWith(["payment" => function($q){
+//            $q->alias("pL");
+//        }],true,"RIGHT JOIN")->orderBy(["pD.date" => SORT_DESC])->asArray()->all();
+        
         exit;
     }
     
