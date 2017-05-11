@@ -103,7 +103,8 @@ class PaymentLog extends BaseModel
             'log' => $this->getPaymentsLog(self::$_SUBSCRIPTION_PAYMENT, true),
             'pending_from' => $this->getPendingFrom(self::$_SUBSCRIPTION_PAYMENT),
             'pending_to' => $this->getPendingTo(self::$_SUBSCRIPTION_PAYMENT),
-            'amount' => $this->getPendingAmount(self::$_SUBSCRIPTION_PAYMENT)
+            'amount' => $this->_user->profile->designations->amount,
+            'total_amount' => $this->getPendingAmount(self::$_SUBSCRIPTION_PAYMENT)
         ];
     }        
    
@@ -113,7 +114,8 @@ class PaymentLog extends BaseModel
             'log' => $this->getPaymentsLog(self::$_WELFAIR_PAYMENT, true),
             'pending_from' => $this->getPendingFrom(self::$_WELFAIR_PAYMENT),
             'pending_to' => $this->getPendingTo(self::$_WELFAIR_PAYMENT),
-            'amount' => $this->getPendingAmount(self::$_WELFAIR_PAYMENT)
+            'amount' => 200,
+            'total_amount' => $this->getPendingAmount(self::$_WELFAIR_PAYMENT)
         ];
     }
     
@@ -134,16 +136,12 @@ class PaymentLog extends BaseModel
         }
     }
     
-    
     public function getFromDate($data){        
         if(isset($data[0]) && isset($data[0]['log'][0]) && isset($data[0]['log'][0]['date']))
             return $data[0]['log'][0]['date'];
         else 
             return date("Y-m-d", $this->_user->created_at);
     }
-
-
-
 
     public function getPaymentsLog($type = "", $asArray = false){        
         $log = PaymentLog::find()
