@@ -53,7 +53,7 @@ class ProfileSearch extends Profile
         $this->load($params);
         $query->alias('p');
         $query->addSelect(['p.*', 'getImageSrc("'. \common\models\UploadForm::getUserTypePathApi() .'", p.user_id) as profilePic']);
-        $query->andFilterCompare("name", $this->name);
+        $query->andFilterCompare("p.name", $this->name);
         // add conditions that should always apply here
         if($this->name) {
             $query->orFilterWhere(['LIKE', 'p.name', $this->name]);
