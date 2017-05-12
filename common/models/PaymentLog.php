@@ -93,31 +93,21 @@ class PaymentLog extends BaseModel
         $return = "";
         $model = self::getInstance();
         $model->_user = $user;
-        $return['subscription'] = $model->getSubscriptionPayments();
-        $return['welfair'] = $model->getWelfairPayments();
+        $return['subscription'] = $model->getPayments(self::$_SUBSCRIPTION_PAYMENT);
+        $return['welfair'] = $model->getPayments(self::$_WELFAIR_PAYMENT);
         return $return;
     }
     
-    public function getSubscriptionPayments(){
+    public function getPayments($type){
         return [
-            'log' => $this->getPaymentsLog(self::$_SUBSCRIPTION_PAYMENT, true),
-            'pending_from' => $this->getPendingFrom(self::$_SUBSCRIPTION_PAYMENT),
-            'pending_to' => $this->getPendingTo(self::$_SUBSCRIPTION_PAYMENT),
+            'log' => $this->getPaymentsLog($type, true),
+            'pending_from' => $this->getPendingFrom($type),
+            'pending_to' => $this->getPendingTo($type),
             'amount' => $this->_user->profile->designations->amount,
-            'total_amount' => $this->getPendingAmount(self::$_SUBSCRIPTION_PAYMENT)
+            'number_count' => $this->getNumberCount($type),
+            'total_amount' => $this->getPendingAmount($type)
         ];
-    }        
-   
-    
-    public function getWelfairPayments(){
-        return [
-            'log' => $this->getPaymentsLog(self::$_WELFAIR_PAYMENT, true),
-            'pending_from' => $this->getPendingFrom(self::$_WELFAIR_PAYMENT),
-            'pending_to' => $this->getPendingTo(self::$_WELFAIR_PAYMENT),
-            'amount' => 200,
-            'total_amount' => $this->getPendingAmount(self::$_WELFAIR_PAYMENT)
-        ];
-    }
+    }          
     
     public function getPendingFrom($type){
         return $this->getFromDate(($type == self::$_SUBSCRIPTION_PAYMENT)? $this->subscription_log: $this->welfair_log);
@@ -127,12 +117,19 @@ class PaymentLog extends BaseModel
         return date('Y-m-d', time());
     }
     
+    public function getNumberCount($type){
+        $month = self::diffInMonths(date_create($this->getPendingFrom($type)), date_create($this->getPendingTo($type)));
+        if($type == self::$_SUBSCRIPTION_PAYMENT) return $month+1;            
+        else round(($month >= 12)? ($month/12)+1 : 1);        
+    }
+
+
     public function getPendingAmount($type){        
-        $month = self::diffInMonths(date_create($this->getPendingFrom($type)), date_create($this->getPendingTo($type)));        
+        $month = $this->getNumberCount($type);
         if($type == self::$_SUBSCRIPTION_PAYMENT){            
             return $month * $this->_user->profile->designations->amount;
         }else if($type == self::$_WELFAIR_PAYMENT){
-            return (($month >= 12)? ($month/12)+1 : 1) * 200;
+            return $month * 200;
         }
     }
     
