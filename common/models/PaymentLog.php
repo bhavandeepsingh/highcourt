@@ -120,7 +120,7 @@ class PaymentLog extends BaseModel
     public function getNumberCount($type){
         $month = self::diffInMonths(date_create($this->getPendingFrom($type)), date_create($this->getPendingTo($type)));
         if($type == self::$_SUBSCRIPTION_PAYMENT) return $month+1;            
-        else round(($month >= 12)? ($month/12)+1 : 1);        
+        else return round(($month >= 12)? ($month/12)+1 : 1);        
     }
 
 
