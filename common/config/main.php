@@ -24,10 +24,11 @@ return [
             'class' => 'dektrium\user\Module',
             'admins' => ['admin'],
             'mailer' => [
-                'welcomeSubject'        => 'Welcome to Highcourt Bar Association',
+                'welcomeSubject'        => 'Welcome To Highcourt Bar Association',
+                'NewPasswordSubject'    => 'Highcourt Bar Association Password Changed',
                 //'confirmationSubject'   => 'Confirmation subject',
                 //'reconfirmationSubject' => 'Email change subject',
-                //'recoverySubject'       => 'Recovery subject',
+                'recoverySubject'       => 'Highcourt Bar Association Password Recovery',
             ],
         ],
         'rbac' => 'dektrium\rbac\RbacWebModule',

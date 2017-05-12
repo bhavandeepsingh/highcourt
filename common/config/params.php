@@ -1,6 +1,6 @@
 <?php
 return [
-    'adminEmail' => 'ramaneverma2005@gmail.com',
-    'supportEmail' => 'ramaneverma2005@gmail.com',
+    'adminEmail' => 'info@uniquecoders.in',
+    'supportEmail' => 'info@uniquecoders.in',
     'user.passwordResetTokenExpire' => 3600,
 ];

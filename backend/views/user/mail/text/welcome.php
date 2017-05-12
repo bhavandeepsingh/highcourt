@@ -16,11 +16,10 @@
 <?= Yii::t('user', 'Hello') ?>,
 
 <?= Yii::t('user', 'Your account on {0} has been created', Yii::$app->name) ?>.
-<?php if ($module->enableGeneratingPassword): ?>
-<?= Yii::t('user', 'We have generated a password for you') ?>:
-<?= $user->password ?>
+<?= Yii::t('user', 'Your username is ') ?> <?= $user->username ?>
+<?php if ($showPassword || $module->enableGeneratingPassword): ?>
+    <?= Yii::t('user', ' and password is ') ?> <?= $user->password ?>
 <?php endif ?>
-
 <?= Yii::t('user', 'You can download Android App from https://goo.gl/L1jNZX and IOS App from https://goo.gl/GrKfnO') ?>.
 
 <?php if ($token !== null): ?>

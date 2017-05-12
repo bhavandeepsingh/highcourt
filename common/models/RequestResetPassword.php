@@ -2,7 +2,7 @@
 namespace common\models;
 
 use Yii;
-
+use dektrium\user\helpers\Password;
 /**
  * This is the model class for table "{{%judges}}".
  *
@@ -46,7 +46,7 @@ class RequestResetPassword extends \yii\base\Model
     }
     
     public function requestSend(){
-        return $this->_user->resetPassword(null);
+        return $this->_user->resetPassword(Password::generate(8));
     }
     
 }
