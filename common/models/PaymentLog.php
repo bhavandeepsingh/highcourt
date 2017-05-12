@@ -18,12 +18,13 @@ use yii\behaviors\TimestampBehavior;
  */
 class PaymentLog extends BaseModel
 {
-    public static $INIT  =   0;
+    public static $INIT     =   0;
     public static $SUCCESS  =   1;
-    public static $ABORT    =   2;
-    public static $FAILURE  =   3;
-    public static $ILLEGAL  =   4;
-    public static $ERROR    =   5;
+    public static $CANCEL   =   2;
+    public static $ABORT    =   3;
+    public static $FAILURE  =   4;
+    public static $ILLEGAL  =   5;
+    public static $ERROR    =   6;
 
     public $_user;
     
@@ -155,9 +156,7 @@ class PaymentLog extends BaseModel
     public static function diffInMonths(\DateTime $date1, \DateTime $date2)
     {
         $diff =  $date1->diff($date2);
-
         $months = $diff->y * 12 + $diff->m + $diff->d / 30;
-
         return (int) round($months);
     }
 }
