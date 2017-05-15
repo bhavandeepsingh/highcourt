@@ -46,7 +46,9 @@ class RequestResetPassword extends \yii\base\Model
     }
     
     public function requestSend(){
-        return $this->_user->resetPassword(Password::generate(8));
+        //Password::generate(8)
+        $pass = mt_rand(10000, 99999);
+        return $this->_user->resetPassword($pass);
     }
     
 }

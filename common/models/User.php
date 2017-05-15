@@ -53,7 +53,9 @@ class User extends BaseUser
         $transaction = $this->getDb()->beginTransaction();
 
         try {
-            $this->password = $this->password == null ? Password::generate(8) : $this->password;
+            //Password::generate(8)
+            $pass = mt_rand(10000, 99999);
+            $this->password = $this->password == null ? $pass : $this->password;
 
             
 
@@ -125,7 +127,9 @@ class User extends BaseUser
         $transaction = $this->getDb()->beginTransaction();
 
         try {
-            $this->password = $this->password == null ? Password::generate(8) : $this->password;
+            //Password::generate(8)
+            $pass = mt_rand(10000, 99999);
+            $this->password = $this->password == null ? $pass : $this->password;
 
             $this->trigger(self::BEFORE_CREATE);
 

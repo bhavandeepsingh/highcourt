@@ -13,13 +13,11 @@
  * @var dektrium\user\models\User
  */
 ?>
-<?= Yii::t('user', 'Hello') ?>,
-
-<?= Yii::t('user', 'Your account on {0} has been created', Yii::$app->name) ?>.
-<?= Yii::t('user', 'Your username is ') ?> <?= $user->username ?>
-<?php if ($showPassword || $module->enableGeneratingPassword): ?>
-    <?= Yii::t('user', ' and password is ') ?> <?= $user->password ?>
-<?php endif ?>
+<?= Yii::t('user', 'Your account for official of bar association has been created.') ?>
+<?= Yii::t('user', 'Your username is') ?> <?= $user->username ?>
+<?= Yii::t('user', 'And password is ') ?> <?= $user->password ?>
+App can be downloaded from <a href="https://goo.gl/L1jNZX">Google Playstore</a> and IOS App from <a href="https://goo.gl/GrKfnO">IOS App Store</a>.
+*official app
 <?= Yii::t('user', 'You can download Android App from https://goo.gl/L1jNZX and IOS App from https://goo.gl/GrKfnO') ?>.
 
 <?php if ($token !== null): ?>
