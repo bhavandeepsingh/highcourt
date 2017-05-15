@@ -21,14 +21,14 @@ class PaymentController extends Controller
     public function actionIndex()
     {
         $req = Yii::$app->request;
-        //if(!$req->post("user_id")){ return "Invalid User ID."; die;}
-        //if(empty($req->post("amount"))){ return "Please Enter a valid amount."; die;}
-        $profile = Profile::find()->where(["user_id" => 1])->one();//$req->post("user_id")
+        if(!$req->post("user_id")){ return "Invalid User ID."; die;}
+        if(empty($req->post("amount"))){ return "Please Enter a valid amount."; die;}
+        $profile = Profile::find()->where(["user_id" => $req->post("user_id")])->one();
         $payment = new PaymentLog();
-        $payment->user_id           =   1;//$req->post("user_id");
-        $payment->amount            =   1;//$req->post("amount");
-        $payment->payment_type      =   1;
-        $payment->status            =   PaymentLog::$INIT;//$req->post("payment_type");
+        $payment->user_id           =   $req->post("user_id");
+        $payment->amount            =   $req->post("amount");
+        $payment->payment_type      =   $req->post("payment_type");
+        $payment->status            =   PaymentLog::$INIT;
         $payment->save();
         
         
@@ -37,14 +37,14 @@ class PaymentController extends Controller
             'working_key'   =>  $this->working_key,
             'params'        =>  [
                 //necessary
-                //"tid"		=>	"",
+                //"tid"     =>  "",
                 "merchant_id"           =>      $this->merchant_id,
-                "order_id"		=>	"CHB00".$payment->id,
-                "currency"		=>	"INR",
-                "amount"		=>	$payment->amount,
-                "language"		=>	"EN",
-                "redirect_url"          =>	\yii\helpers\Url::toRoute("success",true),
-                "cancel_url"            =>	\yii\helpers\Url::toRoute("cancel",true),
+                "order_id"      =>  "CHB00".$payment->id,
+                "currency"      =>  "INR",
+                "amount"        =>  $payment->amount,
+                "language"      =>  "EN",
+                "redirect_url"          =>  \yii\helpers\Url::toRoute("success",true),
+                "cancel_url"            =>  \yii\helpers\Url::toRoute("cancel",true),
                 //"SUB-MERCHANT TEST" => 1,
                 // optional
                 "billing_name"      =>      @$profile->name,
@@ -60,22 +60,28 @@ class PaymentController extends Controller
         return $this->render("index", $data);
     }
     
+    public function parseResponse(){
+       include(__DIR__."/../../NON_SEAMLESS_KIT/Crypto.php");
+        $req = Yii::$app->request;
+        
+        $encResponse=$req->post("encResp");         //This is the response sent by the CCAvenue Server
+        $rcvdString=decrypt($encResponse, $this->working_key);      //Crypto Decryption used as per the specified working key.
+        $order_status="";
+        $decryptValues=explode('&', $rcvdString);
+        $dataSize=sizeof($decryptValues);
+        return $dataSize;
+    }
+    
+    
     public function actionSuccess()
     {
-        include(__DIR__."/../../NON_SEAMLESS_KIT/Crypto.php");
-    	$req = Yii::$app->request;
+        $dataSize = $this->parseResponse();
         
-        $encResponse=$req->post("encResp");			//This is the response sent by the CCAvenue Server
-	$rcvdString=decrypt($encResponse, $this->working_key);		//Crypto Decryption used as per the specified working key.
-	$order_status="";
-	$decryptValues=explode('&', $rcvdString);
-	$dataSize=sizeof($decryptValues);
-	
-        for($i = 0; $i < $dataSize; $i++) 
-	{
-		$information=explode('=',$decryptValues[$i]);
-		if($i==3)	$order_status=$information[1];
-	}
+            for($i = 0; $i < $dataSize; $i++) 
+        {
+            $information=explode('=',$decryptValues[$i]);
+            if($i==3)   $order_status=$information[1];
+        }
         
         switch ($order_status){
             case "Success": $this->Success($decryptValues); break;
@@ -90,14 +96,15 @@ class PaymentController extends Controller
     }
     
     public function savePaymentStatus($res,$status){
-        $payment_id = $this->getPaymentId($res);
+        $payment_id = 1;//$this->getPaymentId(1);
         $payment = PaymentLog::find()->where(["id" => $payment_id])->one();
-        $resArray = $this->getResultArray($res);
+
+        //$resArray = $this->getResultArray($res);        
         if($payment){
             $payment->response = json_encode($resArray);
             $payment->status = $status;
             $payment->save();
-            echo json_encode(PaymentLog::getUserLog(\common\models\User::find()->where(["id" => $payment->user_id])->one()));
+            echo "<html>". json_encode(array_merge(['status' => $status], PaymentLog::getUserLog(\common\models\User::find()->where(["id" => $payment->user_id])->one()))). "</html>";
         }
         die;
     }
@@ -108,6 +115,7 @@ class PaymentController extends Controller
     }
     
     public function getResultArray($res){
+        if(!is_array($res))return [];
         $resArray = [];
         foreach($res as $key => $value){
             $data = explode("=", $value);
@@ -130,7 +138,7 @@ class PaymentController extends Controller
     
     public function actionCancel()
     {
-        $this->savePaymentStatus($res, PaymentLog::$CANCEL);
+        $this->savePaymentStatus($this->parseResponse(), PaymentLog::$CANCEL);
     }
 
 }

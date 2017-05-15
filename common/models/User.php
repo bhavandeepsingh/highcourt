@@ -190,7 +190,7 @@ class User extends BaseUser
     }
     
     public function message($username,$password){
-        return 'Your CHDBAR account has been created, Username is '.$username.', Password is '.$password.' Android App https://goo.gl/L1jNZX And IOS App https://goo.gl/GrKfnO';
+        return 'Your account for bas association has been created, Username: '.$username.', Password:'.$password.' Apps Android https://goo.gl/L1jNZX And IOS https://goo.gl/GrKfnO';
     }
     
     public function resetPasswordMessage($username,$password){
