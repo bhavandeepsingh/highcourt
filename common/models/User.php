@@ -14,6 +14,8 @@ class User extends BaseUser
     public function rules() {
         $rules = parent::rules();
         $rules[] = [["mobile"], "integer", "max" => 9999999999, "message" => "Please enter a valid mobile number"];
+        $rules["passwordLength"] = ['password', 'match', 'pattern' => '/[a-zA-Z0-9_-]+/', 'message' => 'Your password can only contain alphanumeric characters, underscores and dashes.'];
+        //$rules["passwordLength"] = ['password', 'string', 'min' => 6, 'max' => 72, 'on' => ['register', 'create']];
         return $rules;
     }
     
@@ -53,7 +55,9 @@ class User extends BaseUser
         $transaction = $this->getDb()->beginTransaction();
 
         try {
-            $this->password = $this->password == null ? Password::generate(8) : $this->password;
+            //Password::generate(8)
+            $pass = mt_rand(10000, 99999);
+            $this->password = $this->password == null ? $pass : $this->password;
 
             
 
@@ -125,7 +129,9 @@ class User extends BaseUser
         $transaction = $this->getDb()->beginTransaction();
 
         try {
-            $this->password = $this->password == null ? Password::generate(8) : $this->password;
+            //Password::generate(8)
+            $pass = mt_rand(10000, 99999);
+            $this->password = $this->password == null ? $pass : $this->password;
 
             $this->trigger(self::BEFORE_CREATE);
 
@@ -176,17 +182,18 @@ class User extends BaseUser
     
     public function resendPassword()
     {
-        $this->password = Password::generate(8);
-        $this->save(false, ['password_hash']);
+        $password = Password::generate(8);
+        $this->updateAttributes(['password_hash' => Password::hash($password)]);
+        //$this->save(false, ['password_hash']);
         if(@$this->profile->mobile){
-            \common\helpers\SmsHelper::send(@$this->profile->mobile, $this->message($this->username,$this->password));
+            \common\helpers\SmsHelper::send(@$this->profile->mobile, $this->message($this->username,$password));
         }
-        $this->mailer->sendGeneratedPassword($this, $this->password);
+        $this->mailer->sendGeneratedPassword($this, $password);
         return true;
     }
     
     public function message($username,$password){
-        return 'Your CHDBAR account has been created, Username is '.$username.', Password is '.$password.' Android App https://goo.gl/L1jNZX And IOS App https://goo.gl/GrKfnO';
+        return 'Your account for bas association has been created, Username: '.$username.', Password:'.$password.' Apps Android https://goo.gl/L1jNZX And IOS https://goo.gl/GrKfnO';
     }
     
     public function resetPasswordMessage($username,$password){
@@ -206,8 +213,9 @@ class User extends BaseUser
     
     
     public function resetPassword($password){        
+        $this->updateAttributes(['password_hash' => Password::hash($password)]);
         if(@$this->profile->mobile){
-            \common\helpers\SmsHelper::send(@$this->profile->mobile, $this->resetPasswordMessage($this->username,$password));
+            print_r(\common\helpers\SmsHelper::send(@$this->profile->mobile, $this->resetPasswordMessage($this->username,$password)));
         }
         return $this->sendNewPasswordToUser($password);
     }

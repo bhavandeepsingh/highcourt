@@ -20,16 +20,15 @@ class PaymentController extends Controller
     
     public function actionIndex()
     {
-        //return $this->redirect(\yii\helpers\Url::to("success"));die;
         $req = Yii::$app->request;
-        //if(!$req->post("user_id")){ return "Invalid User ID."; die;}
-        //if(empty($req->post("amount"))){ return "Please Enter a valid amount."; die;}
-        $profile = Profile::find()->where(["user_id" => 1])->one();//$req->post("user_id")
+        if(!$req->post("user_id")){ return "Invalid User ID."; die;}
+        if(empty($req->post("amount"))){ return "Please Enter a valid amount."; die;}
+        $profile = Profile::find()->where(["user_id" => $req->post("user_id")])->one();
         $payment = new PaymentLog();
-        $payment->user_id           =   1;//$req->post("user_id");
-        $payment->amount            =   1;//$req->post("amount");
-        $payment->payment_type      =   1;
-        $payment->status            =   PaymentLog::$INIT;//$req->post("payment_type");
+        $payment->user_id           =   $req->post("user_id");
+        $payment->amount            =   $req->post("amount");
+        $payment->payment_type      =   $req->post("payment_type");
+        $payment->status            =   PaymentLog::$INIT;
         $payment->save();
         
         
@@ -38,14 +37,14 @@ class PaymentController extends Controller
             'working_key'   =>  $this->working_key,
             'params'        =>  [
                 //necessary
-                //"tid"		=>	"",
+                //"tid"     =>  "",
                 "merchant_id"           =>      $this->merchant_id,
-                "order_id"		=>	"CHB00".$payment->id,
-                "currency"		=>	"INR",
-                "amount"		=>	$payment->amount,
-                "language"		=>	"EN",
-                "redirect_url"          =>	\yii\helpers\Url::toRoute("success",true),
-                "cancel_url"            =>	\yii\helpers\Url::toRoute("cancel",true),
+                "order_id"      =>  "CHB00".$payment->id,
+                "currency"      =>  "INR",
+                "amount"        =>  $payment->amount,
+                "language"      =>  "EN",
+                "redirect_url"          =>  \yii\helpers\Url::toRoute("success",true),
+                "cancel_url"            =>  \yii\helpers\Url::toRoute("cancel",true),
                 //"SUB-MERCHANT TEST" => 1,
                 // optional
                 "billing_name"      =>      @$profile->name,
@@ -61,24 +60,28 @@ class PaymentController extends Controller
         return $this->render("index", $data);
     }
     
+    public function parseResponse(){
+       include(__DIR__."/../../NON_SEAMLESS_KIT/Crypto.php");
+        $req = Yii::$app->request;
+        
+        $encResponse=$req->post("encResp");         //This is the response sent by the CCAvenue Server
+        $rcvdString=decrypt($encResponse, $this->working_key);      //Crypto Decryption used as per the specified working key.
+        $order_status="";
+        $decryptValues=explode('&', $rcvdString);
+        $dataSize=sizeof($decryptValues);
+        return $dataSize;
+    }
+    
+    
     public function actionSuccess()
     {
-        include(__DIR__."/../../NON_SEAMLESS_KIT/Crypto.php");
-    	$req = Yii::$app->request;
+        $dataSize = $this->parseResponse();
         
-        $encResponse=$req->post("encResp");			//This is the response sent by the CCAvenue Server
-	$rcvdString=decrypt($encResponse, $this->working_key);		//Crypto Decryption used as per the specified working key.
-	$order_status="";
-	$decryptValues=explode('&', $rcvdString);
-	$dataSize=sizeof($decryptValues);
-	
-        //echo "<center>";
-        
-        for($i = 0; $i < $dataSize; $i++) 
-	{
-		$information=explode('=',$decryptValues[$i]);
-		if($i==3)	$order_status=$information[1];
-	}
+            for($i = 0; $i < $dataSize; $i++) 
+        {
+            $information=explode('=',$decryptValues[$i]);
+            if($i==3)   $order_status=$information[1];
+        }
         
         switch ($order_status){
             case "Success": $this->Success($decryptValues); break;
@@ -86,88 +89,56 @@ class PaymentController extends Controller
             case "Failure": $this->Failure($decryptValues); break;
             default: $this->Illegal($decryptValues); break;
         }
-        
-//	echo "<br><br>";
-//	echo "<table cellspacing=4 cellpadding=4>";
-//	for($i = 0; $i < $dataSize; $i++) 
-//	{
-//            $information=explode('=',$decryptValues[$i]);
-//            if($information[0] == "language" || $information[0] == "redirect_url" || $information[0] == "cancel_url") continue;
-//            echo '<tr><td>'.$information[0].'</td><td>'.$information[1].'</td></tr>';
-//	}
-//	echo "</table><br>";
-//	echo "</center>";
     }
     
     public function Success($res){
-        $order_id   = explode("=",$res[0]);
-        $payment_id = str_replace("CHB00", "", $order_id[1]);
+        $this->savePaymentStatus($res, PaymentLog::$SUCCESS);
+    }
+    
+    public function savePaymentStatus($res,$status){
+        $payment_id = 1;//$this->getPaymentId(1);
         $payment = PaymentLog::find()->where(["id" => $payment_id])->one();
+
+        //$resArray = $this->getResultArray($res);        
+        if($payment){
+            $payment->response = json_encode($resArray);
+            $payment->status = $status;
+            $payment->save();
+            echo "<html>". json_encode(array_merge(['status' => $status], PaymentLog::getUserLog(\common\models\User::find()->where(["id" => $payment->user_id])->one()))). "</html>";
+        }
+        die;
+    }
+    
+    public function getPaymentId($res){
+        $order_id   = explode("=",$res[0]);
+        return str_replace("CHB00", "", $order_id[1]);
+    }
+    
+    public function getResultArray($res){
+        if(!is_array($res))return [];
         $resArray = [];
         foreach($res as $key => $value){
             $data = explode("=", $value);
             $resArray[$data[0]] = $data[1];
         }
-        if($payment){
-            $payment->response = json_encode($resArray);
-            $payment->status = PaymentLog::$SUCCESS;
-            $payment->save();
-            
-            $payments = PaymentLog::find()->where(["user_id" => $payment->user_id, "status" => 1])
-            ->with(["log" => function($q){
-                $q->orderBy(["date" => SORT_DESC]);
-            }])->orderBy(["id" => SORT_DESC])->asArray()->all();
-            
-            if(!$payment){
-                $payments = Profile::find()->alias("p")->select("mT.amount,u.created_at,p.designation,p.user_id")
-                ->joinWith("designation mT", false, "RIGHT JOIN")
-                ->joinWith("user u",false,"RIGHT JOIN")->andWhere("u.id = 1")->asArray()->one();
-            }
-            return json_encode($payments);
-            //echo json_encode((array)$payment->attributes);
-        }
-        exit;
+        return $resArray;
     }
-    
-    public function actionTest(){
-//        $payments = PaymentLog::find()->select("id,payment_type, subscription_id, amount,created_at")->where(["id" => 1, "status" => 1])->with(["log" => function($q){
-//            $q->orderBy(["date" => SORT_DESC]);
-//        }])->orderBy(["id" => SORT_DESC])->asArray()->all();
         
-//        $payments = PaymentLog::find()->where(["id" => 1, "status" => 1])->with(["log" => function($q){
-//            $q->orderBy(["date" => SORT_DESC]);
-//        }])->orderBy(["id" => SORT_DESC])->asArray()->all();
-        
-        $payments = Profile::find()->alias("p")->select("mT.amount,u.created_at,p.designation,p.user_id")
-                ->joinWith("designation mT", false, "RIGHT JOIN")
-                ->joinWith("user u",false,"RIGHT JOIN")->andWhere("u.id = 1")->asArray()->one();
-        
-        print_r($payments);
-        //print_r($payments[0]->log[0]->date);
-        
-//        $payment = \common\models\PaymentDatetime::find()->alias("pD")->where(["pL.id" => 1])->joinWith(["payment" => function($q){
-//            $q->alias("pL");
-//        }],true,"RIGHT JOIN")->orderBy(["pD.date" => SORT_DESC])->asArray()->all();
-        
-        exit;
-    }
-    
     public function Aborted($res){
-        echo "<br>We will keep you posted regarding the status of your order through e-mail";
+        $this->savePaymentStatus($res, PaymentLog::$ABORT);
     }
     
     public function Failure($res){
-        echo "<br>The transaction has been declined.";
+        $this->savePaymentStatus($res, PaymentLog::$FAILURE);
     }
     
     public function Illegal($res){
-        echo "<br>Security Error. Illegal access detected";
+        $this->savePaymentStatus($res, PaymentLog::$ILLEGAL);
     }
     
     public function actionCancel()
     {
-        echo "Your Order has been cancelled successfully";
-    	//require(__DIR__."/../../../NON_SEAMLESS_KIT/ccavRequestHandler.php");
+        $this->savePaymentStatus($this->parseResponse(), PaymentLog::$CANCEL);
     }
 
 }

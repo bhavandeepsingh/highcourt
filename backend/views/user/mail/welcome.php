@@ -18,18 +18,37 @@ use yii\helpers\Html;
  * @var bool $showPassword
  */
 ?>
+
+
+
+<?php /* ?>
 <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
     <?= Yii::t('user', 'Hello') ?>,
 </p>
 
 <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
     <?= Yii::t('user', 'Your account on {0} has been created', Yii::$app->name) ?>.
+    <?= Yii::t('user', 'Your username is ') ?> <strong><?= $user->username ?></strong>
     <?php if ($showPassword || $module->enableGeneratingPassword): ?>
-        <?= Yii::t('user', 'We have generated a password for you') ?>: <strong><?= $user->password ?></strong>
+        <?= Yii::t('user', ' and password is ') ?> <strong><?= $user->password ?></strong>
     <?php endif ?>
 </p>
+*/ ?>
+
+<p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">    
+    <?= Yii::t('user', 'Your account for official of bar association has been created.') ?>
+</p>
+<p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">    
+    <?= Yii::t('user', 'Your username is') ?> <strong><?= $user->username ?></strong>
+</p>
 <p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
-    You can download Android App from <a href="https://goo.gl/L1jNZX">Google Playstore</a> and IOS App from <a href="https://goo.gl/GrKfnO">IOS App Store</a>.
+    <?= Yii::t('user', 'And password is ') ?> <strong><?= $user->password ?></strong>
+</p>
+<p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
+    App can be downloaded from <a href="https://goo.gl/L1jNZX">Google Playstore</a> and IOS App from <a href="https://goo.gl/GrKfnO">IOS App Store</a>.
+</p>
+<p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.6; font-weight: normal; margin: 0 0 10px; padding: 0;">
+    *official app
 </p>
 
 <?php if ($token !== null): ?>
