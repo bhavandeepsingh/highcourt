@@ -17,6 +17,8 @@ class UploadForm extends Model
     
     public static $FILE_TYPE_NOTIFICATIONS = "FILE_TYPE_NOTIFICATIONS";
     
+    public static $IMAGE_TYPE_ACHIEVEMENTS = "FILE_TYPE_ACHIEVEMENTS";
+    
     /**
      * @var UploadedFile
      */
@@ -50,12 +52,13 @@ class UploadForm extends Model
                 self::removeImage($path . '/' . $filename);//die;
                 $this->imageFile->saveAs($path . '/' . $filename);
             }
-           
-            if(isset($this->uploadFile)){
+                       
+            if(isset($this->uploadFile)){                
                 //$this->currentType = [['uploadFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg,xls,doc,pdf'];
                 $this->uploadFile->saveAs($path . '/' . ( (!empty($name))? $name: $this->uploadFile->baseName) . '.' . $this->uploadFile->extension);
+                return ( (!empty($name))? $name: $this->uploadFile->baseName) . '.' . $this->uploadFile->extension;
             }              
-            return ( (!empty($name))? $name: $this->uploadFile->baseName) . '.' . $this->uploadFile->extension;
+            
         } else {
             return false;
         }
@@ -72,7 +75,9 @@ class UploadForm extends Model
         }else if($type == self::$IMAGE_TYPE_BANNERS){
             $type_path = "banners/";
         }else if($type == self::$FILE_TYPE_NOTIFICATIONS){
-            $type_path = "notifications/";
+            $type_path = "notifications/";        
+        }else if($type == self::$IMAGE_TYPE_ACHIEVEMENTS){
+            $type_path = "achevements/";
         }
         return $type_path;
     }
@@ -90,6 +95,9 @@ class UploadForm extends Model
                 break;
             case self::$IMAGE_TYPE_BANNERS:
                 return self::getBannerProfilePic($id);
+                break;
+            case self::$IMAGE_TYPE_ACHIEVEMENTS:
+                return self::getAchevementPic($id);
                 break;
             case self::$FILE_TYPE_NOTIFICATIONS:
                 //return self::getFileSrc($type, $id)
@@ -152,6 +160,10 @@ class UploadForm extends Model
         return self::uploadProfilePic($id, self::$IMAGE_TYPE_BANNERS);
     }
     
+    public static function uploadAchevementPic($id){
+        return self::uploadProfilePic($id, self::$IMAGE_TYPE_ACHIEVEMENTS);
+    }
+    
     public static function uploadNotificationFile($id){        
         return self::uploadFile($id, self::$FILE_TYPE_NOTIFICATIONS);
     }
@@ -192,6 +204,15 @@ class UploadForm extends Model
         return false;
     }
     
+    public static function getAchevementPic($id = 0){
+        if($id <= 0) return "";
+        $root = self::getImageSrc(self::$IMAGE_TYPE_ACHIEVEMENTS, $id);
+        if(file_exists($_SERVER['DOCUMENT_ROOT'].$root)){
+            return $root;
+        }
+        return false;
+    }
+    
 
     public static function getNotificationFile($id = 0){
         if($id <= 0) return "";
@@ -223,12 +244,20 @@ class UploadForm extends Model
         return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_JUDGES);
     }
     
+    public static function getBannerPathApi(){
+        return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_BANNERS);
+    }
+    
+    public static function getAchievementApi(){
+        return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_ACHIEVEMENTS);
+    }
+    
     public static function getNotificationTypePathApi(){
         return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$FILE_TYPE_NOTIFICATIONS);
     }
-
-    public static function getUserTypePathApi(){
-        return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_USERS);
+    
+    public static function getAchievementTypePathApi(){
+        return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_ACHIEVEMENTS);
     }
 
     
@@ -258,6 +287,10 @@ class UploadForm extends Model
 
     public static function getProfilePicPathApi($id){
         return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_USERS).$id.'/image.jpg';
+    }
+    
+    public static function getAchevementPathApi($id){
+        return \yii\helpers\Url::base(true).'/../../uploads/'.self::getTypePath(self::$IMAGE_TYPE_ACHIEVEMENTS).$id.'/image.jpg';
     }
 
 }

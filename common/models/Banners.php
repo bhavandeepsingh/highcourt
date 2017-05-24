@@ -51,7 +51,27 @@ class Banners extends BaseModel
     
     public function getBannerPicSrc(){             
         return UploadForm::getBannerProfilePic($this->id);
+    }        
+    
+    public static function getApiDataProvider(){
+        return  new \yii\data\ActiveDataProvider([
+                'query' => self::getInstance()->getDataQuery(true),
+                'pagination' => [
+                    'pageSize' => 25
+                ]
+            ]);
     }
     
+    public function getDataQuery($asArray = false){
+        $query = $this->find();
+        $query->orderBy(['id' => SORT_DESC]);
+        $query->addSelect(['*', 'getImageSrc("'.$this->getImageTypePathApi().'", id) as image_path']);
+        $query->asArray($asArray);
+        return $query;
+    }    
+    
+    public function getImageTypePathApi(){
+        return UploadForm::getBannerPathApi();
+    }
     
 }
