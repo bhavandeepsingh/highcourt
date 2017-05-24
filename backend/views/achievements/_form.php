@@ -21,7 +21,7 @@ for($i = 19; $i > 0; $i--){
 
     <?= $form->field($model, 'title')->textInput(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'description')->textarea(['rows' => 6, 'id' => 'achevement_editor']) ?>
 
     <?= $form->field($model, 'achievement_year')->dropDownList($year_array) ?>
     
@@ -43,3 +43,4 @@ for($i = 19; $i > 0; $i--){
     <?php ActiveForm::end(); ?>
 
 </div>
+<?= $this->registerJs('tinymce.init({selector: \'#achevement_editor\'});') ?>

@@ -29,7 +29,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($data){ return $data->getImageTag(['width' => 100]);},
             ],
             'title:ntext',
-            'description:ntext',
+            [                
+                'attribute' => 'description',
+                'value' => function($data){return $data->description; },
+                'format' => 'html'
+            ],
             [
                 'attribute' => 'achievement_year',
                 'value' => function($data){ return $data->getAchievementYear();}

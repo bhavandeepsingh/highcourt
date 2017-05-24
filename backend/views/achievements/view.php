@@ -29,7 +29,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [            
             'title:ntext',
-            'description:ntext',
+            [
+                'attribute' => 'description',
+                'value' => $model->description,
+                'format' => 'html'
+            ],
             [
                 'label' => 'Achievement Year',
                 'value' => $model->getAchievementYear()

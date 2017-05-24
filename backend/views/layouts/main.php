@@ -42,7 +42,7 @@ if (Yii::$app->controller->action->id === 'login') {
     dmstr\web\AdminLteAsset::register($this);
 
     $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
-    //$this->registerJsFile('https://cloud.tinymce.com/stable/tinymce.min.js?api_key=pd5o516w1etfa6ix6afk0kurj1kuahvwfbwsd276lbqw6zu7', [yii\web\JqueryAsset::className()]);
+    $this->registerJsFile('https://cloud.tinymce.com/stable/tinymce.min.js?api_key=pd5o516w1etfa6ix6afk0kurj1kuahvwfbwsd276lbqw6zu7', [yii\web\JqueryAsset::className()]);
     //$this->registerJs("tinymce.init({ selector:'textarea' });");
     ?>
     <?php $this->beginPage() ?>
