@@ -11,6 +11,7 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $id
  * @property string $title
  * @property string $description
+ * @property string $destination
  * @property integer $achievement_year
  * @property integer $created_at
  * @property integer $updated_at
@@ -32,7 +33,7 @@ class Achievements extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'description', 'achievement_year'], 'required'],
-            [['title', 'description'], 'string'],
+            [['title', 'description', 'destination'], 'string'],
             [['achievement_year'] ,'unique', 'targetAttribute' => 'achievement_year'],
             [['achievement_year', 'created_at', 'updated_at'], 'integer'],
         ];

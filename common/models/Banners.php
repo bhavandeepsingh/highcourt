@@ -62,6 +62,10 @@ class Banners extends BaseModel
             ]);
     }
     
+    public static function getBannerDataApi(){
+        return self::getInstance()->getDataQuery(true)->all();
+    }
+    
     public function getDataQuery($asArray = false){
         $query = $this->find();
         $query->orderBy(['id' => SORT_DESC]);

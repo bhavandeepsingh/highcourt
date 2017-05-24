@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
     <div class="form-group">
         <div class="row">
-            <div class="col-sm-3"><b>Set Banner Scroll Time</b></div>
+            <div class="col-sm-3"><b>Set Banner Scroll Time (In Sec)</b></div>
             <div class="col-sm-9"><?php echo Html::textInput('settings[scroll_time]', (isset($data["scroll_time"]))?$data["scroll_time"]:"", ['placeholder' => 'Set Banner Scroll Time', 'class' => 'form-control']) ?></div>
         </div>
     </div>

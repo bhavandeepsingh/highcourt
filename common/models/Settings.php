@@ -44,4 +44,14 @@ class Settings extends \yii\db\ActiveRecord
             'value' => 'Value',
         ];
     }
+    
+    public static function getSetting($key = ""){
+        $model = self::find()->andWhere(['name' => 'settings'])->one();
+        if($model){
+            $arr = json_decode($model->value);            
+            return (isset($arr->{$key}))? (int) $arr->{$key}: ""; 
+        }        
+    }
+    
+    
 }

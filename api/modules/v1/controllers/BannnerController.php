@@ -15,7 +15,10 @@ namespace app\modules\v1\controllers;
 class BannnerController extends ApiController{
     
     public function actionListAll(){
-        return $this->dataProvider(\common\models\Banners::getApiDataProvider());
+        return $this->success([
+            'list' => \common\models\Banners::getBannerDataApi(),
+            'banner_timing' => \common\models\Settings::getSetting('scroll_time')
+        ]);
     }
     
 }
