@@ -24,6 +24,7 @@ class PaymentLog extends BaseModel
     public static $FAILURE  =   3;
     public static $ILLEGAL  =   4;
     public static $ERROR    =   5;
+    public static $CANCEL    =   6;
 
     public $_user;
     
@@ -103,7 +104,7 @@ class PaymentLog extends BaseModel
             'log' => $this->getPaymentsLog($type, true),
             'pending_from' => $this->getPendingFrom($type),
             'pending_to' => $this->getPendingTo($type),
-            'amount' => $this->_user->profile->designations->amount,
+            'amount' => ($type == self::$_SUBSCRIPTION_PAYMENT)? $this->_user->profile->designations->amount: 200,
             'number_count' => $this->getNumberCount($type),
             'total_amount' => $this->getPendingAmount($type)
         ];
