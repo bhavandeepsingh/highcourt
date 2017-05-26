@@ -78,6 +78,7 @@
             $menu[]=['label' => 'Case Law', 'icon' => 'briefcase ', 'url' => ['/case-law']];
             $menu[]=['label' => 'Banners', 'icon' => 'picture-o', 'url' => ['/banners']];
             $menu[]=['label' => 'Holidays', 'icon' => 'tree', 'url' => ['/holidays']];
+            $menu[]=['label' => 'Achievements', 'icon' => 'trophy', 'url' => ['/achievements']];
             $menu[]=['label' => 'Settings', 'icon' => 'cog', 'url' => ['/settings']];
             $menu[]=['label' => 'Import users', 'icon' => 'file-excel-o', 'url' => ['/excel']];
             $menu[]=['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest];

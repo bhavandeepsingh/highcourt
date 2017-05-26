@@ -15,7 +15,7 @@ class BaseModel extends \yii\db\ActiveRecord{
     }
     
     public function getFormateddate($timestamp){
-        return date('Y-m-d', $timestamp);
+        return date('Y-m-d H:i:s', $timestamp);
     }
     
     public static function getInstance(){

@@ -16,10 +16,15 @@ class UserSearch extends BaseUser
     
     public function search($params)
     {
+        
         $query = $this->finder->getUserQuery();
         
+        if(!isset($params["sort"])){
+            $query->orderBy(["created_at" => SORT_DESC]);
+        }
+        
         $query->joinWith(['profile']);
-
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -43,7 +48,7 @@ class UserSearch extends BaseUser
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['registration_ip' => $this->registration_ip]);
-
+        
         return $dataProvider;
     }
 }

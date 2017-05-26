@@ -24,6 +24,7 @@ class Profile extends BaseProfile
             'websiteLength'        => ['website', 'string', 'max' => 255],
             'designation'          => ['designation', 'integer'],
             'profile'              => ['profile', 'string'],
+            'weight'               => ['weight', 'integer'],
             'enrollment_number'    => ['enrollment_number','string'],
             'membership_number'    => ['membership_number', 'string'],
             'landline'             => ['landline', 'string'],

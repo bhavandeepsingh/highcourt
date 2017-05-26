@@ -78,6 +78,11 @@ class PaymentLog extends BaseModel
         return $this->hasMany(PaymentDatetime::className(), ['payment_id' => 'id']);
     }
     
+    public function getType()
+    {
+        return $this->hasOne(MembershipTypes::className(), ['id' => 'payment_type']);
+    }
+    
     public function getUser()
     {
         return $this->hasOne(\common\models\Profile::className(), ['user_id' => 'user_id']);

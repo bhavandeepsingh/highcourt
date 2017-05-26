@@ -44,7 +44,11 @@ class PaymentLogSearch extends PaymentLog
         $query = PaymentLog::find();
 
         // add conditions that should always apply here
-
+        
+        if(!isset($params["sort"])){
+            $query->orderBy(["created_at" => SORT_DESC]);
+        }
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

@@ -24,7 +24,7 @@ use yii\helpers\Html;
 <?php $form = ActiveForm::begin([
     'layout' => 'horizontal',
     'enableAjaxValidation' => true,
-    'enableClientValidation' => false,
+    'enableClientValidation' => true,
     'fieldConfig' => [
         'horizontalCssClasses' => [
             'wrapper' => 'col-sm-9',
@@ -33,7 +33,7 @@ use yii\helpers\Html;
 ]); ?>
 
 <?= $form->field($profile, 'name')->textInput(['placeholder' => 'Name']) ?>
-<?= $form->field(new \common\models\UploadForm(), 'imageFile')->fileInput() ?> 
+<?= $form->field(new \common\models\UploadForm(), 'imageFile')->fileInput(["accept"=>".jpg"]) ?> 
 
 <?php
 if($profile->user_id > 0 && ($profile->profilePicSrc)){
