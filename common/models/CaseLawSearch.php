@@ -41,7 +41,9 @@ class CaseLawSearch extends CaseLaw
      */
     public function search($params, $login_id = 0, $as_array = false)
     {
-        $query = CaseLaw::find();
+        $this->login_id = $login_id;
+        
+        $query = CaseLaw::find()->alias('c');
 
         // add conditions that should always apply here
 
@@ -59,14 +61,23 @@ class CaseLawSearch extends CaseLaw
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'c.id' => $this->id,
+            'c.created_at' => $this->created_at,
+            'c.updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'discription', $this->discription])
-            ->andFilterWhere(['like', 'title', $this->title]);
-
+        $query->andFilterWhere(['like', 'c.discription', $this->discription])
+            ->andFilterWhere(['like', 'c.title', $this->title]);
+        
+        $query->joinWith(['caseStatus' => function($q){
+            $q->onCondition(['user_id' => $this->login_id]);
+            $q->alias('cS');
+        }], false, 'LEFT JOIN');
+        
+        $query->addSelect(['c.*', 'cS.id as is_read']);
+        
+        $query->asArray($as_array);
+        
         return $dataProvider;
     }
     public static function getApiList($params = [], $login_id = 0, $as_array = false){

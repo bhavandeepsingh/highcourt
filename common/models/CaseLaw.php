@@ -57,4 +57,10 @@ class CaseLaw extends BaseModel
             TimestampBehavior::className(),
         ];                
     }
+    
+    public function getCaseStatus(){
+        return $this->hasOne(CaseLawStatus::className(), ['case_id' => 'id']);
+    }
+        
+    
 }
