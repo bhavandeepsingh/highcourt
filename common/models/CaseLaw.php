@@ -32,7 +32,7 @@ class CaseLaw extends BaseModel
     {
         return [
             [['discription', 'title'], 'required'],
-            [['discription', 'title'], 'string'],
+            [['discription', 'title', 'url'], 'string'],
             [['created_at', 'updated_at'], 'integer'],
         ];
     }
@@ -46,6 +46,7 @@ class CaseLaw extends BaseModel
             'id' => 'ID',
             'discription' => 'Discription',
             'title' => 'Title',
+            'url' => 'Url Link',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

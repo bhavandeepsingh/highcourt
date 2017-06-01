@@ -17,15 +17,16 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
+        <?php if(Yii::$app->user->can(USER_CAN_CREATE_POSTS)){ ?>
         <?= Html::a(Yii::t('app', 'Create Judges'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?php } ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
 
             [
                 'label' => 'Image',
@@ -40,8 +41,14 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
                 'value' => function($data){return $data->nameWithSubtitle;},
             ],
             'address',
-            'dob',
-            'date_of_appointment',
+            [
+                'attribute' => 'dob',
+                'filter'    =>false,
+            ],
+            [
+                'attribute' => 'date_of_appointment',
+                'filter'    =>false,
+            ],
             // 'date_of_retirement',
             // 'bio_graphy:ntext',
             // 'created_at',

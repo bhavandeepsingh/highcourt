@@ -26,6 +26,67 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?= $this->render('_menu') ?>
 
+<?php
+$arr = [
+//                        [
+//                            'label' => Yii::t('user', 'Account details'),
+//                            'url' => ['/user/admin/update', 'id' => $user->id]
+//                        ],
+            [
+                'label' => Yii::t('user', 'Profile details'),
+                'url' => ['/user/admin/update-profile', 'id' => $user->id]
+            ],
+            ['label' => Yii::t('user', 'Information'), 'url' => ['/user/admin/info', 'id' => $user->id]],
+    ];
+    if(!$user->isAdmin){
+        $arr[] = [
+                'label' => Yii::t('user', 'Permissions'),
+                'url' => ['/user/admin/assignments', 'id' => $user->id],
+                'visible' => isset(Yii::$app->extensions['dektrium/yii2-rbac']),
+            ];
+        $arr[] = '<hr>';
+        $arr[] = [
+                'label' => Yii::t('user', 'Confirm'),
+                'url' => ['/user/admin/confirm', 'id' => $user->id],
+                'visible' => !$user->isConfirmed,
+                'linkOptions' => [
+                    'class' => 'text-success',
+                    'data-method' => 'post',
+                    'data-confirm' => Yii::t('user', 'Are you sure you want to confirm this user?'),
+                ],
+            ];
+        $arr[] =     [
+                'label' => Yii::t('user', 'Block'),
+                'url' => ['/user/admin/block', 'id' => $user->id],
+                'visible' => !$user->isBlocked,
+                'linkOptions' => [
+                    'class' => 'text-danger',
+                    'data-method' => 'post',
+                    'data-confirm' => Yii::t('user', 'Are you sure you want to block this user?'),
+                ],
+            ];
+        $arr[] =     [
+                'label' => Yii::t('user', 'Unblock'),
+                'url' => ['/user/admin/block', 'id' => $user->id],
+                'visible' => $user->isBlocked,
+                'linkOptions' => [
+                    'class' => 'text-success',
+                    'data-method' => 'post',
+                    'data-confirm' => Yii::t('user', 'Are you sure you want to unblock this user?'),
+                ],
+            ];
+        $arr[] =    [
+                'label' => Yii::t('user', 'Delete'),
+                'url' => ['/user/admin/delete', 'id' => $user->id],
+                'linkOptions' => [
+                    'class' => 'text-danger',
+                    'data-method' => 'post',
+                    'data-confirm' => Yii::t('user', 'Are you sure you want to delete this user?'),
+                ],
+            ];
+    }
+?>
+
 <div class="row">
     <div class="col-md-3">
         <div class="panel panel-default">
@@ -34,62 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'options' => [
                         'class' => 'nav-pills nav-stacked',
                     ],
-                    'items' => [
-//                        [
-//                            'label' => Yii::t('user', 'Account details'),
-//                            'url' => ['/user/admin/update', 'id' => $user->id]
-//                        ],
-                        [
-                            'label' => Yii::t('user', 'Profile details'),
-                            'url' => ['/user/admin/update-profile', 'id' => $user->id]
-                        ],
-                        ['label' => Yii::t('user', 'Information'), 'url' => ['/user/admin/info', 'id' => $user->id]],
-                        [
-                            'label' => Yii::t('user', 'Permissions'),
-                            'url' => ['/user/admin/assignments', 'id' => $user->id],
-                            'visible' => isset(Yii::$app->extensions['dektrium/yii2-rbac']),
-                        ],
-                        '<hr>',
-                        [
-                            'label' => Yii::t('user', 'Confirm'),
-                            'url' => ['/user/admin/confirm', 'id' => $user->id],
-                            'visible' => !$user->isConfirmed,
-                            'linkOptions' => [
-                                'class' => 'text-success',
-                                'data-method' => 'post',
-                                'data-confirm' => Yii::t('user', 'Are you sure you want to confirm this user?'),
-                            ],
-                        ],
-                        [
-                            'label' => Yii::t('user', 'Block'),
-                            'url' => ['/user/admin/block', 'id' => $user->id],
-                            'visible' => !$user->isBlocked,
-                            'linkOptions' => [
-                                'class' => 'text-danger',
-                                'data-method' => 'post',
-                                'data-confirm' => Yii::t('user', 'Are you sure you want to block this user?'),
-                            ],
-                        ],
-                        [
-                            'label' => Yii::t('user', 'Unblock'),
-                            'url' => ['/user/admin/block', 'id' => $user->id],
-                            'visible' => $user->isBlocked,
-                            'linkOptions' => [
-                                'class' => 'text-success',
-                                'data-method' => 'post',
-                                'data-confirm' => Yii::t('user', 'Are you sure you want to unblock this user?'),
-                            ],
-                        ],
-                        [
-                            'label' => Yii::t('user', 'Delete'),
-                            'url' => ['/user/admin/delete', 'id' => $user->id],
-                            'linkOptions' => [
-                                'class' => 'text-danger',
-                                'data-method' => 'post',
-                                'data-confirm' => Yii::t('user', 'Are you sure you want to delete this user?'),
-                            ],
-                        ],
-                    ],
+                    'items' => $arr,
                 ]) ?>
             </div>
         </div>

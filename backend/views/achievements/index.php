@@ -9,6 +9,9 @@ use yii\widgets\Pjax;
 
 $this->title = Yii::t('app', 'Achievements');
 $this->params['breadcrumbs'][] = $this->title;
+$templates="";
+$templates.=(Yii::$app->user->can(USER_CAN_UPDATE_POSTS))?"{update} ":"";
+$templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
 ?>
 <div class="achievements-index">
 
@@ -16,7 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Achievements'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?php if(Yii::$app->user->can(USER_CAN_CREATE_POSTS)){ ?>
+            <?= Html::a(Yii::t('app', 'Create Achievements'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?php } ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -39,7 +44,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'achievement_year',
                 'value' => function($data){ return $data->getAchievementYear();}
             ],
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view} '.$templates,
+            ],
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

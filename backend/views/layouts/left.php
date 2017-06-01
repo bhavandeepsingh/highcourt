@@ -58,8 +58,10 @@
                     ],
                 ];*/
             $roles=\Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
+            $isAdmin = false;
             foreach($roles as $key=>$role){
                 if($key=="admin"){
+                    $isAdmin = true;
                     //$menu[]=['label' => 'Gii', 'icon' => 'fa fa-file-code-o', 'url' => ['/gii']];
                     $menu[]=['label' => 'Subscription', 'icon' => 'user-plus', 'url' => ['/membership-types']];
                     $menu[]=['label' => 'Users', 'icon' => 'user', 'url' => ['/user/admin/index']];
@@ -73,14 +75,15 @@
             ]];
             
             $menu[]=['label' => 'Case Law', 'icon' => 'legal', 'url' => ['/case-law']];
-            $menu[]=['label' => 'Payment History', 'icon' => 'money', 'url' => ['/payment-log']];
+            if($isAdmin){
+                $menu[]=['label' => 'Payment History', 'icon' => 'money', 'url' => ['/payment-log']];
+            }
             $menu[]=['label' => 'Notification', 'icon' => 'envelope', 'url' => ['/notification']];
-            $menu[]=['label' => 'Case Law', 'icon' => 'briefcase ', 'url' => ['/case-law']];
             $menu[]=['label' => 'Banners', 'icon' => 'picture-o', 'url' => ['/banners']];
             $menu[]=['label' => 'Holidays', 'icon' => 'tree', 'url' => ['/holidays']];
             $menu[]=['label' => 'Achievements', 'icon' => 'trophy', 'url' => ['/achievements']];
             $menu[]=['label' => 'Settings', 'icon' => 'cog', 'url' => ['/settings']];
-            $menu[]=['label' => 'Import users', 'icon' => 'file-excel-o', 'url' => ['/excel']];
+            //$menu[]=['label' => 'Import users', 'icon' => 'file-excel-o', 'url' => ['/excel']];
             $menu[]=['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest];
             
         ?>

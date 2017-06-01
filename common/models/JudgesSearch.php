@@ -62,6 +62,7 @@ class JudgesSearch extends Judges
         $query->andFilterWhere([
             'id' => $this->id,
             'dob' => $this->dob,
+            'address' => $this->address,
             'date_of_appointment' => $this->date_of_appointment,
             'date_of_retirement' => $this->date_of_retirement,
             'created_at' => $this->created_at,
@@ -73,7 +74,7 @@ class JudgesSearch extends Judges
         else{
             $query->andFilterWhere(['like', 'name', $this->name]);
         }
-        
+        $query->andFilterWhere(['like', 'address', $this->address]);
         $query->addSelect(['*', 'getImageSrc("'.$this->getImageTypePathApi().'", id) as image_src']);
         $query->limit(100);
         if($as_array) $query->asArray(true);

@@ -36,6 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
     'dataProvider' => $dataProvider,
     'filterModel'  => $searchModel,
     'layout'       => "{items}\n{pager}",
+    'pager' => [
+        'firstPageLabel' => 'First',
+        'lastPageLabel'  => 'Last'
+    ],
     'columns' => [
         'username',
         'email:email',
@@ -45,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'format' => 'raw',
             'filter' => [0 => "Member",1 => "Executive"],
             'value' => function($data){
-                if($data->profile->executive==1){
+                if(@$data->profile->executive==1){
                     return 'Executive';
                 }
                 return 'Member';
@@ -82,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 return date('Y-m-d G:i:s', $model->last_login_at);
             }
           },
-        ],*/
+        ],
         [
             'header' => Yii::t('user', 'Confirmation'),
             'value' => function ($model) {
@@ -100,10 +104,11 @@ $this->params['breadcrumbs'][] = $this->title;
             },
             'format' => 'raw',
             'visible' => Yii::$app->getModule('user')->enableConfirmation,
-        ],
+        ],*/
         [
             'header' => Yii::t('user', 'Block status'),
             'value' => function ($model) {
+                if($model->isAdmin)return "";
                 if ($model->isBlocked) {
                     return Html::a(Yii::t('user', 'Unblock'), ['block', 'id' => $model->id], [
                         'class' => 'btn btn-xs btn-success btn-block',
@@ -127,7 +132,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'resend_password' => function ($url, $model, $key) {
                     if (!$model->isAdmin) {
                         return '
-                    <a data-method="POST" data-confirm="' . Yii::t('user', 'Do you want to change and send the ?') . '" href="' . Url::to(['resend-password', 'id' => $model->id]) . '">
+                    <a data-method="POST" data-confirm="' . Yii::t('user', 'Do you want to change and resend the credentials?') . '" href="' . Url::to(['resend-password', 'id' => $model->id]) . '">
                     <span title="' . Yii::t('user', 'Generate and send new password to user') . '" class="glyphicon glyphicon-envelope">
                     </span> </a>';
                     }
@@ -152,7 +157,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'update' => function($url,$model,$key){
                     return '
                         <a href="' . Url::to(["admin/update-profile","id" => $key]) . '">
-                        <span title="' . Yii::t('user', 'Generate and send new password to user') . '" class="glyphicon glyphicon-pencil">
+                        <span title="' . Yii::t('user', 'Update user profile') . '" class="glyphicon glyphicon-pencil">
+                        </span> </a>';
+                    //return "<a href='".Url::to(["user/admin/update-profile","id" => $key])."><span class='glyphicon glyphicon-pencil'></span></a>";//$key;
+                },
+                'delete' => function($url,$model,$key){
+                    if($model->isAdmin)return "";
+                    return '
+                        <a href="' . Url::to(["admin/delete","id" => $key,"page"=>Yii::$app->request->get("page")]) . '" aria-label="Delete" data-pjax="1" data-method="post" data-confirm="Are you sure you want to delete this user?">
+                        <span title="' . Yii::t('user', 'Delete') . '" class="glyphicon glyphicon-trash">
                         </span> </a>';
                     //return "<a href='".Url::to(["user/admin/update-profile","id" => $key])."><span class='glyphicon glyphicon-pencil'></span></a>";//$key;
                 }

@@ -19,7 +19,9 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
+        <?php if(Yii::$app->user->can(USER_CAN_CREATE_POSTS)){ ?>
         <?= Html::a(Yii::t('app', 'Create Executive Members'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?php } ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,

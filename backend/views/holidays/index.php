@@ -15,7 +15,9 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
 <div class="holidays-index">
     <h1><?= Html::encode($this->title) ?></h1>
     <p>
+        <?php if(Yii::$app->user->can(USER_CAN_CREATE_POSTS)){ ?>
         <?= Html::a('Create Holidays', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php } ?>
     </p>
 <?php Pjax::begin(); ?>
     <?= GridView::widget([

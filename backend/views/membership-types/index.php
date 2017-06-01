@@ -19,7 +19,9 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
+        <?php if(Yii::$app->user->can(USER_CAN_CREATE_POSTS)){ ?>
         <?= Html::a('Create Subscription Type', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php } ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

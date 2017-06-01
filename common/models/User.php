@@ -8,6 +8,7 @@ use Yii;
 class User extends BaseUser
 {   
     public $mobile = "";
+    public $saveCall = false;
 
     public static $usernameRegexp = '/^[-a-zA-Z0-9_\.@\/]+$/';
     
@@ -174,15 +175,21 @@ class User extends BaseUser
     
     public function afterSave($insert, $changedAttributes) {
         parent::afterSave($insert, $changedAttributes);
-        $this->profile->mobile=$this->mobile;
-        $this->profile->public_email=$this->email;
-        $this->profile->enrollment_number=$this->username;
-        $this->profile->save();
+        if($this->profile->mobile!=$this->mobile)$$this->saveCall=true;
+        if($this->profile->public_email!=$this->email)$this->saveCall=true;
+        if($this->profile->enrollment_number!=$this->username)$this->saveCall=true;
+        if($this->saveCall){
+            $this->profile->mobile=$this->mobile;
+            $this->profile->public_email=$this->email;
+            $this->profile->enrollment_number=$this->username;
+            $this->profile->save();
+        }
     }
     
     public function resendPassword()
     {
-        $password = Password::generate(8);
+        //$password = Password::generate(8);
+        $password = mt_rand(10000, 99999);
         $this->updateAttributes(['password_hash' => Password::hash($password)]);
         //$this->save(false, ['password_hash']);
         if(@$this->profile->mobile){
@@ -193,7 +200,7 @@ class User extends BaseUser
     }
     
     public function message($username,$password){
-        return 'Your account for bas association has been created, Username: '.$username.', Password:'.$password.' Apps Android https://goo.gl/L1jNZX And IOS https://goo.gl/GrKfnO';
+        return 'Your account for bar association has been created, Username: '.$username.', Password:'.$password.' Apps Android https://goo.gl/L1jNZX And IOS https://goo.gl/GrKfnO';
     }
     
     public function resetPasswordMessage($username,$password){

@@ -18,7 +18,8 @@ class Profile extends BaseProfile
             /*'websiteUrl'           => ['website', 'url'],*/
             'nameLength'           => ['name', 'string', 'max' => 255],
             'publicEmailLength'    => ['public_email', 'string', 'max' => 255],
-            'publicEmailUnique'    => ['public_email', 'unique'],
+            'publicEmailUnique'    => ['public_email', 'required'],
+            'public_email'         => ['public_email', 'emailValidate'],
             /*'gravatarEmailLength'  => ['gravatar_email', 'string', 'max' => 255],*/
             'locationLength'       => ['location', 'string', 'max' => 255],
             'websiteLength'        => ['website', 'string', 'max' => 255],
@@ -28,7 +29,10 @@ class Profile extends BaseProfile
             'enrollment_number'    => ['enrollment_number','string'],
             'membership_number'    => ['membership_number', 'string'],
             'landline'             => ['landline', 'string'],
-            'mobile'               => ['mobile', 'string'],
+            //'mobile'               => ['mobile', 'string'],
+            'mobileunqiue'               => ['mobile', 'unique'],
+            'mobilerequired'               => ['mobile', 'required'],
+            'mobile'               => ['mobile', 'integer'],
             'residential_address'  => ['residential_address', 'string'],
             'court_address'        => ['court_address', 'string'],
             'blood_group'          => ['blood_group', 'string'],
@@ -45,7 +49,7 @@ class Profile extends BaseProfile
     {
         return [
             'name'                  => \Yii::t('user', 'Name'),
-            'public_email'          => \Yii::t('user', 'Email (public)'),
+            'public_email'          => \Yii::t('user', 'Email ID'),
             /*'gravatar_email' => \Yii::t('user', 'Gravatar email'),
             'website'        => \Yii::t('user', 'Website'),*/
             'location'              => \Yii::t('user', 'Location'),
@@ -69,6 +73,12 @@ class Profile extends BaseProfile
         ];
     }
     
+    public function emailValidate(){
+        if(User::find()->where(['email'=>$this->public_email])->andWhere(['<>','id',$this->user_id])->one()){
+            $this->addError("public_email","Email ID already in use.");
+        }
+    }
+    
     public function afterSave($insert, $changedAttributes) {
         //UploadForm::deleteImage($this->user_id, UploadForm::$IMAGE_TYPE_USERS);
         UploadForm::uploadUserProfilePic($this->user_id);
@@ -76,6 +86,10 @@ class Profile extends BaseProfile
             $data=$_POST["clerks"];
             Clerks::saveClerk($this->user_id, $data);
         }
+        $user = \common\models\User::find()->where(["id"=>$this->user_id])->one();
+        $user->email = $this->public_email;
+        $user->mobile = $this->mobile;
+        $user->save();
         parent::afterSave($insert, $changedAttributes);
     }
     

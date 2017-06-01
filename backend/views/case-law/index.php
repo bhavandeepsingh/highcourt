@@ -16,7 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
+        <?php if(Yii::$app->user->can(USER_CAN_CREATE_POSTS)){ ?>
         <?= Html::a('Create Case Law', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php } ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,12 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'title:ntext',
-            [
-                'label' => 'Description',
-                'format' => 'raw',
-                'value' => function($data){ return substr($data->discription, 0, 30);},
-            ],
-            
+            'discription:ntext',
             [
                 'label' => 'Created At',
                 'value' => function($data){ return $data->getFormatedCreateAt(); },

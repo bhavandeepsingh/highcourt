@@ -20,7 +20,7 @@ class UserSearch extends BaseUser
         $query = $this->finder->getUserQuery();
         
         if(!isset($params["sort"])){
-            $query->orderBy(["created_at" => SORT_DESC]);
+            $query->orderBy(["confirmed_at" => SORT_DESC]);
         }
         
         $query->joinWith(['profile']);
