@@ -32,7 +32,7 @@ $templates.=(Yii::$app->user->can(USER_CAN_DELETE_POSTS))?"{delete} ":"";
             [
               'label' => 'Image',
               'format' => 'html',
-              'value' => function($data){ return '<img src="'. \common\models\UploadForm::getMemberProfilePic($data->id).'" width="100">'; }  
+              'value' => function($data){ return '<img src="'. \common\models\UploadForm::getMemberProfilePic($data->id)."?".time().'" width="100">'; }  
             ],
             'name',
             'enrollment_no',

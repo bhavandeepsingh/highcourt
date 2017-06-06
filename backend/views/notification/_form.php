@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
             ?>
             <div class="col-sm-12">
                 <div class="form-group">
-                    <img src="<?= $model->fileSrc; ?>" width="100"/>
+                    <img src="<?= $model->fileSrc."?".time(); ?>" width="100"/>
                 </div>
             </div>
             <?php

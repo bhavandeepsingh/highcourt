@@ -2,8 +2,13 @@
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
-        'cache' => [
+        /*'cache' => [
             'class' => 'yii\caching\FileCache',
+        ],*/
+        'assetManager' => [
+            //'class' => 'yii\web\AssetManager',
+            'forceCopy' => true,
+            'linkAssets' => true,
         ],
         'user' => [    
             //'class' => 'common\models\User',

@@ -33,7 +33,7 @@ for($i = 19; $i > 0; $i--){
         if($model->id > 0):
     ?>
         <div class="form-group field-achievements-description required has-success">
-            <img src="<?= \common\models\UploadForm::getAchevementPic($model->id)?>" width="150"/>
+            <img src="<?= \common\models\UploadForm::getAchevementPic($model->id)."?".time(); ?>" width="150"/>
         </div>
     <?php
         endif;

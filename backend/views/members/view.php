@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="members-view">
 
-    <h1><img src="<?= \common\models\UploadForm::getMemberProfilePic($model->id) ?>" width="100"></h1>
+    <h1><img src="<?= \common\models\UploadForm::getMemberProfilePic($model->id)."?".time(); ?>" width="100"></h1>
 
     <p>
         <?php

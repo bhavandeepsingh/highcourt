@@ -42,6 +42,8 @@ class CaseLawSearch extends CaseLaw
     public function search($params, $login_id = 0, $as_array = false)
     {
         $query = CaseLaw::find();
+        
+        $query->orderBy(["id" => SORT_DESC]);
 
         // add conditions that should always apply here
 

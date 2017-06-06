@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function($data){
                     if($data->is_file){
-                        return "<a class='btn btn-success' target='_blank' style='margin-bottom:10px;' href='".Yii::$app->urlManager->baseUrl."/../../uploads/notifications/".$data->id."/".$data->filename."'>"
+                        return "<a class='btn btn-success' target='_blank' style='margin-bottom:10px;' href='".Yii::$app->urlManager->baseUrl."/../../uploads/notifications/".$data->id."/".$data->filename."?".time()."'>"
                              ."<span class='glyphicon glyphicon-download-alt'></span></a><div class='clearfix'></div>";
                     }else{ return "No file selected.";}
                 }

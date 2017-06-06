@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
     <?php
     if($model->id > 0){
     ?>
-    <img src="<?= \common\models\UploadForm::getMemberProfilePic($model->id); ?>" width="100"/>
+    <img src="<?= \common\models\UploadForm::getMemberProfilePic($model->id)."?".time(); ?>" width="100"/>
     <?php
     }
     ?>

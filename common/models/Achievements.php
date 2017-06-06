@@ -70,7 +70,7 @@ class Achievements extends \yii\db\ActiveRecord
     }
     
     public function getImageTag($config = []){
-        $config['src'] = UploadForm::getAchevementPathApi($this->id);
+        $config['src'] = UploadForm::getAchevementPathApi($this->id)."?".time();
         return \yii\helpers\Html::tag('img', '', $config);
     }
     

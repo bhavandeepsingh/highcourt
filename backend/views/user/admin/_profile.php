@@ -40,7 +40,7 @@ if($profile->user_id > 0 && ($profile->profilePicSrc)){
     ?>
     <div class="col-sm-9 col-sm-offset-3">
         <div class="form-group">
-            <img src="<?= $profile->profilePicSrc; ?>" width="100"/>
+            <img src="<?= $profile->profilePicSrc."?".time(); ?>" width="100"/>
         </div>
     </div>
     <?php

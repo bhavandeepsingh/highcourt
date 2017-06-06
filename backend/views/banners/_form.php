@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
             ?>
             <div class="col-sm-9 col-sm-offset-3">
                 <div class="form-group">
-                    <img src="<?= $model->bannerPicSrc; ?>" width="100"/>
+                    <img src="<?= $model->bannerPicSrc."?".time(); ?>" width="100"/>
                 </div>
             </div>
             <?php
