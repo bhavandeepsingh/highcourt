@@ -23,7 +23,8 @@
         "dektrium/yii2-user": "^0.9.12",
         "2amigos/yii2-date-picker-widget": "~1.0",
         "moonlandsoft/yii2-phpexcel": "*",
-        "phpoffice/phpexcel": "^1.8"
+        "phpoffice/phpexcel": "^1.8",
+        "maybeworks/yii2-minify": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

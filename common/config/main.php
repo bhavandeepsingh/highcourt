@@ -4,18 +4,19 @@ return [
     'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',
-        ],
-        'user' => [    
-            //'class' => 'common\models\User',
-            'identityClass' => 'common\models\User',
-            'loginUrl' => ['site/login'],
-        ],
+        ],        
         'as access' => [
             'class' => 'mdm\admin\components\AccessControl',
             'allowActions' => [
                 'site/*',
-                'admin/*',
+                'admin/*',                
             ]
+        ],
+        'minifyManager' => [
+            'class' => 'maybeworks\minify\MinifyManager',
+            'html' => true,
+            'css' => true,
+            'js' => true,
         ]
     ],
     'timeZone' => 'Asia/Kolkata',
@@ -32,5 +33,5 @@ return [
             ],
         ],
         'rbac' => 'dektrium\rbac\RbacWebModule',
-    ],
+    ],    
 ];

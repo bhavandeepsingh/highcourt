@@ -17,7 +17,7 @@ return [
             'as backend' => [
                 'class' => 'dektrium\user\filters\BackendFilter',
                 'controllers' => ['profile', 'recovery', 'registration', 'settings'],
-            ],
+            ],            
         ],
     ],
     'components' => [
@@ -74,7 +74,7 @@ return [
                 'Profile'   => 'common\models\Profile',
             ],
             'enableRegistration' => false,
-            'enableConfirmation' => true,
+            'enableConfirmation' => true,            
         ],
     ],
     'params' => $params,
